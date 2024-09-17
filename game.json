@@ -1,0 +1,175 @@
+{
+	"width": 1280,
+	"height": 720,
+	"fps": 30,
+	"main": "./script/_bootstrap.js",
+	"assets": {
+		"player": {
+			"type": "image",
+			"width": 32,
+			"height": 32,
+			"path": "image/player.png",
+			"global": true
+		},
+		"_bootstrap": {
+			"type": "script",
+			"path": "script/_bootstrap.js",
+			"global": true
+		},
+		"main": {
+			"type": "script",
+			"path": "script/main.js",
+			"global": true
+		},
+		"parameterObject": {
+			"type": "script",
+			"path": "script/parameterObject.js",
+			"global": true
+		},
+		"node_modules/@yasshi2525/live-on-air/image/broadcaster.default.png": {
+			"type": "image",
+			"path": "node_modules/@yasshi2525/live-on-air/image/broadcaster.default.png",
+			"width": 192,
+			"height": 72,
+			"global": true
+		},
+		"node_modules/@yasshi2525/live-on-air/image/default.png": {
+			"type": "image",
+			"path": "node_modules/@yasshi2525/live-on-air/image/default.png",
+			"width": 181,
+			"height": 94,
+			"global": true
+		},
+		"node_modules/@yasshi2525/live-on-air/image/layer.comment.label.png": {
+			"type": "image",
+			"path": "node_modules/@yasshi2525/live-on-air/image/layer.comment.label.png",
+			"width": 109,
+			"height": 37
+		},
+		"node_modules/@yasshi2525/live-on-air/image/layer.field.label.png": {
+			"type": "image",
+			"path": "node_modules/@yasshi2525/live-on-air/image/layer.field.label.png",
+			"width": 52,
+			"height": 37
+		},
+		"node_modules/@yasshi2525/live-on-air/image/layer.header.label.png": {
+			"type": "image",
+			"path": "node_modules/@yasshi2525/live-on-air/image/layer.header.label.png",
+			"width": 84,
+			"height": 37
+		},
+		"node_modules/@yasshi2525/live-on-air/image/layer.screen.label.png": {
+			"type": "image",
+			"path": "node_modules/@yasshi2525/live-on-air/image/layer.screen.label.png",
+			"width": 82,
+			"height": 37
+		},
+		"node_modules/@yasshi2525/live-on-air/image/spot.default.disabled.png": {
+			"type": "image",
+			"path": "node_modules/@yasshi2525/live-on-air/image/spot.default.disabled.png",
+			"width": 150,
+			"height": 100,
+			"global": true
+		},
+		"node_modules/@yasshi2525/live-on-air/image/spot.default.locked.png": {
+			"type": "image",
+			"path": "node_modules/@yasshi2525/live-on-air/image/spot.default.locked.png",
+			"width": 150,
+			"height": 100,
+			"global": true
+		},
+		"node_modules/@yasshi2525/live-on-air/image/spot.default.normal.png": {
+			"type": "image",
+			"path": "node_modules/@yasshi2525/live-on-air/image/spot.default.normal.png",
+			"width": 150,
+			"height": 100,
+			"global": true
+		},
+		"node_modules/@yasshi2525/live-on-air/image/spot.default.png": {
+			"type": "image",
+			"path": "node_modules/@yasshi2525/live-on-air/image/spot.default.png",
+			"width": 133,
+			"height": 94,
+			"global": true
+		},
+		"node_modules/@yasshi2525/live-on-air/image/spot.default.unvisited.png": {
+			"type": "image",
+			"path": "node_modules/@yasshi2525/live-on-air/image/spot.default.unvisited.png",
+			"width": 150,
+			"height": 100,
+			"global": true
+		},
+		"sampleLiveGame": {
+			"type": "script",
+			"path": "script/sampleLiveGame.js",
+			"global": true
+		}
+	},
+	"environment": {
+		"sandbox-runtime": "3",
+		"nicolive": {
+			"supportedModes": [
+				"ranking"
+			],
+			"preferredSessionParameters": {
+				"totalTimeLimit": 82
+			}
+		}
+	},
+	"globalScripts": [
+		"node_modules/@akashic-extension/akashic-timeline/lib/ActionType.js",
+		"node_modules/@akashic-extension/akashic-timeline/lib/Easing.js",
+		"node_modules/@akashic-extension/akashic-timeline/lib/Timeline.js",
+		"node_modules/@akashic-extension/akashic-timeline/lib/Tween.js",
+		"node_modules/@akashic-extension/akashic-timeline/lib/index.js",
+		"node_modules/@yasshi2525/live-on-air/lib/builder/broadcasterBuilder.js",
+		"node_modules/@yasshi2525/live-on-air/lib/builder/broadcasterConfigure.js",
+		"node_modules/@yasshi2525/live-on-air/lib/builder/commentDeployerBuilder.js",
+		"node_modules/@yasshi2525/live-on-air/lib/builder/commentDeployerConfigure.js",
+		"node_modules/@yasshi2525/live-on-air/lib/builder/commentSupplierBuilder.js",
+		"node_modules/@yasshi2525/live-on-air/lib/builder/commentSupplierConfigure.js",
+		"node_modules/@yasshi2525/live-on-air/lib/builder/fieldBuilder.js",
+		"node_modules/@yasshi2525/live-on-air/lib/builder/layerBuilder.js",
+		"node_modules/@yasshi2525/live-on-air/lib/builder/layerConfigure.js",
+		"node_modules/@yasshi2525/live-on-air/lib/builder/liveOnAirSceneBuilder.js",
+		"node_modules/@yasshi2525/live-on-air/lib/builder/liveOnAirSceneConfigure.js",
+		"node_modules/@yasshi2525/live-on-air/lib/builder/scorerBuilder.js",
+		"node_modules/@yasshi2525/live-on-air/lib/builder/scorerConfigure.js",
+		"node_modules/@yasshi2525/live-on-air/lib/builder/screenBuilder.js",
+		"node_modules/@yasshi2525/live-on-air/lib/builder/spotBuilder.js",
+		"node_modules/@yasshi2525/live-on-air/lib/builder/spotConfigure.js",
+		"node_modules/@yasshi2525/live-on-air/lib/builder/tickerBuilder.js",
+		"node_modules/@yasshi2525/live-on-air/lib/builder/tickerConfigure.js",
+		"node_modules/@yasshi2525/live-on-air/lib/index.js",
+		"node_modules/@yasshi2525/live-on-air/lib/model/broadcaster.js",
+		"node_modules/@yasshi2525/live-on-air/lib/model/commentContextSupplier.js",
+		"node_modules/@yasshi2525/live-on-air/lib/model/commentDeployer.js",
+		"node_modules/@yasshi2525/live-on-air/lib/model/commentSupplier.js",
+		"node_modules/@yasshi2525/live-on-air/lib/model/field.js",
+		"node_modules/@yasshi2525/live-on-air/lib/model/layer.js",
+		"node_modules/@yasshi2525/live-on-air/lib/model/live.js",
+		"node_modules/@yasshi2525/live-on-air/lib/model/liveGame.js",
+		"node_modules/@yasshi2525/live-on-air/lib/model/liveOnAirScene.js",
+		"node_modules/@yasshi2525/live-on-air/lib/model/numberLabel.js",
+		"node_modules/@yasshi2525/live-on-air/lib/model/scorer.js",
+		"node_modules/@yasshi2525/live-on-air/lib/model/screen.js",
+		"node_modules/@yasshi2525/live-on-air/lib/model/spot.js",
+		"node_modules/@yasshi2525/live-on-air/lib/model/ticker.js",
+		"node_modules/@yasshi2525/live-on-air/lib/util/loader.js",
+		"node_modules/@yasshi2525/live-on-air/lib/value/broadcasterConfig.js",
+		"node_modules/@yasshi2525/live-on-air/lib/value/commentDeployerConfig.js",
+		"node_modules/@yasshi2525/live-on-air/lib/value/commentSupplierConfig.js",
+		"node_modules/@yasshi2525/live-on-air/lib/value/fieldConfig.js",
+		"node_modules/@yasshi2525/live-on-air/lib/value/layerConfig.js",
+		"node_modules/@yasshi2525/live-on-air/lib/value/numberLabelConfig.js",
+		"node_modules/@yasshi2525/live-on-air/lib/value/scorerConfig.js",
+		"node_modules/@yasshi2525/live-on-air/lib/value/screenConfig.js",
+		"node_modules/@yasshi2525/live-on-air/lib/value/spotConfig.js",
+		"node_modules/@yasshi2525/live-on-air/lib/value/tickerConfig.js",
+		"node_modules/@yasshi2525/live-on-air/lib/value/value.js"
+	],
+	"moduleMainScripts": {
+		"@akashic-extension/akashic-timeline": "node_modules/@akashic-extension/akashic-timeline/lib/index.js",
+		"@yasshi2525/live-on-air": "node_modules/@yasshi2525/live-on-air/lib/index.js"
+	}
+}
