@@ -103,6 +103,21 @@
 			"type": "script",
 			"path": "script/sampleLiveGame.js",
 			"global": true
+		},
+		"avatar": {
+			"type": "script",
+			"path": "script/avatar.js",
+			"global": true
+		},
+		"title": {
+			"type": "script",
+			"path": "script/title.js",
+			"global": true
+		},
+		"utils": {
+			"type": "script",
+			"path": "script/utils.js",
+			"global": true
 		}
 	},
 	"environment": {
