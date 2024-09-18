@@ -9,7 +9,7 @@ export interface AvatarOptions {
 
 export class Avatar {
 	readonly onSpeak = new g.Trigger<string>();
-	private readonly view: g.E;
+	readonly view: g.E;
 	private readonly face: g.FilledRect;
 	private readonly _text: g.Label;
 
@@ -40,7 +40,7 @@ export class Avatar {
 			y: 0,
 			font: new g.DynamicFont({
 				game: g.game,
-				size: 30,
+				size: 45,
 				strokeColor: "white",
 				strokeWidth: 4,
 				fontFamily: "sans-serif",

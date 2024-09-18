@@ -4,7 +4,12 @@ import { GameMainParameterObject } from "./parameterObject";
 import { SampleLiveGame } from "./sampleLiveGame";
 import { sleep, wait } from "./utils";
 
-const TEXT_VIEW_TIME = 2000;
+// テキスト表示時間
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const TEXT_VIEW_TIME = 3000;
+// ゲーム終了後の待機時間
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const CLOSING_SEC = 15;
 
 export function main(param: GameMainParameterObject): void {
 	// シーンを作成します.
@@ -19,24 +24,37 @@ export function main(param: GameMainParameterObject): void {
 		})
 		.spot({
 			x: g.game.width / 4,
-			y: 50,
+			y: (g.game.height - 200) / 2,
 			liveClass: SampleLiveGame
 		})
 		.spot({
 			x: g.game.width / 2,
-			y: 50
+			y: (g.game.height - 200) / 2,
 		})
 		.spot({
 			x: g.game.width * 3 / 4,
-			y: 50
+			y: (g.game.height - 200) / 2,
+		})
+		.spot({
+			x: g.game.width / 4,
+			y: (g.game.height - 200) / 4,
+			liveClass: SampleLiveGame
+		})
+		.spot({
+			x: g.game.width / 2,
+			y: (g.game.height - 200) / 4,
+		})
+		.spot({
+			x: g.game.width * 3 / 4,
+			y: (g.game.height - 200) / 4,
 		})
 		.ticker({
-			frame: (param.sessionParameter.totalTimeLimit ?? 60) * g.game.fps
+			frame: ((param.sessionParameter.totalTimeLimit ?? 60) - CLOSING_SEC) * g.game.fps
 		})
 		.build();
 	scene.onLoad.add(() => {
-		const layer = scene.layer;
-		layer.field.hide();
+		// Avatarにゲームの説明をさせる
+		// 会話のためのレイヤを追加
 		const characterLayer = new g.E({
 			scene,
 			parent: scene,
@@ -48,18 +66,47 @@ export function main(param: GameMainParameterObject): void {
 		const beginner = new Avatar({ scene, container: characterLayer, side: "left" });
 		const guide = new Avatar({ scene, container: characterLayer, side: "right" });
 
+		const { broadcaster, layer, field, spots, ticker } = scene;
+		// スポットに名前とラベル表記
+		["ゲージを溜める", "狙いを定める", "イチかバチか"].forEach((name, i) => {
+			spots[i].vars = { name };
+			const area = spots[i].view.calculateBoundingRect();
+			spots[i].view.append(new g.Label({
+				scene,
+				font: new g.DynamicFont({
+					game: g.game,
+					size: 25,
+					fontColor: "black",
+					strokeColor: "white",
+					strokeWidth: 3,
+					fontFamily: "sans-serif"
+				}),
+				x: (area.right - area.left) / 2,
+				y: area.bottom - area.top,
+				anchorX: 0.5,
+				anchorY: 0,
+				width: (g.game.width - 200) / 3,
+				widthAutoAdjust: false,
+				textAlign: "center",
+				text: name
+			}));
+		});
+
+		// 上級スポットをロックする
+		spots[3].lockedBy(spots[0]);
+		spots[4].lockedBy(spots[1]);
+		spots[5].lockedBy(spots[2]);
+
+		// イントロの会話のためスポットを非表示
+		layer.field.hide();
+
+		// 会話：導入
 		(async () => {
-			await sleep(TEXT_VIEW_TIME);
-			await sleep(TEXT_VIEW_TIME);
-			await sleep(TEXT_VIEW_TIME);
 			beginner.text = "うぇーん、ゲームってどう作るのぉ…";
 			await wait(beginner.onSpeak);
 			await sleep(TEXT_VIEW_TIME);
 			beginner.text = "";
-			guide.text = "よしっ、一緒にやってみよう！";
-			await wait(guide.onSpeak);
-			await sleep(TEXT_VIEW_TIME);
-			guide.text = "どんなゲームが作りたいんだい？！";
+			guide.text = "どんなゲームを作りたいんだい？！";
 			await wait(guide.onSpeak);
 			await sleep(TEXT_VIEW_TIME);
 			guide.text = "";
@@ -67,6 +114,7 @@ export function main(param: GameMainParameterObject): void {
 			await wait(beginner.onSpeak);
 			await sleep(TEXT_VIEW_TIME);
 			beginner.text = "";
+			layer.field.show();
 			guide.text = "じゃあ３つサンプルを用意したから、";
 			await wait(guide.onSpeak);
 			await sleep(TEXT_VIEW_TIME);
@@ -75,8 +123,66 @@ export function main(param: GameMainParameterObject): void {
 			await sleep(TEXT_VIEW_TIME);
 			guide.text = "";
 			await wait(guide.onSpeak);
-			layer.field.show();
+			beginner.text = "どれが面白そうかなぁ？";
 		})();
+
+		// Spot に入って生放送が始まったら Avatar を隠す。終わったら戻す。
+		broadcaster.onEnter.add(() => {
+			beginner.text = "";
+			beginner.view.hide();
+			guide.text = "";
+			guide.view.hide();
+		});
+		broadcaster.onLiveEnd.add(() => {
+			beginner.view.show();
+			guide.view.show();
+		});
+
+		// 最初の生放送が終わったら
+		broadcaster.onLiveEnd.addOnce(() => {
+			// 上級スポットを解放
+			const selectedIdx = spots.indexOf(broadcaster.staying);
+			spots[selectedIdx + 3].unlock(broadcaster.staying);
+
+			// 会話優先のためスポット訪問無効
+			field.disableSpotExcept(undefined);
+			// 会話
+			(async () => {
+				const selectedGame = (broadcaster.staying.vars as Record<string, string>).name;
+				guide.text = `${selectedGame}ゲームはどうだったかい？`;
+				await wait(guide.onSpeak);
+				await sleep(TEXT_VIEW_TIME);
+				guide.text = "";
+				beginner.text = "こういうミニゲームな感じね";
+				await wait(beginner.onSpeak);
+				await sleep(TEXT_VIEW_TIME);
+				beginner.text = "ありかも…？！";
+				await wait(beginner.onSpeak);
+				await sleep(TEXT_VIEW_TIME);
+				field.enableSpotExcept(undefined);
+				beginner.text = "";
+				guide.text = "面白かったなら上に解放されたスポットを";
+				await wait(guide.onSpeak);
+				await sleep(TEXT_VIEW_TIME);
+				guide.text = "訪問してみてくれぃ！";
+				await wait(guide.onSpeak);
+				await sleep(TEXT_VIEW_TIME);
+				guide.text = "他にも試したければ、";
+				await wait(guide.onSpeak);
+				await sleep(TEXT_VIEW_TIME);
+				guide.text = "他のスポットを選んでみてくれぃ！";
+				await wait(guide.onSpeak);
+				await sleep(TEXT_VIEW_TIME);
+				guide.text = "";
+				beginner.text = `${selectedGame}で攻めるか、他で攻めるか…`;
+				await wait(beginner.onSpeak);
+			})();
+		});
+
+		// ゲームが終わったら
+		ticker.onExpire.addOnce(() => {
+			// TODO:
+		});
 	});
 	g.game.pushScene(scene);
 }
