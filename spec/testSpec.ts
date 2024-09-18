@@ -27,7 +27,7 @@ describe("mainScene", () => {
 		expect(scoreLabel.text).toBe("スコア   0点");
 
 		const timeLabel = scene.children[3].children[1] as g.Label;
-		expect(timeLabel.text).toBe("残り59秒");
+		expect(timeLabel.text).toBe("残り44秒");
 
 		// 制限時間がなくなった時の時間表示を確認
 		await context.advance(60000);
