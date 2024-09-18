@@ -20,7 +20,7 @@ export class SampleLiveGame extends LiveGame {
 	 * @protected
 	 * @inheritDoc
 	 */
-	protected handleIntroduction (context: LiveContext, next: () => void): () => void {
+	protected handleIntroduction(context: LiveContext, next: () => void): () => void {
 		const { scene, container } = { ...context };
 		container.append(new g.FilledRect({
 			scene,
@@ -54,7 +54,7 @@ export class SampleLiveGame extends LiveGame {
 	 * @protected
 	 * @inheritDoc
 	 */
-	protected handleGamePlay (context: LiveContext): () => void {
+	protected handleGamePlay(context: LiveContext): () => void {
 		const { scene, container } = { ...context };
 		const gauge = new g.FilledRect({
 			scene,
@@ -85,7 +85,11 @@ export class SampleLiveGame extends LiveGame {
 	 * ゲージの長さをもとに得点を算出します. 100点満点
 	 * @inheritDoc
 	 */
-	protected evaluateScore (context: LiveContext): number {
+	protected evaluateScore(context: LiveContext): number {
 		return (context.vars as Record<string, g.FilledRect>).gauge.width / context.container.width * 100;
+	}
+
+	override satisfiesUnlockSpotCondition(): boolean {
+		return true;
 	}
 }

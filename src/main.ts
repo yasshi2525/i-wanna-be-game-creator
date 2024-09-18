@@ -25,20 +25,23 @@ export function main(param: GameMainParameterObject): void {
 		.spot({
 			x: g.game.width / 4,
 			y: (g.game.height - 200) / 2,
-			liveClass: SampleLiveGame
+			liveClass: SampleLiveGame,
+			name: "ゲージを溜める"
 		})
 		.spot({
 			x: g.game.width / 2,
 			y: (g.game.height - 200) / 2,
+			name: "狙いを定める"
 		})
 		.spot({
 			x: g.game.width * 3 / 4,
 			y: (g.game.height - 200) / 2,
+			name: "イチかバチか"
 		})
 		.spot({
 			x: g.game.width / 4,
 			y: (g.game.height - 200) / 4,
-			liveClass: SampleLiveGame
+			liveClass: SampleLiveGame,
 		})
 		.spot({
 			x: g.game.width / 2,
@@ -67,30 +70,6 @@ export function main(param: GameMainParameterObject): void {
 		const guide = new Avatar({ scene, container: characterLayer, side: "right" });
 
 		const { broadcaster, layer, field, spots, ticker } = scene;
-		// スポットに名前とラベル表記
-		["ゲージを溜める", "狙いを定める", "イチかバチか"].forEach((name, i) => {
-			spots[i].vars = { name };
-			const area = spots[i].view.calculateBoundingRect();
-			spots[i].view.append(new g.Label({
-				scene,
-				font: new g.DynamicFont({
-					game: g.game,
-					size: 25,
-					fontColor: "black",
-					strokeColor: "white",
-					strokeWidth: 3,
-					fontFamily: "sans-serif"
-				}),
-				x: (area.right - area.left) / 2,
-				y: area.bottom - area.top,
-				anchorX: 0.5,
-				anchorY: 0,
-				width: (g.game.width - 200) / 3,
-				widthAutoAdjust: false,
-				textAlign: "center",
-				text: name
-			}));
-		});
 
 		// 上級スポットをロックする
 		spots[3].lockedBy(spots[0]);
@@ -140,15 +119,11 @@ export function main(param: GameMainParameterObject): void {
 
 		// 最初の生放送が終わったら
 		broadcaster.onLiveEnd.addOnce(() => {
-			// 上級スポットを解放
-			const selectedIdx = spots.indexOf(broadcaster.staying);
-			spots[selectedIdx + 3].unlock(broadcaster.staying);
-
 			// 会話優先のためスポット訪問無効
 			field.disableSpotExcept(undefined);
 			// 会話
 			(async () => {
-				const selectedGame = (broadcaster.staying.vars as Record<string, string>).name;
+				const selectedGame = broadcaster.staying.name;
 				guide.text = `${selectedGame}ゲームはどうだったかい？`;
 				await wait(guide.onSpeak);
 				await sleep(TEXT_VIEW_TIME);
