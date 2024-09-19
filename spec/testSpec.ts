@@ -18,19 +18,21 @@ describe("mainScene", () => {
 			() => game.scene()!.local !== "full-local" && game.scene()!.name !== "_bootstrap"
 		); // ローカル(ローディング)シーンを抜けるまで進める
 
+		await client.advanceUntil(() => game.scene()!.name !== "title");
+
 		const scene = client.game.scene()!;
 		expect(scene).toBeDefined();
 
 		// 初期スコア、時間の値を確認
 		await context.step();
-		const scoreLabel = scene.children[3].children[0] as g.Label;
+		const scoreLabel = scene.children![3].children![0] as g.Label;
 		expect(scoreLabel.text).toBe("スコア   0点");
 
-		const timeLabel = scene.children[3].children[1] as g.Label;
-		expect(timeLabel.text).toBe("残り44秒");
+		const timeLabel = scene.children![3].children![1] as g.Label;
+		expect(timeLabel.text).toBe("残り64秒");
 
 		// 制限時間がなくなった時の時間表示を確認
-		await context.advance(60000);
+		await context.advance(100000);
 		expect(timeLabel.text).toBe("残り 0秒");
 
 		await context.destroy();

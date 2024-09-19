@@ -36,11 +36,6 @@
 			"path": "script/avatar.js",
 			"global": true
 		},
-		"title": {
-			"type": "script",
-			"path": "script/title.js",
-			"global": true
-		},
 		"utils": {
 			"type": "script",
 			"path": "script/utils.js",
@@ -118,6 +113,27 @@
 			"width": 150,
 			"height": 100,
 			"global": true
+		},
+		"sceneMain": {
+			"type": "script",
+			"path": "script/sceneMain.js",
+			"global": true
+		},
+		"sceneTitle": {
+			"type": "script",
+			"path": "script/sceneTitle.js",
+			"global": true
+		},
+		"sceneClosing": {
+			"type": "script",
+			"path": "script/sceneClosing.js",
+			"global": true
+		},
+		"avatar_icon": {
+			"type": "image",
+			"path": "image/avatar_icon.png",
+			"width": 408,
+			"height": 738
 		}
 	},
 	"environment": {
@@ -127,7 +143,7 @@
 				"ranking"
 			],
 			"preferredSessionParameters": {
-				"totalTimeLimit": 82
+				"totalTimeLimit": 120
 			}
 		}
 	},
