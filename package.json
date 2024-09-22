@@ -6,6 +6,7 @@
   "scripts": {
     "postinstall": "npm run build",
     "build": "rimraf ./script && tsc && akashic scan asset script",
+    "watch": "tsc -w",
     "update": "akashic scan asset && akashic scan globalScripts",
     "lint": "eslint -c .eslintrc.js \"src/**/*.ts\" --fix",
     "start": "akashic sandbox .",
@@ -31,6 +32,6 @@
     "typescript": "5.3"
   },
   "dependencies": {
-    "@yasshi2525/live-on-air": "^1.0.0-alpha.1"
+    "@yasshi2525/live-on-air": "^1.0.0-alpha.2"
   }
 }

@@ -41,6 +41,43 @@
 			"path": "script/utils.js",
 			"global": true
 		},
+		"sceneMain": {
+			"type": "script",
+			"path": "script/sceneMain.js",
+			"global": true
+		},
+		"sceneTitle": {
+			"type": "script",
+			"path": "script/sceneTitle.js",
+			"global": true
+		},
+		"sceneClosing": {
+			"type": "script",
+			"path": "script/sceneClosing.js",
+			"global": true
+		},
+		"avatar_icon": {
+			"type": "image",
+			"path": "image/avatar_icon.png",
+			"width": 408,
+			"height": 738,
+			"global": true
+		},
+		"liveGameMotivation": {
+			"type": "script",
+			"path": "script/liveGameMotivation.js",
+			"global": true
+		},
+		"sceneMainExperimental": {
+			"type": "script",
+			"path": "script/sceneMainExperimental.js",
+			"global": true
+		},
+		"sceneTitleExperimental": {
+			"type": "script",
+			"path": "script/sceneTitleExperimental.js",
+			"global": true
+		},
 		"node_modules/@yasshi2525/live-on-air/image/broadcaster.default.png": {
 			"type": "image",
 			"path": "node_modules/@yasshi2525/live-on-air/image/broadcaster.default.png",
@@ -114,26 +151,15 @@
 			"height": 100,
 			"global": true
 		},
-		"sceneMain": {
+		"frame": {
 			"type": "script",
-			"path": "script/sceneMain.js",
+			"path": "script/frame.js",
 			"global": true
 		},
-		"sceneTitle": {
+		"globals": {
 			"type": "script",
-			"path": "script/sceneTitle.js",
+			"path": "script/globals.js",
 			"global": true
-		},
-		"sceneClosing": {
-			"type": "script",
-			"path": "script/sceneClosing.js",
-			"global": true
-		},
-		"avatar_icon": {
-			"type": "image",
-			"path": "image/avatar_icon.png",
-			"width": 408,
-			"height": 738
 		}
 	},
 	"environment": {
@@ -190,6 +216,7 @@
 		"node_modules/@yasshi2525/live-on-air/lib/model/ticker.js",
 		"node_modules/@yasshi2525/live-on-air/lib/util/loader.js",
 		"node_modules/@yasshi2525/live-on-air/lib/value/broadcasterConfig.js",
+		"node_modules/@yasshi2525/live-on-air/lib/value/commentContextConfig.js",
 		"node_modules/@yasshi2525/live-on-air/lib/value/commentDeployerConfig.js",
 		"node_modules/@yasshi2525/live-on-air/lib/value/commentSupplierConfig.js",
 		"node_modules/@yasshi2525/live-on-air/lib/value/fieldConfig.js",

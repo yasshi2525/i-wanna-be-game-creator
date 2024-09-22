@@ -1,168 +1,94 @@
-import { LiveOnAirScene, LiveOnAirSceneBuilder } from "@yasshi2525/live-on-air";
+import { CommentCondition, LiveOnAirScene, LiveOnAirSceneBuilder } from "@yasshi2525/live-on-air";
 import { Avatar } from "./avatar";
-import { SampleLiveGame } from "./sampleLiveGame";
+import { MotivationLiveGame } from "./liveGameMotivation";
 import { ClosingScene } from "./sceneClosing";
-import { sleep, wait } from "./utils";
+import { toCommentSchema } from "./utils";
 
-// テキスト表示時間
-// eslint-disable-next-line @typescript-eslint/naming-convention
-const TEXT_VIEW_TIME = 3000;
-// eslint-disable-next-line @typescript-eslint/naming-convention
-const OPENING_SEC = 10;
-// ゲーム終了後の待機時間
-// eslint-disable-next-line @typescript-eslint/naming-convention
-const CLOSING_SEC = 15;
+export interface MainSceneOptions {
+	totalTimeLimit: number;
+}
 
-export const createMainScene = (totalTimeLimit: number): LiveOnAirScene & g.Scene => {
-	// シーンを作成します.
+export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAirScene & g.Scene => {
+	// TODO: わこつ 消せない
+
+	// Spot 共通のフォントを指定します
+	LiveOnAirSceneBuilder.getDefault(g.game)
+		.spot({
+			labelFont: new g.DynamicFont({
+				game: g.game,
+				size: 30,
+				fontFamily: "sans-serif",
+				fontColor: "black",
+				strokeColor: "white",
+				strokeWidth: 5,
+			})
+		})
+		.commentSupplier({ comments: [] });
+
+	// Scene を以下の初期値で作成します
 	const scene = new LiveOnAirSceneBuilder(g.game)
 		.layer({
-			field: { x: 0, y: 100, width: g.game.width, height: g.game.height - 200 }
+			comment: { x: 0, y: 100, width: g.game.width, height: 400 },
+			screen: { x: 100, y: 100, width: g.game.width - 200, height: 400 }
 		})
 		.broadcaster({
-			x: 100,
-			y: (g.game.height - 200) / 2,
-			asset: g.game.asset.getImageById("player")
+			x: 50,
+			y: 260,
 		})
 		.spot({
-			x: g.game.width / 4,
-			y: (g.game.height - 200) / 2,
-			liveClass: SampleLiveGame,
-			name: "ゲージを溜める"
+			x: 300,
+			y: 260,
+			name: "やる気をだす",
+			liveClass: MotivationLiveGame
 		})
-		.spot({
-			x: g.game.width / 2,
-			y: (g.game.height - 200) / 2,
-			name: "狙いを定める"
+		.commentContext({
+			vars: { stage: "motivation" } satisfies CommentContextVars
 		})
-		.spot({
-			x: g.game.width * 3 / 4,
-			y: (g.game.height - 200) / 2,
-			name: "イチかバチか"
+		.commentSupplier({
+			comments: toCommentSchema(
+				["やる気大事！", isMotivationStage],
+				["やる気だしてこ！", isMotivationStage],
+				["まずはそこからかよｗｗｗ", isMotivationStage],
+				["早く作れしｗｗｗ", isMotivationStage],
+				["間に合わなくなっても知らんぞｗｗｗ", isMotivationStage]
+			)
 		})
-		.spot({
-			x: g.game.width / 4,
-			y: (g.game.height - 200) / 4,
-			liveClass: SampleLiveGame,
-		})
-		.spot({
-			x: g.game.width / 2,
-			y: (g.game.height - 200) / 4,
-		})
-		.spot({
-			x: g.game.width * 3 / 4,
-			y: (g.game.height - 200) / 4,
+		.commentDeployer({
+			speed: 8
 		})
 		.ticker({
-			frame: (totalTimeLimit - OPENING_SEC - CLOSING_SEC) * g.game.fps
+			frame: (totalTimeLimit - 10) * g.game.fps
 		})
 		.build();
 	scene.onLoad.add(() => {
-		// Avatarにゲームの説明をさせる
-		// 会話のためのレイヤを追加
-		const characterLayer = new g.E({
+		// avatar を表示させます
+		const overlay = new g.E({
 			scene,
 			parent: scene,
-			x: 0,
-			y: 0,
 			width: g.game.width,
 			height: g.game.height
 		});
-		const beginner = new Avatar({ scene, container: characterLayer, side: "left" });
-		const guide = new Avatar({ scene, container: characterLayer, side: "right" });
+		const avatar = new Avatar({ scene, container: overlay, side: "left" });
+		avatar.text = "まずは、やる気を出すでぇ～す!!";
 
-		const { broadcaster, layer, field, spots, ticker } = scene;
-
-		// 上級スポットをロックする
-		spots[3].lockedBy(spots[0]);
-		spots[4].lockedBy(spots[1]);
-		spots[5].lockedBy(spots[2]);
-
-		// イントロの会話のためスポットを非表示
-		layer.field.hide();
-
-		// 会話：導入
-		(async () => {
-			beginner.text = "うぇーん、ゲームってどう作るのぉ…";
-			await wait(beginner.onSpeak);
-			await sleep(TEXT_VIEW_TIME);
-			beginner.text = "";
-			guide.text = "どんなゲームを作りたいんだい？！";
-			await wait(guide.onSpeak);
-			await sleep(TEXT_VIEW_TIME);
-			guide.text = "";
-			beginner.text = "まだ決めてないし、アイデアもないよぉ…";
-			await wait(beginner.onSpeak);
-			await sleep(TEXT_VIEW_TIME);
-			beginner.text = "";
-			layer.field.show();
-			guide.text = "じゃあ３つサンプルを用意したから、";
-			await wait(guide.onSpeak);
-			await sleep(TEXT_VIEW_TIME);
-			guide.text = "どれがいいか選んでくれぇ！";
-			await wait(guide.onSpeak);
-			await sleep(TEXT_VIEW_TIME);
-			guide.text = "";
-			await wait(guide.onSpeak);
-			beginner.text = "どれが面白そうかなぁ？";
-		})();
-
-		// Spot に入って生放送が始まったら Avatar を隠す。終わったら戻す。
-		broadcaster.onEnter.add(() => {
-			beginner.text = "";
-			beginner.view.hide();
-			guide.text = "";
-			guide.view.hide();
-		});
-		broadcaster.onLiveEnd.add(() => {
-			beginner.view.show();
-			guide.view.show();
-		});
-
-		// 最初のミニゲームプレイが終わったら
-		broadcaster.onLiveEnd.addOnce(() => {
-			// 会話優先のためスポット訪問無効
-			field.disableSpotExcept(undefined);
-			// 会話
-			(async () => {
-				const selectedGame = broadcaster.staying.name;
-				guide.text = `${selectedGame}ゲームはどうだったかい？`;
-				await wait(guide.onSpeak);
-				await sleep(TEXT_VIEW_TIME);
-				guide.text = "";
-				beginner.text = "こういうミニゲームな感じね";
-				await wait(beginner.onSpeak);
-				await sleep(TEXT_VIEW_TIME);
-				field.enableSpotExcept(undefined);
-				beginner.text = "";
-				guide.text = "他も遊んでみてくれぃ！";
-				// 2回目のミニゲームプレイが終わったら
-				broadcaster.onLiveEnd.add(() => {
-					(async () => {
-						await sleep(TEXT_VIEW_TIME);
-						beginner.text = "どれもいいなぁ…";
-						await wait(beginner.onSpeak);
-						await sleep(TEXT_VIEW_TIME);
-						beginner.text = "よしっ！おれ、ミニゲーム集をつくるよ！";
-						await wait(beginner.onSpeak);
-						await sleep(TEXT_VIEW_TIME);
-						beginner.text = "";
-						guide.text = "そんなアナタにオススメがコチラ！";
-						await wait(beginner.onSpeak);
-						await sleep(TEXT_VIEW_TIME);
-					})();
-				});
-				await wait(guide.onSpeak);
-				await sleep(TEXT_VIEW_TIME);
-				guide.text = "";
-				g.game.pushScene(new ClosingScene({ game: g.game }));
-			})();
-		});
-
-		// ゲームが終わったら
-		ticker.onExpire.addOnce(() => {
+		// 残り時間がなくなったら結果表示画面へ
+		scene.ticker.onExpire.addOnce(() => {
 			g.game.pushScene(new ClosingScene({ game: g.game }));
 		});
 	});
 	return scene;
 };
+
+/**
+ * CommentContext の vars に定義するオブジェクトの型
+ */
+type CommentContextVars = {
+	stage: "motivation";
+};
+
+/**
+ * やる気出すステージか
+ * @param ctx CommentContext
+ * @returns やる気出すステージの場合 true
+ */
+const isMotivationStage: CommentCondition = ctx => (ctx.vars as CommentContextVars).stage === "motivation";
