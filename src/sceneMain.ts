@@ -1,6 +1,7 @@
 import { LiveOnAirScene, LiveOnAirSceneBuilder } from "@yasshi2525/live-on-air";
 import { Avatar } from "./avatar";
 import { BroadcasterVars, CommentContextVars, isIdeaStage, isMotivationStage } from "./globals";
+import { DevelopLiveGame } from "./liveGameDevelop";
 import { IdeaLiveGame } from "./liveGameIdea";
 import { MotivationLiveGame } from "./liveGameMotivation";
 import { ClosingScene } from "./sceneClosing";
@@ -54,7 +55,8 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 		.spot({
 			x: g.game.width * 3 / 4,
 			y: 260,
-			name: "仮置き"
+			name: "ゲームを制作する",
+			liveClass: DevelopLiveGame
 		})
 		.commentContext({
 			vars: { stage: "motivation" } satisfies CommentContextVars

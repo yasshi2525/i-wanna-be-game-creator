@@ -160,6 +160,11 @@
 			"type": "script",
 			"path": "script/liveGameIdea.js",
 			"global": true
+		},
+		"liveGameDevelop": {
+			"type": "script",
+			"path": "script/liveGameDevelop.js",
+			"global": true
 		}
 	},
 	"environment": {
