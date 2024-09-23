@@ -1,7 +1,11 @@
 import { BroadcasterVars } from "./globals";
 
+/**
+ * ミニゲームの結果もらえるパラメタを表示
+ */
 export class ScoreBoard extends g.E {
 	private readonly motivation: ParameterView;
+	private readonly idea: ParameterView;
 	private readonly model: BroadcasterVars;
 
 	constructor(opts: g.EParameterObject & {
@@ -14,7 +18,15 @@ export class ScoreBoard extends g.E {
 			scene: this.scene,
 			parent: this,
 			font: opts.font,
-			name: "やる気",
+			name: "やる気　",
+			width: opts.width
+		});
+		this.idea = new ParameterView({
+			scene: this.scene,
+			parent: this,
+			font: opts.font,
+			name: "アイデア",
+			y: opts.font.size * 2,
 			width: opts.width
 		});
 	}
@@ -24,6 +36,7 @@ export class ScoreBoard extends g.E {
 	 */
 	notify(): void {
 		this.motivation.value = this.model.motivation;
+		this.idea.value = this.model.idea;
 	}
 }
 
@@ -72,17 +85,17 @@ class ParameterView extends g.E {
 			this.background.show();
 			this.label.show();
 		}
-		this.label.text = this.name + ": " + this.toViewString(this._value);
+		this.label.text = this.name + ":" + this.toViewString(this._value);
 		this.label.invalidate();
 	}
 
 	toViewString(v: number): string {
-		if (v >= 2) {
-			return "✔✔MAX";
+		if (v >= 1.8) {
+			return "✔✔✔";
 		}
 		if (v >= 0.9) {
-			return "✔✔";
+			return " ✔✔";
 		}
-		return "✔＿";
+		return "  ✔";
 	}
 }

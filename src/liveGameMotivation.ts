@@ -1,13 +1,14 @@
 import { LiveContext, LiveGame } from "@yasshi2525/live-on-air";
-import { BroadcasterVars, INTERVAL_TIME, MAX_MOTIVATION, TEXT_VIEW_TIME } from "./globals";
+import { BroadcasterVars, MAX_MOTIVATION, TEXT_VIEW_TIME, TWEET_VIEW_TIME } from "./globals";
 import { sleep } from "./utils";
 
 /**
  * やる気を出すゲーム
  */
 export class MotivationLiveGame extends LiveGame {
-	protected speech: g.Label;
-	protected gauge: g.FilledRect;
+	override unlockThreshold = 0;
+	private speech: g.Label;
+	private gauge: g.FilledRect;
 
 	protected override handleIntroduction({ scene, container }: LiveContext, next: () => void): (() => void) | void {
 		container.append(new g.FilledRect({
@@ -53,28 +54,29 @@ export class MotivationLiveGame extends LiveGame {
 		this.gauge.onUpdate.add(updateHandler);
 		this.onSubmit.addOnce(() => this.gauge.onUpdate.remove(updateHandler));
 		const tweet = async (): Promise<void> => {
-			await sleep(INTERVAL_TIME);
+			await sleep(TWEET_VIEW_TIME);
 			this.speech.text = "やる気でない…";
 			this.speech.invalidate();
-			await sleep(INTERVAL_TIME);
+			await sleep(TWEET_VIEW_TIME);
 			this.speech.text = "今は時期が悪い…";
 			this.speech.invalidate();
-			await sleep(INTERVAL_TIME);
+			await sleep(TWEET_VIEW_TIME);
 			this.speech.text = "明日からにしようかな…";
 			this.speech.invalidate();
-			await sleep(INTERVAL_TIME);
+			await sleep(TWEET_VIEW_TIME);
 			this.speech.text = "コーヒーでも飲むか…";
 			this.speech.invalidate();
-			await sleep(INTERVAL_TIME);
+			await sleep(TWEET_VIEW_TIME);
 			this.speech.text = "あっ、推しの配信始まった";
 			this.speech.invalidate();
-			await sleep(INTERVAL_TIME);
+			await sleep(TWEET_VIEW_TIME);
 			this.speech.text = "生ゲやったら始めるか…";
 			this.speech.invalidate();
 			await tweet();
 		};
 		tweet();
 	}
+
 	protected override evaluateScore({ container }: LiveContext): number {
 		return this.gauge.width / container.width * 100;
 	}

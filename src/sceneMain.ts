@@ -1,6 +1,7 @@
 import { LiveOnAirScene, LiveOnAirSceneBuilder } from "@yasshi2525/live-on-air";
 import { Avatar } from "./avatar";
-import { BroadcasterVars, CommentContextVars, isMotivationStage } from "./globals";
+import { BroadcasterVars, CommentContextVars, isIdeaStage, isMotivationStage } from "./globals";
+import { IdeaLiveGame } from "./liveGameIdea";
 import { MotivationLiveGame } from "./liveGameMotivation";
 import { ClosingScene } from "./sceneClosing";
 import { ScoreBoard } from "./scoreBoard";
@@ -36,13 +37,24 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 		.broadcaster({
 			x: 50,
 			y: 260,
-			vars: { motivation: 0 } satisfies BroadcasterVars
+			vars: { motivation: 0, idea: 0 } satisfies BroadcasterVars
 		})
 		.spot({
 			x: 300,
 			y: 260,
 			name: "やる気をだす",
 			liveClass: MotivationLiveGame
+		})
+		.spot({
+			x: g.game.width / 2,
+			y: 260,
+			name: "アイデアをだす",
+			liveClass: IdeaLiveGame
+		})
+		.spot({
+			x: g.game.width * 3 / 4,
+			y: 260,
+			name: "仮置き"
 		})
 		.commentContext({
 			vars: { stage: "motivation" } satisfies CommentContextVars
@@ -53,8 +65,13 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 				["やる気だしてこ！", isMotivationStage],
 				["まずはそこからかよｗｗｗ", isMotivationStage],
 				["早く作れしｗｗｗ", isMotivationStage],
-				["間に合わなくなっても知らんぞｗｗｗ", isMotivationStage]
-			)
+				["間に合わなくなっても知らんぞｗｗｗ", isMotivationStage],
+				["やっぱアイデアよ、大事なのは", isIdeaStage],
+				["一番いいアイデアを頼む", isIdeaStage],
+				["今から考えるんかいｗｗｗ", isIdeaStage],
+				["ノーアイデアで草", isIdeaStage],
+				["時間ないぞー", isIdeaStage]
+			),
 		})
 		.commentDeployer({
 			speed: 8
@@ -66,6 +83,10 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 
 	// Scene の初期化処理を定義します
 	scene.onLoad.add(() => {
+		// 後続の Spot をロックする.
+		scene.spots[1].lockedBy(scene.spots[0]);
+		scene.spots[2].lockedBy(scene.spots[1]);
+
 		// 各種表示用のレイヤを作成します
 		const overlay = new g.E({
 			scene,
@@ -76,6 +97,20 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 		// avatar を表示させます
 		const avatar = new Avatar({ scene, container: overlay, side: "left" });
 		avatar.text = "まずは、やる気を出すでぇ～す!!";
+
+		// ミニゲーム攻略にしたがって、 avatar のセリフを変化させます
+		scene.broadcaster.onLiveEnd.add(() => {
+			const vars = scene.commentContext.vars as CommentContextVars;
+			if (vars.stage === "motivation" && scene.spots[1].lockedBy().length === 0) {
+				vars.stage = "idea";
+				avatar.text = "次は、アイデアを固めるでぇ～す!!";
+			}
+			if (vars.stage === "idea" && scene.spots[2].lockedBy().length === 0) {
+				vars.stage = "develop";
+				avatar.text = "いよいよゲームを作るでぇ～す!!";
+			}
+		});
+
 
 		// ミニゲームの結果獲得されるパラメタを表示します.
 		const paramFont = new g.DynamicFont({
@@ -90,8 +125,7 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 			scene,
 			parent: overlay,
 			x: g.game.width - 300,
-			y: g.game.height - 300,
-			anchorY: 1,
+			y: g.game.height - 180,
 			width: 300,
 			font: paramFont,
 			model: scene.broadcaster.vars as BroadcasterVars

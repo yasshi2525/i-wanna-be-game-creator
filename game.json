@@ -155,6 +155,11 @@
 			"type": "script",
 			"path": "script/scoreBoard.js",
 			"global": true
+		},
+		"liveGameIdea": {
+			"type": "script",
+			"path": "script/liveGameIdea.js",
+			"global": true
 		}
 	},
 	"environment": {
