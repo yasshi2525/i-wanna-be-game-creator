@@ -1,5 +1,5 @@
 import { LiveContext, LiveGame } from "@yasshi2525/live-on-air";
-import { INTERVAL_TIME, TEXT_VIEW_TIME } from "./globals";
+import { BroadcasterVars, INTERVAL_TIME, MAX_MOTIVATION, TEXT_VIEW_TIME } from "./globals";
 import { sleep } from "./utils";
 
 /**
@@ -32,7 +32,7 @@ export class MotivationLiveGame extends LiveGame {
 			next();
 		})();
 	}
-	protected override handleGamePlay({ scene, container }: LiveContext): (() => void) | void {
+	protected override handleGamePlay({ scene, container, broadcaster }: LiveContext): (() => void) | void {
 		this.gauge = new g.FilledRect({
 			scene,
 			parent: container,
@@ -43,7 +43,8 @@ export class MotivationLiveGame extends LiveGame {
 			cssColor: "brown",
 		});
 		const updateHandler = (): void => {
-			this.gauge.width += 10;
+			// やる気が高いほどさらなるやる気上げを難しくするため、バーが伸びる速度をあげる
+			this.gauge.width += 10 * Math.max(1, (broadcaster.vars as BroadcasterVars).motivation);
 			if (this.gauge.width > container.width) {
 				this.gauge.width = 0;
 			}
@@ -78,4 +79,9 @@ export class MotivationLiveGame extends LiveGame {
 		return this.gauge.width / container.width * 100;
 	}
 
+	protected override handleResultViewing(context: LiveContext, score: number, next: () => void): (() => void) | void {
+		const vars = context.broadcaster.vars as BroadcasterVars;
+		vars.motivation = Math.min(vars.motivation + score / 100, MAX_MOTIVATION);
+		return super.handleResultViewing(context, score, next);
+	}
 }

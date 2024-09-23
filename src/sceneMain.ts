@@ -1,7 +1,9 @@
-import { CommentCondition, LiveOnAirScene, LiveOnAirSceneBuilder } from "@yasshi2525/live-on-air";
+import { LiveOnAirScene, LiveOnAirSceneBuilder } from "@yasshi2525/live-on-air";
 import { Avatar } from "./avatar";
+import { BroadcasterVars, CommentContextVars, isMotivationStage } from "./globals";
 import { MotivationLiveGame } from "./liveGameMotivation";
 import { ClosingScene } from "./sceneClosing";
+import { ScoreBoard } from "./scoreBoard";
 import { toCommentSchema } from "./utils";
 
 export interface MainSceneOptions {
@@ -34,6 +36,7 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 		.broadcaster({
 			x: 50,
 			y: 260,
+			vars: { motivation: 0 } satisfies BroadcasterVars
 		})
 		.spot({
 			x: 300,
@@ -60,16 +63,44 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 			frame: (totalTimeLimit - 10) * g.game.fps
 		})
 		.build();
+
+	// Scene の初期化処理を定義します
 	scene.onLoad.add(() => {
-		// avatar を表示させます
+		// 各種表示用のレイヤを作成します
 		const overlay = new g.E({
 			scene,
 			parent: scene,
 			width: g.game.width,
 			height: g.game.height
 		});
+		// avatar を表示させます
 		const avatar = new Avatar({ scene, container: overlay, side: "left" });
 		avatar.text = "まずは、やる気を出すでぇ～す!!";
+
+		// ミニゲームの結果獲得されるパラメタを表示します.
+		const paramFont = new g.DynamicFont({
+			game: g.game,
+			size: 40,
+			fontFamily: "monospace",
+			fontColor: "green",
+			strokeColor: "white",
+			strokeWidth: 5
+		});
+		const scoreBoard = new ScoreBoard({
+			scene,
+			parent: overlay,
+			x: g.game.width - 300,
+			y: g.game.height - 300,
+			anchorY: 1,
+			width: 300,
+			font: paramFont,
+			model: scene.broadcaster.vars as BroadcasterVars
+		});
+
+		// ミニゲームが終わったらパラメタ表示を最新にします
+		scene.broadcaster.onLiveEnd.add(() => {
+			scoreBoard.notify();
+		});
 
 		// 残り時間がなくなったら結果表示画面へ
 		scene.ticker.onExpire.addOnce(() => {
@@ -78,17 +109,3 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 	});
 	return scene;
 };
-
-/**
- * CommentContext の vars に定義するオブジェクトの型
- */
-type CommentContextVars = {
-	stage: "motivation";
-};
-
-/**
- * やる気出すステージか
- * @param ctx CommentContext
- * @returns やる気出すステージの場合 true
- */
-const isMotivationStage: CommentCondition = ctx => (ctx.vars as CommentContextVars).stage === "motivation";

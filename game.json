@@ -68,16 +68,6 @@
 			"path": "script/liveGameMotivation.js",
 			"global": true
 		},
-		"sceneMainExperimental": {
-			"type": "script",
-			"path": "script/sceneMainExperimental.js",
-			"global": true
-		},
-		"sceneTitleExperimental": {
-			"type": "script",
-			"path": "script/sceneTitleExperimental.js",
-			"global": true
-		},
 		"node_modules/@yasshi2525/live-on-air/image/broadcaster.default.png": {
 			"type": "image",
 			"path": "node_modules/@yasshi2525/live-on-air/image/broadcaster.default.png",
@@ -159,6 +149,11 @@
 		"globals": {
 			"type": "script",
 			"path": "script/globals.js",
+			"global": true
+		},
+		"scoreBoard": {
+			"type": "script",
+			"path": "script/scoreBoard.js",
 			"global": true
 		}
 	},
