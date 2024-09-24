@@ -4,13 +4,6 @@
 	"fps": 30,
 	"main": "./script/_bootstrap.js",
 	"assets": {
-		"player": {
-			"type": "image",
-			"width": 32,
-			"height": 32,
-			"path": "image/player.png",
-			"global": true
-		},
 		"_bootstrap": {
 			"type": "script",
 			"path": "script/_bootstrap.js",
@@ -164,6 +157,41 @@
 			"path": "node_modules/@yasshi2525/live-on-air/image/spot.default.unvisited.png",
 			"width": 150,
 			"height": 100,
+			"global": true
+		},
+		"broadcaster": {
+			"type": "image",
+			"path": "image/broadcaster.png",
+			"width": 107,
+			"height": 107,
+			"global": true
+		},
+		"spot_disabled": {
+			"type": "image",
+			"path": "image/spot_disabled.png",
+			"width": 223,
+			"height": 140,
+			"global": true
+		},
+		"spot_locked": {
+			"type": "image",
+			"path": "image/spot_locked.png",
+			"width": 223,
+			"height": 140,
+			"global": true
+		},
+		"spot_normal": {
+			"type": "image",
+			"path": "image/spot_normal.png",
+			"width": 223,
+			"height": 140,
+			"global": true
+		},
+		"spot_unvisited": {
+			"type": "image",
+			"path": "image/spot_unvisited.png",
+			"width": 223,
+			"height": 140,
 			"global": true
 		}
 	},

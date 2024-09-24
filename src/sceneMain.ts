@@ -34,7 +34,11 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 				fontColor: "black",
 				strokeColor: "white",
 				strokeWidth: 5,
-			})
+			}),
+			unvisited: g.game.scene().asset.getImageById("spot_unvisited"),
+			locked: g.game.scene().asset.getImageById("spot_locked"),
+			normal: g.game.scene().asset.getImageById("spot_normal"),
+			disabled: g.game.scene().asset.getImageById("spot_disabled"),
 		})
 		.commentSupplier({ comments: [] });
 
@@ -54,7 +58,8 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 		})
 		.broadcaster({
 			x: 50,
-			y: 260
+			y: 260,
+			asset: g.game.scene().asset.getImageById("broadcaster")
 		})
 		.liveContext({
 			vars: contextVars
@@ -130,6 +135,12 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 		const avatar = new Avatar({ scene, container: overlay, side: "left" });
 		avatar.text = "まずは、やる気を出すでぇ～す!!";
 
+		// ミニゲームが始まったらマップを薄くします
+		scene.screen.onLiveStart.add(() => {
+			scene.layer.field.opacity = 0.25;
+			scene.layer.field.modified();
+		});
+
 		// ミニゲームの結果の際、一時的にコメントを増やします.
 		contextVars.onLiveGameResult.add(e => {
 			const oldInterval = scene.commentSupplier.interval;
@@ -151,6 +162,8 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 				contextVars.stage = "develop";
 				avatar.text = "いよいよゲームを作るでぇ～す!!";
 			}
+			scene.layer.field.opacity = 1;
+			scene.layer.field.modified();
 		});
 
 

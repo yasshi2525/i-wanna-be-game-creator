@@ -19,8 +19,8 @@ export class DevelopLiveGame extends LiveGame {
 			scene,
 			width: container.width,
 			height: container.height,
-			cssColor: "yellow",
-			opacity: 0.75
+			cssColor: "khaki",
+			opacity: 0.5
 		}));
 		const attacker = {
 			color: "green",
