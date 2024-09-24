@@ -90,9 +90,9 @@ export class TitleScene extends g.Scene {
 					fontFamily: "sans-serif",
 					fontColor: "wheat",
 					strokeColor: "black",
-					strokeWidth: 3
+					strokeWidth: 4
 				}))
-				.speed(6)
+				.speed(4)
 				.build();
 			commentDeployer.container = commentArea;
 			commentSupplier.addDeployer(commentDeployer);

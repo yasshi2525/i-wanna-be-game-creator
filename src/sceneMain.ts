@@ -119,9 +119,9 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 				fontFamily: "sans-serif",
 				fontColor: "wheat",
 				strokeColor: "black",
-				strokeWidth: 3
+				strokeWidth: 4
 			}),
-			speed: 6
+			speed: 4
 		})
 		.ticker({
 			frame: (totalTimeLimit - 10) * g.game.fps
@@ -154,7 +154,7 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 		// ミニゲームの結果の際、一時的にコメントを増やします.
 		contextVars.onLiveGameResult.add(e => {
 			contextVars.liveGameResult = e;
-			scene.commentSupplier.interval = 1000 / (e.score * LIVEGAME_COMMENT_PER_SCORE);
+			scene.commentSupplier.interval = Math.min(1000 / ((e.score + 1) * LIVEGAME_COMMENT_PER_SCORE), COMMENT_INTERVAL * 5);
 			scene.setTimeout(() => {
 				scene.commentSupplier.interval = COMMENT_INTERVAL;
 				delete contextVars.liveGameResult;
