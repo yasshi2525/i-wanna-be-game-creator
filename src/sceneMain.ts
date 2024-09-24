@@ -1,6 +1,15 @@
 import { LiveOnAirScene, LiveOnAirSceneBuilder } from "@yasshi2525/live-on-air";
 import { Avatar } from "./avatar";
-import { ContextVars, isIdeaStage, isMotivationStage } from "./globals";
+import {
+	ContextVars,
+	isIdeaLiveGame,
+	isIdeaStage,
+	isLiveGameResult,
+	isMotivationLiveGame,
+	isMotivationStage,
+	LIVEGAME_COMMENT_INTERVAL,
+	LIVEGAME_COMMENT_PER_SCORE
+} from "./globals";
 import { DevelopLiveGame } from "./liveGameDevelop";
 import { IdeaLiveGame } from "./liveGameIdea";
 import { MotivationLiveGame } from "./liveGameMotivation";
@@ -33,7 +42,8 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 	const contextVars: ContextVars = {
 		stage: "motivation",
 		motivation: 0,
-		idea: 0
+		idea: 0,
+		onLiveGameResult: new g.Trigger()
 	};
 
 	// Scene を以下の初期値で作成します
@@ -81,7 +91,18 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 				["一番いいアイデアを頼む", isIdeaStage],
 				["今から考えるんかいｗｗｗ", isIdeaStage],
 				["ノーアイデアで草", isIdeaStage],
-				["時間ないぞー", isIdeaStage]
+				["時間ないぞー", isIdeaStage],
+				["888888888888888", isLiveGameResult],
+				["おおおおおおおお", isLiveGameResult],
+				["テンションあがる！", isLiveGameResult],
+				["やる気でたあぁぁ！", isMotivationLiveGame],
+				["元気！げんき！ゲンキ！", isMotivationLiveGame],
+				["やる気最強！やる気最強！", isMotivationLiveGame],
+				["神アイデアｷﾀ━━━━(ﾟ∀ﾟ)━━━━!!", isIdeaLiveGame],
+				["アイデア降臨！", isIdeaLiveGame],
+				["アイデアネ申", isIdeaLiveGame],
+				["アイデア！あいであ！神発想！", isIdeaLiveGame],
+				["アイデア最強！アイデア最強！", isIdeaLiveGame],
 			),
 		})
 		.commentDeployer({
@@ -108,6 +129,17 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 		// avatar を表示させます
 		const avatar = new Avatar({ scene, container: overlay, side: "left" });
 		avatar.text = "まずは、やる気を出すでぇ～す!!";
+
+		// ミニゲームの結果の際、一時的にコメントを増やします.
+		contextVars.onLiveGameResult.add(e => {
+			const oldInterval = scene.commentSupplier.interval;
+			contextVars.liveGameResult = e;
+			scene.commentSupplier.interval = 1000 / (e.score * LIVEGAME_COMMENT_PER_SCORE);
+			scene.setTimeout(() => {
+				scene.commentSupplier.interval = oldInterval;
+				delete contextVars.liveGameResult;
+			}, LIVEGAME_COMMENT_INTERVAL);
+		});
 
 		// ミニゲーム攻略にしたがって、 avatar のセリフを変化させます
 		scene.broadcaster.onLiveEnd.add(() => {

@@ -128,6 +128,7 @@ export class IdeaLiveGame extends LiveGame {
 
 	protected override handleResultViewing(context: LiveContext, score: number, next: () => void): (() => void) | void {
 		const vars = context.vars as ContextVars;
+		vars.onLiveGameResult.fire({ gameType: "idea", score });
 		vars.idea = Math.min(vars.idea + score / 100, MAX_IDEA);
 		return super.handleResultViewing(context, score, next);
 	}

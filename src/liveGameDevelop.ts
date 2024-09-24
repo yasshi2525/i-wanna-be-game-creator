@@ -1,4 +1,5 @@
 import { LiveContext, LiveGame } from "@yasshi2525/live-on-air";
+import { ContextVars } from "./globals";
 
 /**
  * ゲーム開発をシューティングゲームに模したミニゲーム.
@@ -66,6 +67,11 @@ export class DevelopLiveGame extends LiveGame {
 		throw new Error("Method not implemented.");
 	}
 
+	protected override handleResultViewing(context: LiveContext, score: number, next: () => void): (() => void) | void {
+		const vars = context.vars as ContextVars;
+		vars.onLiveGameResult.fire({ gameType: "develop", score });
+		return super.handleResultViewing(context, score, next);
+	}
 }
 
 /**

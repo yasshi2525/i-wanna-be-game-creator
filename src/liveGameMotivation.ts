@@ -83,6 +83,7 @@ export class MotivationLiveGame extends LiveGame {
 
 	protected override handleResultViewing(context: LiveContext, score: number, next: () => void): (() => void) | void {
 		const vars = context.vars as ContextVars;
+		vars.onLiveGameResult.fire({ gameType: "motivation", score });
 		vars.motivation = Math.min(vars.motivation + score / 100, MAX_MOTIVATION);
 		return super.handleResultViewing(context, score, next);
 	}
