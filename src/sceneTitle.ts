@@ -84,7 +84,15 @@ export class TitleScene extends g.Scene {
 				.build();
 
 			const commentDeployer = new CommentDeployerBuilder(this)
-				.speed(8)
+				.font(new g.DynamicFont({
+					game: g.game,
+					size: 40,
+					fontFamily: "sans-serif",
+					fontColor: "wheat",
+					strokeColor: "black",
+					strokeWidth: 3
+				}))
+				.speed(6)
 				.build();
 			commentDeployer.container = commentArea;
 			commentSupplier.addDeployer(commentDeployer);

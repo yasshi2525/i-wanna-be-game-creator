@@ -12,13 +12,13 @@ describe("mainScene", () => {
 		const game = client.game!;
 		expect(game.width).toBe(1280);
 		expect(game.height).toBe(720);
-		expect(game.fps).toBe(30);
+		expect(game.fps).toBe(60);
 
 		await client.advanceUntil(
 			() => game.scene()!.local !== "full-local" && game.scene()!.name !== "_bootstrap"
 		); // ローカル(ローディング)シーンを抜けるまで進める
 
-		await client.advanceUntil(() => game.scene()!.name !== "title");
+		await client.advanceUntil(() => game.scene()?.constructor.name !== "TitleScene");
 
 		const scene = client.game.scene()!;
 		expect(scene).toBeDefined();
@@ -29,7 +29,7 @@ describe("mainScene", () => {
 		expect(scoreLabel.text).toBe("スコア   0点");
 
 		const timeLabel = scene.children![3].children![1] as g.Label;
-		expect(timeLabel.text).toBe("残り64秒");
+		expect(timeLabel.text).toBe("残り68秒");
 
 		// 制限時間がなくなった時の時間表示を確認
 		await context.advance(100000);

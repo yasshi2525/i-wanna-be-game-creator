@@ -113,7 +113,15 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 			interval: COMMENT_INTERVAL
 		})
 		.commentDeployer({
-			speed: 8
+			font: new g.DynamicFont({
+				game: g.game,
+				size: 40,
+				fontFamily: "sans-serif",
+				fontColor: "wheat",
+				strokeColor: "black",
+				strokeWidth: 3
+			}),
+			speed: 6
 		})
 		.ticker({
 			frame: (totalTimeLimit - 10) * g.game.fps

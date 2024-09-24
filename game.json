@@ -1,7 +1,7 @@
 {
 	"width": 1280,
 	"height": 720,
-	"fps": 30,
+	"fps": 60,
 	"main": "./script/_bootstrap.js",
 	"assets": {
 		"_bootstrap": {
@@ -202,7 +202,7 @@
 				"ranking"
 			],
 			"preferredSessionParameters": {
-				"totalTimeLimit": 120
+				"totalTimeLimit": 90
 			}
 		}
 	},
