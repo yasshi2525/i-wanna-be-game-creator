@@ -1,6 +1,7 @@
 import { LiveOnAirScene, LiveOnAirSceneBuilder } from "@yasshi2525/live-on-air";
 import { Avatar } from "./avatar";
 import {
+	COMMENT_INTERVAL,
 	ContextVars,
 	isIdeaLiveGame,
 	isIdeaStage,
@@ -109,6 +110,7 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 				["アイデア！あいであ！神発想！", isIdeaLiveGame],
 				["アイデア最強！アイデア最強！", isIdeaLiveGame],
 			),
+			interval: COMMENT_INTERVAL
 		})
 		.commentDeployer({
 			speed: 8
@@ -143,11 +145,10 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 
 		// ミニゲームの結果の際、一時的にコメントを増やします.
 		contextVars.onLiveGameResult.add(e => {
-			const oldInterval = scene.commentSupplier.interval;
 			contextVars.liveGameResult = e;
 			scene.commentSupplier.interval = 1000 / (e.score * LIVEGAME_COMMENT_PER_SCORE);
 			scene.setTimeout(() => {
-				scene.commentSupplier.interval = oldInterval;
+				scene.commentSupplier.interval = COMMENT_INTERVAL;
 				delete contextVars.liveGameResult;
 			}, LIVEGAME_COMMENT_INTERVAL);
 		});

@@ -111,3 +111,9 @@ interface LiveGameResult {
 	 */
 	score: number;
 }
+
+/**
+ * 通常時のコメント間隔
+ */
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export const COMMENT_INTERVAL = 800;
