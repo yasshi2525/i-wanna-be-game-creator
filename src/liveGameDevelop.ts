@@ -4,8 +4,8 @@ import { ContextVars } from "./globals";
 /**
  * ゲーム開発をシューティングゲームに模したミニゲーム.
  *
- * 障害 (Obstacle) が随時発生. 対処に時間がかかるとダメージ.
- * 人員投入 (Shooter による Attacker 射出) して障害をつぶす.
+ * 障壁 (Obstacle) が随時発生. 対処に時間がかかるとダメージ.
+ * やる気を出して根性 (Shooter による Attacker 射出) で障壁をつぶす.
  * 開発が終了するまで耐える. // TODO
  * やる気が高いと Attacker の頻度Up // TODO
  * アイデアが良いと Attacker の爆発四散時の個数アップ // TODO
@@ -52,8 +52,8 @@ export class DevelopLiveGame extends LiveGame {
 				size: 50,
 				fontFamily: "sans-serif"
 			}),
-			width: 150,
-			height: 75,
+			width: 200,
+			height: 100,
 		};
 		for (let i = 0; i < 5; i++) {
 			const obstacle = Obstacle.create(opts);
@@ -80,53 +80,54 @@ export class DevelopLiveGame extends LiveGame {
  */
 class Obstacle extends g.FilledRect {
 
-	private static names: string[] = [
-		"要件が曖昧",
-		"技術的には出来る",
-		"工数不足",
-		"人員不足",
-		"予算不足",
-		"プロマネがいない",
-		"仕様が曖昧",
-		"仕様書がない",
-		"手順書がない",
-		"ドキュメントがない",
-		"ファイルが散らかっている",
-		"構成管理してない",
-		"最新のコードが行方不明",
-		"チーム連携ができてない",
-		"処理速度が遅い",
-		"手戻り",
-		"大量のコピペ",
-		"コピペコードにバグ",
-		"再現性のないバグ",
-		"たまにおこるバグ",
-		"自分のパソコンでは動く",
-		"バグの件数を把握してない",
-		"収束しないバグ報告数",
+	private static names: string[][] = [
+		["動かない"],
+		["たまにバグる"],
+		["絵心がない"],
+		["サウンドを作れない"],
+		["唐突なフリーズ"],
+		["本当に面白い？", "始まる自問自答"],
+		["テストプレイを依頼", "する友人がいない"],
+		["人前でおこる", "初めて見るバグ"],
+		["バグを直すと", "増えるバグ"],
+		["散らかっていく", "ソースコード"],
+		["増えていく", "コピー＆ペースト"],
+		["コピペしまくったコード", "バグで書き直し発覚"],
+		["友人からの", "謎のバグ報告"],
+		["最新版が行方不明"],
+		["SNSで進捗報告", "説明しづらい"],
+		["1ピクセル", "右に動かしたい"],
+		["音量ちょっと", "小さいかな"],
+		["繰り返すテスト", "ゲームに飽きる"],
+		["画像のサイズが", "ちょっと大きい"],
+		["難しすぎと", "友人に怒られる"],
+		["気づかれない", "隠し要素"],
+		["ボタンを連打", "されると恐怖"],
 	];
 
-	private static remains: string[] = [...Obstacle.names];
+	private static remains: string[][] = [...Obstacle.names];
 
 	private constructor(opts: g.FilledRectParameterObject & {
 		font: g.Font;
-		name: string;
+		name: string[];
 	}) {
 		super(opts);
-		const label = new g.Label({
-			scene: this.scene,
-			parent: this,
-			anchorX: 0.5,
-			anchorY: 0.5,
-			x: this.width / 2,
-			y: this.height / 2,
-			font: opts.font,
-			text: opts.name
-		});
-		// はみ出ないように横幅を縮める
-		if (label.width > this.width) {
-			label.scaleX = this.width / label.width;
-			label.modified();
+		for (let i = 0; i < opts.name.length; i++) {
+			const label = new g.Label({
+				scene: this.scene,
+				parent: this,
+				anchorX: 0.5,
+				anchorY: 0.5,
+				x: this.width / 2,
+				y: this.height * (i + 0.5) / opts.name.length,
+				font: opts.font,
+				text: opts.name[i]
+			});
+			// はみ出ないように横幅を縮める
+			if (label.width > this.width) {
+				label.scaleX = this.width / label.width;
+				label.modified();
+			}
 		}
 	}
 
