@@ -1,5 +1,5 @@
 import { LiveContext, LiveGame } from "@yasshi2525/live-on-air";
-import { BroadcasterVars, MAX_IDEA, TEXT_VIEW_TIME, TWEET_VIEW_TIME } from "./globals";
+import { ContextVars, MAX_IDEA, TEXT_VIEW_TIME, TWEET_VIEW_TIME } from "./globals";
 import { sleep } from "./utils";
 
 /**
@@ -40,7 +40,7 @@ export class IdeaLiveGame extends LiveGame {
 			next();
 		})();
 	}
-	protected override handleGamePlay({ container, scene, broadcaster }: LiveContext): (() => void) | void {
+	protected override handleGamePlay({ container, scene, broadcaster, vars }: LiveContext): (() => void) | void {
 		this.idea = new g.FilledRect({
 			scene,
 			parent: container,
@@ -56,9 +56,8 @@ export class IdeaLiveGame extends LiveGame {
 		let sizeDirection: Direction = "expand";
 		let opacityDirection: Direction = "expand";
 		const updateHandler = (): void => {
-			const vars = broadcaster.vars as BroadcasterVars;
 			// やる気・アイデアの値が高いほど、速度アップで難しくなる
-			const multiply = Math.max(1, vars.motivation) + Math.max(1, vars.idea);
+			const multiply = Math.max(1, (vars as ContextVars).motivation) + Math.max(1, (vars as ContextVars).idea);
 			this.idea.height += 5 * multiply * (sizeDirection === "expand" ? 1 : -1);
 			this.idea.width += 5 * multiply * (sizeDirection === "expand" ? 1 : -1);
 			this.idea.opacity += 0.01 * multiply * (opacityDirection === "expand" ? 1 : -1);
@@ -128,7 +127,7 @@ export class IdeaLiveGame extends LiveGame {
 	}
 
 	protected override handleResultViewing(context: LiveContext, score: number, next: () => void): (() => void) | void {
-		const vars = context.broadcaster.vars as BroadcasterVars;
+		const vars = context.vars as ContextVars;
 		vars.idea = Math.min(vars.idea + score / 100, MAX_IDEA);
 		return super.handleResultViewing(context, score, next);
 	}

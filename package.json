@@ -32,6 +32,6 @@
     "typescript": "5.3"
   },
   "dependencies": {
-    "@yasshi2525/live-on-air": "^1.0.0-alpha.2"
+    "@yasshi2525/live-on-air": "^1.0.0-alpha.3"
   }
 }

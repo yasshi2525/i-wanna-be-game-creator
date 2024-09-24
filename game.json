@@ -68,6 +68,31 @@
 			"path": "script/liveGameMotivation.js",
 			"global": true
 		},
+		"frame": {
+			"type": "script",
+			"path": "script/frame.js",
+			"global": true
+		},
+		"globals": {
+			"type": "script",
+			"path": "script/globals.js",
+			"global": true
+		},
+		"scoreBoard": {
+			"type": "script",
+			"path": "script/scoreBoard.js",
+			"global": true
+		},
+		"liveGameIdea": {
+			"type": "script",
+			"path": "script/liveGameIdea.js",
+			"global": true
+		},
+		"liveGameDevelop": {
+			"type": "script",
+			"path": "script/liveGameDevelop.js",
+			"global": true
+		},
 		"node_modules/@yasshi2525/live-on-air/image/broadcaster.default.png": {
 			"type": "image",
 			"path": "node_modules/@yasshi2525/live-on-air/image/broadcaster.default.png",
@@ -140,31 +165,6 @@
 			"width": 150,
 			"height": 100,
 			"global": true
-		},
-		"frame": {
-			"type": "script",
-			"path": "script/frame.js",
-			"global": true
-		},
-		"globals": {
-			"type": "script",
-			"path": "script/globals.js",
-			"global": true
-		},
-		"scoreBoard": {
-			"type": "script",
-			"path": "script/scoreBoard.js",
-			"global": true
-		},
-		"liveGameIdea": {
-			"type": "script",
-			"path": "script/liveGameIdea.js",
-			"global": true
-		},
-		"liveGameDevelop": {
-			"type": "script",
-			"path": "script/liveGameDevelop.js",
-			"global": true
 		}
 	},
 	"environment": {
@@ -226,6 +226,7 @@
 		"node_modules/@yasshi2525/live-on-air/lib/value/commentSupplierConfig.js",
 		"node_modules/@yasshi2525/live-on-air/lib/value/fieldConfig.js",
 		"node_modules/@yasshi2525/live-on-air/lib/value/layerConfig.js",
+		"node_modules/@yasshi2525/live-on-air/lib/value/liveContextConfig.js",
 		"node_modules/@yasshi2525/live-on-air/lib/value/numberLabelConfig.js",
 		"node_modules/@yasshi2525/live-on-air/lib/value/scorerConfig.js",
 		"node_modules/@yasshi2525/live-on-air/lib/value/screenConfig.js",

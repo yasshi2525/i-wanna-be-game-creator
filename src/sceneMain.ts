@@ -1,6 +1,6 @@
 import { LiveOnAirScene, LiveOnAirSceneBuilder } from "@yasshi2525/live-on-air";
 import { Avatar } from "./avatar";
-import { BroadcasterVars, CommentContextVars, isIdeaStage, isMotivationStage } from "./globals";
+import { ContextVars, isIdeaStage, isMotivationStage } from "./globals";
 import { DevelopLiveGame } from "./liveGameDevelop";
 import { IdeaLiveGame } from "./liveGameIdea";
 import { MotivationLiveGame } from "./liveGameMotivation";
@@ -29,6 +29,13 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 		})
 		.commentSupplier({ comments: [] });
 
+	// 内部パラメタ
+	const contextVars: ContextVars = {
+		stage: "motivation",
+		motivation: 0,
+		idea: 0
+	};
+
 	// Scene を以下の初期値で作成します
 	const scene = new LiveOnAirSceneBuilder(g.game)
 		.layer({
@@ -37,8 +44,10 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 		})
 		.broadcaster({
 			x: 50,
-			y: 260,
-			vars: { motivation: 0, idea: 0 } satisfies BroadcasterVars
+			y: 260
+		})
+		.liveContext({
+			vars: contextVars
 		})
 		.spot({
 			x: 300,
@@ -59,7 +68,7 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 			liveClass: DevelopLiveGame
 		})
 		.commentContext({
-			vars: { stage: "motivation" } satisfies CommentContextVars
+			vars: contextVars
 		})
 		.commentSupplier({
 			comments: toCommentSchema(
@@ -102,13 +111,12 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 
 		// ミニゲーム攻略にしたがって、 avatar のセリフを変化させます
 		scene.broadcaster.onLiveEnd.add(() => {
-			const vars = scene.commentContext.vars as CommentContextVars;
-			if (vars.stage === "motivation" && scene.spots[1].lockedBy().length === 0) {
-				vars.stage = "idea";
+			if (contextVars.stage === "motivation" && scene.spots[1].lockedBy().length === 0) {
+				contextVars.stage = "idea";
 				avatar.text = "次は、アイデアを固めるでぇ～す!!";
 			}
-			if (vars.stage === "idea" && scene.spots[2].lockedBy().length === 0) {
-				vars.stage = "develop";
+			if (contextVars.stage === "idea" && scene.spots[2].lockedBy().length === 0) {
+				contextVars.stage = "develop";
 				avatar.text = "いよいよゲームを作るでぇ～す!!";
 			}
 		});
@@ -130,7 +138,7 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 			y: g.game.height - 180,
 			width: 300,
 			font: paramFont,
-			model: scene.broadcaster.vars as BroadcasterVars
+			model: contextVars
 		});
 
 		// ミニゲームが終わったらパラメタ表示を最新にします

@@ -1,4 +1,4 @@
-import { BroadcasterVars } from "./globals";
+import { ContextVars } from "./globals";
 
 /**
  * ミニゲームの結果もらえるパラメタを表示
@@ -6,11 +6,11 @@ import { BroadcasterVars } from "./globals";
 export class ScoreBoard extends g.E {
 	private readonly motivation: ParameterView;
 	private readonly idea: ParameterView;
-	private readonly model: BroadcasterVars;
+	private readonly model: ContextVars;
 
 	constructor(opts: g.EParameterObject & {
 		font: g.Font;
-		model: BroadcasterVars;
+		model: ContextVars;
 	}) {
 		super(opts);
 		this.model = opts.model;
