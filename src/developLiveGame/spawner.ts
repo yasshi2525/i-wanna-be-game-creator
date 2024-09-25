@@ -10,17 +10,17 @@ export class Spawner {
 	 */
 	readonly onCreate = new g.Trigger<Obstacle>();
 	/**
-	 * タイマー値（終了時にキャンセルする）
-	 */
-	private readonly tid: g.TimerIdentifier;
-	/**
 	 * 現在のシーン
 	 */
 	private readonly scene: g.Scene;
+	private ended: boolean;
 
 	constructor(opts: SpawnerOptions) {
 		this.scene = opts.scene;
-		this.tid = this.scene.setInterval(() => {
+		this.scene.setInterval(() => {
+			if (this.ended) {
+				return;
+			}
 			const o = new Obstacle({
 				scene: this.scene,
 				parent: opts.container,
@@ -43,7 +43,7 @@ export class Spawner {
 	 * Obstacle 生成を取りやめます
 	 */
 	end(): void {
-		this.scene.clearInterval(this.tid);
+		this.ended = true;
 	}
 }
 

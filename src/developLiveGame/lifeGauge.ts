@@ -19,6 +19,7 @@ export class LifeGauge extends g.E {
 	 * expire 1発によるゲージの減少幅
 	 */
 	private readonly damage: number;
+	private ended: boolean;
 
 	constructor(opts: LifeGaugeOptions) {
 		super(opts);
@@ -29,6 +30,20 @@ export class LifeGauge extends g.E {
 			height: opts.height,
 			cssColor: opts.color
 		});
+		this.append(new g.Label({
+			scene: this.scene,
+			font: new g.DynamicFont({
+				game: g.game,
+				fontFamily: "sans-serif",
+				size: this.height * 0.8
+			}),
+			text: "体力",
+			width: this.width,
+			y: this.height / 2,
+			anchorY: 0.5,
+			textAlign: "center",
+			widthAutoAdjust: false
+		}));
 		this.damage = opts.damage / opts.life * this.gauge.width;
 	}
 
@@ -38,14 +53,52 @@ export class LifeGauge extends g.E {
 	watch(obstacle: Obstacle): void {
 		// 爆発したら体力減
 		obstacle.onExpire.add(() => {
-			this.gauge.width -= this.damage;
-			// 体力0でミニゲーム終了
-			if (this.gauge.width < 0) {
-				this.gauge.width = 0;
-				this.onDie.fire();
+			for (const offset of [
+				{ x: -obstacle.width / 2, y: -obstacle.height / 2 },
+				{ x: obstacle.width / 2, y: -obstacle.height / 2 },
+				{ x: obstacle.width / 2, y: obstacle.height / 2 },
+				{ x: -obstacle.width / 2, y: obstacle.height / 2 }
+			]) {
+				const effect = new g.Sprite({
+					scene: this.scene,
+					parent: this.parent,
+					src: this.scene.asset.getImageById("damage"),
+					x: obstacle.x + offset.x,
+					y: obstacle.y + offset.y,
+					anchorX: 0.5,
+					anchorY: 0.5,
+					scaleX: 0.5,
+					scaleY: 0.5
+				});
+				let v = 2;
+				effect.onUpdate.add(() => {
+					const theta = Math.atan2(this.y + this.height / 2 - effect.y, this.x + this.gauge.width - effect.x);
+					effect.x += Math.cos(theta) * v;
+					effect.y += Math.sin(theta) * v;
+					if (g.Util.distance(effect.x, effect.y, this.x + this.gauge.width, this.y + this.height / 2)
+						< effect.width * effect.scaleX / 2) {
+						effect.destroy();
+						if (!this.ended) {
+							this.gauge.width -= this.damage / 4;
+							// 体力0でミニゲーム終了
+							if (this.gauge.width < 0) {
+								this.gauge.width = 0;
+								this.onDie.fire();
+							}
+							this.gauge.modified();
+						}
+						return true;
+					}
+					effect.modified();
+					v += 0.1;
+				});
 			}
-			this.gauge.modified();
+
 		});
+	}
+
+	end(): void {
+		this.ended = true;
 	}
 }
 

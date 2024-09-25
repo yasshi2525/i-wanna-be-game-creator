@@ -271,6 +271,20 @@
 			"width": 73,
 			"height": 73,
 			"global": true
+		},
+		"progress_unit": {
+			"type": "image",
+			"path": "image/progress_unit.png",
+			"width": 74,
+			"height": 74,
+			"global": true
+		},
+		"damage": {
+			"type": "image",
+			"path": "image/damage.png",
+			"width": 74,
+			"height": 73,
+			"global": true
 		}
 	},
 	"environment": {

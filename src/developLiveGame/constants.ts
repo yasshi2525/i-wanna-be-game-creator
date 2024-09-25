@@ -10,7 +10,7 @@ export const constants = {
 		y: 0,
 		width: 400,
 		height: 50,
-		color: "green",
+		color: "mediumseagreen",
 		/**
 		 * 初期体力
 		 */
@@ -28,7 +28,7 @@ export const constants = {
 		y: 50,
 		width: 400,
 		height: 50,
-		color: "blue",
+		color: "royalblue",
 		/**
 		 * 弾 (Attacker) 1発分につき増える進捗 (1で完成)
 		 */
@@ -45,7 +45,7 @@ export const constants = {
 		/**
 		 * 何ミリ秒立っても破壊されなかった場合に爆発（expire、ペナルティ）するか
 		 */
-		span: 10000,
+		span: 6000,
 		/**
 		 * 表示色
 		 */
@@ -69,7 +69,7 @@ export const constants = {
 		/**
 		 * 生成間隔
 		 */
-		interval: 2000
+		interval: 4000
 	},
 	/**
 	 * 自機回転機について

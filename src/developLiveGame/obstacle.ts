@@ -19,10 +19,6 @@ export class Obstacle extends g.FilledRect {
 	 * 残り体力
 	 */
 	private life: number;
-	/**
-	 * 爆発するまでのタイマーのID
-	 */
-	private tid: g.TimerIdentifier;
 
 	/**
 	 * 障壁の説明文
@@ -82,7 +78,7 @@ export class Obstacle extends g.FilledRect {
 			}
 		}
 		// interval ミリ秒後爆発
-		this.tid = this.scene.setTimeout(() => {
+		this.scene.setTimeout(() => {
 			if (!this.destroyed()) {
 				this.cssColor = "red";
 				this.modified();
@@ -103,7 +99,6 @@ export class Obstacle extends g.FilledRect {
 	attack(): void {
 		this.life--;
 		if (this.life <= 0 && !this.destroyed()) {
-			this.scene.clearTimeout(this.tid);
 			this.destroy();
 			this.onBreak.fire();
 		}

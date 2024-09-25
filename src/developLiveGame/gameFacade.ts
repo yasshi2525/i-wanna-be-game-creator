@@ -78,8 +78,8 @@ export class GameFacade {
 		// 定期的に弾射出
 		this.shooter.onShoot.add(a => {
 			this.blaster.addAttacker(a);
-			a.onOut.add(() => {
-				this.progressor.progress();
+			a.onOut.add(loc => {
+				this.progressor.progress(loc);
 			});
 		});
 		// 弾と障壁がぶつかったら弾消滅
@@ -99,6 +99,8 @@ export class GameFacade {
 	 * ミニゲームの進行処理を取りやめます
 	 */
 	end(): void {
+		this.lifeGauge.end();
+		this.progressor.end();
 		this.spawner.end();
 		this.rotator.end();
 		this.shooter.end();
