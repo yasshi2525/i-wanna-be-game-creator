@@ -34,8 +34,10 @@ export interface ContextVars {
 	 * developing: 開発ミニゲーム中
 	 *
 	 * retry: 開発ミニゲームから撤退
+	 *
+	 * success: ゲーム完成
 	 */
-	stage: "motivation" | "idea" | "develop" | "developing" | "retry";
+	stage: "motivation" | "idea" | "develop" | "developing" | "retry" | "success";
 
 	/**
 	 * 直近のミニゲーム結果
@@ -69,6 +71,13 @@ export interface ContextVars {
 export const isLiveGameResult: CommentCondition = ctx => (ctx.vars as ContextVars).liveGameResult !== undefined;
 
 /**
+ * ゲームは成功したか (開発ゲームで戻る以外全部成功扱い)
+ */
+export const isLiveGameSuccess: CommentCondition = ctx => (ctx.vars as ContextVars).stage !== "retry";
+
+export const isLiveGameFailed: CommentCondition = ctx => (ctx.vars as ContextVars).stage === "retry";
+
+/**
  * やる気出すステージか
  */
 export const isMotivationStage: CommentCondition = ctx => !isLiveGameResult(ctx) && (ctx.vars as ContextVars).stage === "motivation";
@@ -76,6 +85,25 @@ export const isMotivationStage: CommentCondition = ctx => !isLiveGameResult(ctx)
  * アイデア出しステージか
  */
 export const isIdeaStage: CommentCondition = ctx => !isLiveGameResult(ctx) && (ctx.vars as ContextVars).stage === "idea";
+
+/**
+ * ゲーム開発ステージか
+ */
+export const isDevelopStage: CommentCondition = ctx => !isLiveGameResult(ctx) && (ctx.vars as ContextVars).stage === "develop";
+/**
+ * ゲーム開発ミニゲーム中か
+ */
+export const isDevelopingStage: CommentCondition = ctx => !isLiveGameResult(ctx) && (ctx.vars as ContextVars).stage === "developing";
+
+/**
+ * ゲームが完成したか
+ */
+export const isSuccess: CommentCondition = ctx => (ctx.vars as ContextVars).stage === "success";
+
+export const isLowMotivation: CommentCondition = ctx => (ctx.vars as ContextVars).motivation < LOW_MOTIVATION;
+export const isHighMotivation: CommentCondition = ctx => (ctx.vars as ContextVars).motivation > HIGH_MOTIVATION;
+export const isLowIdea: CommentCondition = ctx => (ctx.vars as ContextVars).idea < LOW_IDEA;
+export const isHighIdea: CommentCondition = ctx => (ctx.vars as ContextVars).idea > HIGH_IDEA;
 
 /**
  * やる気を出すミニゲームの結果判明後か
@@ -95,11 +123,21 @@ export const isIdeaLiveGame: CommentCondition = ctx => isLiveGameResult(ctx)
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export const MAX_MOTIVATION = 1.8;
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export const HIGH_MOTIVATION = 1.5;
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export const LOW_MOTIVATION = 0.5;
+
 /**
  * アイデアの最大値
  */
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export const MAX_IDEA = 1.8;
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export const LOW_IDEA = 0.25;
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export const HIGH_IDEA = 1.5;
 
 /**
  * ミニゲームで1点とるともらえる1秒あたりのコメント

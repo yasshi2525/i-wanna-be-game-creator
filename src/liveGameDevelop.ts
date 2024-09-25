@@ -7,7 +7,6 @@ import { ContextVars } from "./globals";
  *
  * 障壁 (Obstacle) が随時発生. 対処に時間がかかるとダメージ.
  * やる気を出して根性 (Shooter による Attacker 射出) で障壁をつぶす.
- * 開発が終了するまで耐える. // TODO
  */
 export class DevelopLiveGame extends LiveGame {
 	private gameFacade: GameFacade;
@@ -93,6 +92,9 @@ export class DevelopLiveGame extends LiveGame {
 		const vars = context.vars as ContextVars;
 		vars.progress = this.gameFacade.progress;
 		vars.numbOfObstacle = this.gameFacade.numOfObstacle;
+		if (this.gameFacade.status === "success") {
+			vars.stage = "success";
+		}
 		vars.onLiveGameResult.fire({ gameType: "develop", score });
 		context.scene.setTimeout(() => next(), 2000);
 	}

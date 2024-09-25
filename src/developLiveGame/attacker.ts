@@ -1,6 +1,5 @@
 /**
  * Obstacle を倒す攻撃手. 弾. ひたすら前進
- * TODO: out 時に progress が進む演出
  */
 export class Attacker extends g.Sprite {
 	/**

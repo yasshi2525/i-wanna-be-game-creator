@@ -3,13 +3,26 @@ import { Avatar } from "./avatar";
 import {
 	COMMENT_INTERVAL,
 	ContextVars,
+	HIGH_IDEA,
+	HIGH_MOTIVATION,
+	isDevelopingStage,
+	isDevelopStage,
+	isHighIdea,
+	isHighMotivation,
 	isIdeaLiveGame,
 	isIdeaStage,
+	isLiveGameFailed,
 	isLiveGameResult,
+	isLiveGameSuccess,
+	isLowIdea,
+	isLowMotivation,
 	isMotivationLiveGame,
 	isMotivationStage,
+	isSuccess,
 	LIVEGAME_COMMENT_INTERVAL,
-	LIVEGAME_COMMENT_PER_SCORE
+	LIVEGAME_COMMENT_PER_SCORE,
+	LOW_IDEA,
+	LOW_MOTIVATION
 } from "./globals";
 import { DevelopLiveGame } from "./liveGameDevelop";
 import { IdeaLiveGame } from "./liveGameIdea";
@@ -100,9 +113,29 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 				["今から考えるんかいｗｗｗ", isIdeaStage],
 				["ノーアイデアで草", isIdeaStage],
 				["時間ないぞー", isIdeaStage],
-				["888888888888888", isLiveGameResult],
-				["おおおおおおおお", isLiveGameResult],
-				["テンションあがる！", isLiveGameResult],
+				["いよいよ本編ktkr!!", isDevelopStage],
+				["ksk", isDevelopStage],
+				["準備完了!!", isDevelopStage],
+				["あとは作るのみ!!", isDevelopStage],
+				["やる気あまりなくて草", isDevelopStage, isLowMotivation],
+				["やる気最強で草", isDevelopStage, isHighMotivation],
+				["アイデアそこそこで草", isDevelopStage, isLowIdea],
+				["アイデア完璧で草", isDevelopStage, isHighIdea],
+				["魂を飛ばしてゲーム作ろう！", isDevelopingStage],
+				["魂を飛ばしまくると完成だ！", isDevelopingStage],
+				["ゲーム作りは困難の連続…", isDevelopingStage],
+				["困難を魂で吹きとばせ！", isDevelopingStage],
+				["やる気あまりなくて草", isDevelopingStage, isLowMotivation],
+				["このやる気だと時間かかりそう…", isDevelopingStage, isLowMotivation],
+				["やる気最強で草", isDevelopingStage, isHighMotivation],
+				["このやる気ならすぐ完成しそう！", isDevelopingStage, isHighMotivation],
+				["アイデアそこそこで草", isDevelopingStage, isLowIdea],
+				["このアイデアだと障壁にぶつかりそう…", isDevelopingStage, isLowIdea],
+				["アイデア完璧で草", isDevelopingStage, isHighIdea],
+				["このアイデアなら障壁もなさそう！", isDevelopingStage, isHighIdea],
+				["888888888888888", isLiveGameResult, isLiveGameSuccess],
+				["おおおおおおおお", isLiveGameResult, isLiveGameSuccess],
+				["テンションあがる！", isLiveGameResult, isLiveGameSuccess],
 				["やる気でたあぁぁ！", isMotivationLiveGame],
 				["元気！げんき！ゲンキ！", isMotivationLiveGame],
 				["やる気最強！やる気最強！", isMotivationLiveGame],
@@ -111,6 +144,14 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 				["アイデアネ申", isIdeaLiveGame],
 				["アイデア！あいであ！神発想！", isIdeaLiveGame],
 				["アイデア最強！アイデア最強！", isIdeaLiveGame],
+				["いったん引き返そう", isLiveGameResult, isLiveGameFailed],
+				["もう一度やる気あげるのもアリかも", isLiveGameResult, isLiveGameFailed, isLowMotivation],
+				["もう一度アイデア固めるのもアリかも", isLiveGameResult, isLiveGameFailed, isLowIdea],
+				["完成したぁぁああ！！", isSuccess],
+				["おめでとぉぉおお！！", isSuccess],
+				["できたあぁぁああ！！", isSuccess],
+				["きｔらああぁぁぁ！！", isSuccess],
+				["マックスボルテージ！", isSuccess],
 			),
 			interval: COMMENT_INTERVAL
 		})
@@ -183,7 +224,7 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 				avatar.text = "いよいよゲームを作るでぇ～す!!";
 			}
 			if (live instanceof DevelopLiveGame) {
-				if (contextVars.progress < 1) {
+				if (contextVars.stage !== "success") {
 					contextVars.stage = "retry";
 					avatar.text = "一旦、体制を立て直すでぇ～す!!";
 				} else {
@@ -199,13 +240,13 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 		scene.screen.onLiveStart.add(live => {
 			if (live instanceof DevelopLiveGame) {
 				contextVars.stage = "developing";
-				if (contextVars.motivation < 0.5) {
+				if (contextVars.motivation < LOW_MOTIVATION) {
 					avatar.text = "やる気が低くて、作業が捗りませぇ～ん!!";
-				} else if (contextVars.idea < 0.25) {
+				} else if (contextVars.idea < LOW_IDEA) {
 					avatar.text = "アイデアが微妙で、困難だらけでぇ～す!!";
-				} else if (contextVars.motivation > 1.5) {
+				} else if (contextVars.motivation > HIGH_MOTIVATION) {
 					avatar.text = "やる気に燃えて、作業が捗るでぇ～す!!";
-				} else if (contextVars.idea > 1.25) {
+				} else if (contextVars.idea > HIGH_IDEA) {
 					avatar.text = "アイデアが秀逸で、困難もなく順調でぇ～す!!";
 				} else {
 					avatar.text = "困難を打ち倒しながら、前に駆け出すでぇ～す!!";

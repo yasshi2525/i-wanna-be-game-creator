@@ -3,8 +3,6 @@
  *
  * 一定期間放置で爆発＝ペナルティ
  * Attacker による 一定ダメージで破壊
- *
- * TODO: expire 時に lifeGauge が下がる演出
  */
 export class Obstacle extends g.FilledRect {
 	/**
