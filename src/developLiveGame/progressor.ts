@@ -23,7 +23,7 @@ export class Progressor extends g.E {
 		this.gauge = new g.FilledRect({
 			scene: this.scene,
 			parent: this,
-			width: 1,
+			width: opts.progress === 0 ? 1 : opts.progress * this.width,
 			height: this.height,
 			cssColor: opts.color,
 		});
@@ -85,6 +85,13 @@ export class Progressor extends g.E {
 	end(): void {
 		this.ended = true;
 	}
+
+	/**
+	 * 現在の進捗を0-1で返します.
+	 */
+	get value(): number {
+		return this.gauge.width / this.width;
+	}
 }
 
 export interface ProgressorOptions extends g.EParameterObject {
@@ -96,4 +103,8 @@ export interface ProgressorOptions extends g.EParameterObject {
 	 * 進捗バーの色
 	 */
 	color: string;
+	/**
+	 * 進捗の初期値
+	 */
+	progress: number;
 }

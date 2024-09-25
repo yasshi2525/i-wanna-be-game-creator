@@ -54,6 +54,14 @@ export interface ContextVars {
 	 * アイデア. 0-1.8. 以降のすべての作業が idea 倍の速度で行われる
 	 */
 	idea: number;
+	/**
+	 * ゲームの完成度
+	 */
+	progress: number;
+	/**
+	 * 障壁の生成数
+	 */
+	numbOfObstacle: number;
 }
 /**
  * ミニゲーム結果後のコメント反応時間中か

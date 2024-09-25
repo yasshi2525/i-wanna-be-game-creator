@@ -12,6 +12,12 @@ import { Spawner } from "./spawner";
  */
 export class GameFacade {
 	/**
+	 * ゲームが完成(true)/失敗(false)したとき発火します.
+	 */
+	readonly onComplete = new g.Trigger<boolean>();
+	private _status: GameStatus = "developing";
+
+	/**
 	 * 残り体力
 	 */
 	private readonly lifeGauge: LifeGauge;
@@ -36,7 +42,7 @@ export class GameFacade {
 	 */
 	private readonly blaster: Blaster;
 
-	constructor({ scene, container, motivation, idea }: GameFacadeOptions) {
+	constructor({ scene, container, motivation, idea, progress, numOfObstacle }: GameFacadeOptions) {
 		this.lifeGauge = new LifeGauge({
 			scene,
 			parent: container,
@@ -45,13 +51,15 @@ export class GameFacade {
 		this.progressor = new Progressor({
 			scene,
 			parent: container,
+			progress,
 			...constants.progressor,
 		});
 		this.spawner = new Spawner({
 			scene,
 			container,
 			interval: (1 - idea / MAX_IDEA) * constants.spawner.interval.min
-				+ (idea / MAX_IDEA) * constants.spawner.interval.max
+				+ (idea / MAX_IDEA) * constants.spawner.interval.max,
+			numOfSpawn: numOfObstacle
 		});
 		this.rotator = new Rotator({
 			scene,
@@ -92,10 +100,14 @@ export class GameFacade {
 		});
 		// 残り体力0でゲームオーバー
 		this.lifeGauge.onDie.addOnce(() => {
+			this._status = "fail";
 			this.end();
+			this.onComplete.fire(false);
 		});
 		this.progressor.onComplete.addOnce(() => {
+			this._status = "success";
 			this.end();
+			this.onComplete.fire(true);
 		});
 	}
 
@@ -108,6 +120,24 @@ export class GameFacade {
 		this.spawner.end();
 		this.rotator.end();
 		this.shooter.end();
+	}
+
+	/**
+	 * ゲームの開発状況を取得します.
+	 */
+	get status(): GameStatus {
+		return this._status;
+	}
+
+	/**
+	 * ゲームの完成度を取得します.
+	 */
+	get progress(): number {
+		return this.progressor.value;
+	}
+
+	get numOfObstacle(): number {
+		return this.spawner.numOfObstacle;
 	}
 }
 
@@ -131,4 +161,23 @@ export interface GameFacadeOptions {
 	 * アイデア。障壁の出現率に影響。0-1.8
 	 */
 	idea: number;
+	/**
+	 * 前回までの進捗
+	 */
+	progress: number;
+	/**
+	 * これまで生成したObstacleの数
+	 */
+	numOfObstacle: number;
 }
+
+/**
+ * ゲームの開発状況
+ *
+ * developing: 開発中
+ *
+ * success: 体力を残した状態で進捗1
+ *
+ * fail: 進捗が1になる前に体力0
+ */
+export type GameStatus = "developing" | "success" | "fail";

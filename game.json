@@ -86,79 +86,6 @@
 			"path": "script/liveGameDevelop.js",
 			"global": true
 		},
-		"node_modules/@yasshi2525/live-on-air/image/broadcaster.default.png": {
-			"type": "image",
-			"path": "node_modules/@yasshi2525/live-on-air/image/broadcaster.default.png",
-			"width": 192,
-			"height": 72,
-			"global": true
-		},
-		"node_modules/@yasshi2525/live-on-air/image/default.png": {
-			"type": "image",
-			"path": "node_modules/@yasshi2525/live-on-air/image/default.png",
-			"width": 181,
-			"height": 94,
-			"global": true
-		},
-		"node_modules/@yasshi2525/live-on-air/image/layer.comment.label.png": {
-			"type": "image",
-			"path": "node_modules/@yasshi2525/live-on-air/image/layer.comment.label.png",
-			"width": 109,
-			"height": 37
-		},
-		"node_modules/@yasshi2525/live-on-air/image/layer.field.label.png": {
-			"type": "image",
-			"path": "node_modules/@yasshi2525/live-on-air/image/layer.field.label.png",
-			"width": 52,
-			"height": 37
-		},
-		"node_modules/@yasshi2525/live-on-air/image/layer.header.label.png": {
-			"type": "image",
-			"path": "node_modules/@yasshi2525/live-on-air/image/layer.header.label.png",
-			"width": 84,
-			"height": 37
-		},
-		"node_modules/@yasshi2525/live-on-air/image/layer.screen.label.png": {
-			"type": "image",
-			"path": "node_modules/@yasshi2525/live-on-air/image/layer.screen.label.png",
-			"width": 82,
-			"height": 37
-		},
-		"node_modules/@yasshi2525/live-on-air/image/spot.default.disabled.png": {
-			"type": "image",
-			"path": "node_modules/@yasshi2525/live-on-air/image/spot.default.disabled.png",
-			"width": 150,
-			"height": 100,
-			"global": true
-		},
-		"node_modules/@yasshi2525/live-on-air/image/spot.default.locked.png": {
-			"type": "image",
-			"path": "node_modules/@yasshi2525/live-on-air/image/spot.default.locked.png",
-			"width": 150,
-			"height": 100,
-			"global": true
-		},
-		"node_modules/@yasshi2525/live-on-air/image/spot.default.normal.png": {
-			"type": "image",
-			"path": "node_modules/@yasshi2525/live-on-air/image/spot.default.normal.png",
-			"width": 150,
-			"height": 100,
-			"global": true
-		},
-		"node_modules/@yasshi2525/live-on-air/image/spot.default.png": {
-			"type": "image",
-			"path": "node_modules/@yasshi2525/live-on-air/image/spot.default.png",
-			"width": 133,
-			"height": 94,
-			"global": true
-		},
-		"node_modules/@yasshi2525/live-on-air/image/spot.default.unvisited.png": {
-			"type": "image",
-			"path": "node_modules/@yasshi2525/live-on-air/image/spot.default.unvisited.png",
-			"width": 150,
-			"height": 100,
-			"global": true
-		},
 		"broadcaster": {
 			"type": "image",
 			"path": "image/broadcaster.png",
@@ -284,6 +211,79 @@
 			"path": "image/damage.png",
 			"width": 74,
 			"height": 73,
+			"global": true
+		},
+		"node_modules/@yasshi2525/live-on-air/image/broadcaster.default.png": {
+			"type": "image",
+			"path": "node_modules/@yasshi2525/live-on-air/image/broadcaster.default.png",
+			"width": 192,
+			"height": 72,
+			"global": true
+		},
+		"node_modules/@yasshi2525/live-on-air/image/default.png": {
+			"type": "image",
+			"path": "node_modules/@yasshi2525/live-on-air/image/default.png",
+			"width": 181,
+			"height": 94,
+			"global": true
+		},
+		"node_modules/@yasshi2525/live-on-air/image/layer.comment.label.png": {
+			"type": "image",
+			"path": "node_modules/@yasshi2525/live-on-air/image/layer.comment.label.png",
+			"width": 109,
+			"height": 37
+		},
+		"node_modules/@yasshi2525/live-on-air/image/layer.field.label.png": {
+			"type": "image",
+			"path": "node_modules/@yasshi2525/live-on-air/image/layer.field.label.png",
+			"width": 52,
+			"height": 37
+		},
+		"node_modules/@yasshi2525/live-on-air/image/layer.header.label.png": {
+			"type": "image",
+			"path": "node_modules/@yasshi2525/live-on-air/image/layer.header.label.png",
+			"width": 84,
+			"height": 37
+		},
+		"node_modules/@yasshi2525/live-on-air/image/layer.screen.label.png": {
+			"type": "image",
+			"path": "node_modules/@yasshi2525/live-on-air/image/layer.screen.label.png",
+			"width": 82,
+			"height": 37
+		},
+		"node_modules/@yasshi2525/live-on-air/image/spot.default.disabled.png": {
+			"type": "image",
+			"path": "node_modules/@yasshi2525/live-on-air/image/spot.default.disabled.png",
+			"width": 150,
+			"height": 100,
+			"global": true
+		},
+		"node_modules/@yasshi2525/live-on-air/image/spot.default.locked.png": {
+			"type": "image",
+			"path": "node_modules/@yasshi2525/live-on-air/image/spot.default.locked.png",
+			"width": 150,
+			"height": 100,
+			"global": true
+		},
+		"node_modules/@yasshi2525/live-on-air/image/spot.default.normal.png": {
+			"type": "image",
+			"path": "node_modules/@yasshi2525/live-on-air/image/spot.default.normal.png",
+			"width": 150,
+			"height": 100,
+			"global": true
+		},
+		"node_modules/@yasshi2525/live-on-air/image/spot.default.png": {
+			"type": "image",
+			"path": "node_modules/@yasshi2525/live-on-air/image/spot.default.png",
+			"width": 133,
+			"height": 94,
+			"global": true
+		},
+		"node_modules/@yasshi2525/live-on-air/image/spot.default.unvisited.png": {
+			"type": "image",
+			"path": "node_modules/@yasshi2525/live-on-air/image/spot.default.unvisited.png",
+			"width": 150,
+			"height": 100,
 			"global": true
 		}
 	},

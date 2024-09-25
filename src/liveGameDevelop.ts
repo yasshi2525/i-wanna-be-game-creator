@@ -21,18 +21,79 @@ export class DevelopLiveGame extends LiveGame {
 			cssColor: "khaki",
 			opacity: 0.5
 		}));
-		this.gameFacade = new GameFacade({ scene, container, motivation: contextVars.motivation, idea: contextVars.idea });
+		this.gameFacade = new GameFacade({
+			scene,
+			container,
+			motivation: contextVars.motivation,
+			idea: contextVars.idea,
+			progress: contextVars.progress,
+			numOfObstacle: contextVars.numbOfObstacle,
+		});
+		scene.setTimeout(() => next(), 2000);
 	}
 	protected override handleGamePlay(context: LiveContext): (() => void) | void {
-		throw new Error("Method not implemented.");
+		// do-nothing
 	}
+
+	protected override handleSubmit({ scene, container }: LiveContext, next: () => void): (() => void) | void {
+		const goBack = new g.FilledRect({
+			scene,
+			parent: container,
+			x: container.width / 2,
+			width: 200,
+			height: 100,
+			anchorX: 0.5,
+			cssColor: "firebrick",
+			touchable: true
+		});
+		goBack.append(new g.Label({
+			scene,
+			font: new g.DynamicFont({
+				game: g.game,
+				size: 50,
+				fontFamily: "sans-serif",
+				fontColor: "white"
+			}),
+			x: goBack.width / 2,
+			y: goBack.height / 2,
+			width: goBack.width,
+			anchorX: 0.5,
+			anchorY: 0.5,
+			text: "戻る",
+			textAlign: "center",
+			widthAutoAdjust: false,
+		}));
+		goBack.onPointDown.addOnce(() => {
+			this.gameFacade.end();
+			next();
+		});
+		this.gameFacade.onComplete.add(() => {
+			goBack.destroy();
+			next();
+		});
+		return () => {
+			goBack.cssColor = "gray";
+			goBack.touchable = false;
+			goBack.modified();
+		};
+	}
+
 	protected override evaluateScore(context: LiveContext): number {
-		throw new Error("Method not implemented.");
+		switch (this.gameFacade.status) {
+			case "developing":
+				return 0;
+			case "success":
+				return 100;
+			case "fail":
+				return this.gameFacade.progress * 90;
+		}
 	}
 
 	protected override handleResultViewing(context: LiveContext, score: number, next: () => void): (() => void) | void {
 		const vars = context.vars as ContextVars;
+		vars.progress = this.gameFacade.progress;
+		vars.numbOfObstacle = this.gameFacade.numOfObstacle;
 		vars.onLiveGameResult.fire({ gameType: "develop", score });
-		return super.handleResultViewing(context, score, next);
+		context.scene.setTimeout(() => next(), 2000);
 	}
 }

@@ -14,10 +14,14 @@ export class Spawner {
 	 */
 	private readonly scene: g.Scene;
 	private ended: boolean;
+	/**
+	 * 今まで作成したObstacleの数
+	 */
+	private numOfSpawn: number;
 
 	constructor(opts: SpawnerOptions) {
-		let counter = 0;
 		this.scene = opts.scene;
+		this.numOfSpawn = opts.numOfSpawn;
 		this.scene.setInterval(() => {
 			if (this.ended) {
 				return;
@@ -34,9 +38,9 @@ export class Spawner {
 				cssColor: constants.obstacle.color,
 				font: constants.obstacle.font,
 				span: constants.obstacle.span,
-				life: constants.obstacle.life.min + Math.min(counter, constants.obstacle.life.max - constants.obstacle.life.min),
+				life: constants.obstacle.life.min + Math.min(this.numOfSpawn, constants.obstacle.life.max - constants.obstacle.life.min),
 			});
-			counter++;
+			this.numOfSpawn++;
 			this.onCreate.fire(o);
 		}, opts.interval);
 	}
@@ -46,6 +50,13 @@ export class Spawner {
 	 */
 	end(): void {
 		this.ended = true;
+	}
+
+	/**
+	 * これまで生成したObstacleの数
+	 */
+	get numOfObstacle(): number {
+		return this.numOfSpawn;
 	}
 }
 
@@ -65,4 +76,8 @@ export interface SpawnerOptions {
 	 * 生成間隔
 	 */
 	interval: number;
+	/**
+	 * これまで作成したObstacleの数
+	 */
+	numOfSpawn: number;
 }

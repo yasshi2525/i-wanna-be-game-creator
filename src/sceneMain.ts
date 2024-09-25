@@ -48,6 +48,8 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 		stage: "motivation",
 		motivation: 0,
 		idea: 0,
+		progress: 0,
+		numbOfObstacle: 0,
 		onLiveGameResult: new g.Trigger()
 	};
 
@@ -181,8 +183,15 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 				avatar.text = "いよいよゲームを作るでぇ～す!!";
 			}
 			if (live instanceof DevelopLiveGame) {
-				contextVars.stage = "retry";
-				avatar.text = "一旦、体制を立て直すでぇ～す!!";
+				if (contextVars.progress < 1) {
+					contextVars.stage = "retry";
+					avatar.text = "一旦、体制を立て直すでぇ～す!!";
+				} else {
+					for (const spot of scene.spots) {
+						spot.disable();
+					}
+					avatar.text = "ゲームが完成したでぇ～す!!";
+				}
 			}
 		});
 
