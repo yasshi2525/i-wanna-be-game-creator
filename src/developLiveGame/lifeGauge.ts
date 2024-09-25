@@ -26,7 +26,7 @@ export class LifeGauge extends g.E {
 		this.gauge = new g.FilledRect({
 			scene: this.scene,
 			parent: this,
-			width: opts.width,
+			width: opts.width * opts.initLife / opts.life,
 			height: opts.height,
 			cssColor: opts.color
 		});
@@ -44,7 +44,7 @@ export class LifeGauge extends g.E {
 			textAlign: "center",
 			widthAutoAdjust: false
 		}));
-		this.damage = opts.damage / opts.life * this.gauge.width;
+		this.damage = opts.damage / opts.life * opts.width;
 	}
 
 	/**
@@ -100,11 +100,34 @@ export class LifeGauge extends g.E {
 	end(): void {
 		this.ended = true;
 	}
+
+	/**
+	 * 指定の体力分、強制的に減らします. 減らせたかどうかを返します.
+	 */
+	substract(value: number): boolean {
+		this.gauge.width -= value;
+		if (this.gauge.width < 0) {
+			this.gauge.width = 0;
+		}
+		this.gauge.modified();
+		return this.gauge.width > 0;
+	}
+
+	/**
+	 * 残り体力を取得します.
+	 */
+	get life(): number {
+		return this.gauge.width / this.damage;
+	}
 }
 
 export interface LifeGaugeOptions extends g.EParameterObject {
 	/**
-	 * 初期体力（体力の最大値）
+	 * 初期体力
+	 */
+	initLife: number;
+	/**
+	 * 体力の最大値
 	 */
 	life: number;
 	/**

@@ -1,5 +1,6 @@
 import { LiveOnAirScene, LiveOnAirSceneBuilder } from "@yasshi2525/live-on-air";
 import { Avatar } from "./avatar";
+import { constants } from "./developLiveGame/constants";
 import {
 	COMMENT_INTERVAL,
 	ContextVars,
@@ -62,6 +63,7 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 		motivation: 0,
 		idea: 0,
 		progress: 0,
+		life: constants.lifeGauge.life,
 		numbOfObstacle: 0,
 		onLiveGameResult: new g.Trigger()
 	};

@@ -19,6 +19,10 @@ export const constants = {
 		 * 障壁 (Obstacle) が一回爆発(expire)した際、減る体力
 		 */
 		damage: 1,
+		/**
+		 * ゲーム終了時、この体力の分に乗じた値分、ボーナスが発生します.
+		 */
+		bonus: 1,
 	},
 	/**
 	 * 完成度について

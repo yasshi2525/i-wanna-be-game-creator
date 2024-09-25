@@ -1,6 +1,8 @@
 import { LiveContext, LiveGame } from "@yasshi2525/live-on-air";
+import { constants } from "./developLiveGame/constants";
 import { GameFacade } from "./developLiveGame/gameFacade";
 import { ContextVars } from "./globals";
+import { sleep } from "./utils";
 
 /**
  * ゲーム開発をシューティングゲームに模したミニゲーム.
@@ -26,6 +28,7 @@ export class DevelopLiveGame extends LiveGame {
 			motivation: contextVars.motivation,
 			idea: contextVars.idea,
 			progress: contextVars.progress,
+			life: contextVars.life,
 			numOfObstacle: contextVars.numbOfObstacle,
 		});
 		scene.setTimeout(() => next(), 2000);
@@ -91,11 +94,57 @@ export class DevelopLiveGame extends LiveGame {
 	protected override handleResultViewing(context: LiveContext, score: number, next: () => void): (() => void) | void {
 		const vars = context.vars as ContextVars;
 		vars.progress = this.gameFacade.progress;
+		vars.life = this.gameFacade.life;
+		// 残り体力が少なければ全回復
+		if (vars.life < constants.lifeGauge.damage) {
+			vars.life = constants.lifeGauge.life;
+		}
 		vars.numbOfObstacle = this.gameFacade.numOfObstacle;
 		if (this.gameFacade.status === "success") {
 			vars.stage = "success";
 		}
 		vars.onLiveGameResult.fire({ gameType: "develop", score });
-		context.scene.setTimeout(() => next(), 2000);
+		if (vars.stage !== "success") {
+			context.scene.setTimeout(() => next(), 2000);
+		} else {
+			(async () => {
+				// 残り体力に応じたボーナス
+				while (this.gameFacade.lifeBonus()) {
+					const offset = context.container.localToGlobal({
+						x: constants.lifeGauge.x + this.gameFacade.life / constants.lifeGauge.life * constants.lifeGauge.width,
+						y: constants.lifeGauge.y + constants.lifeGauge.height / 2
+					});
+					const bonus = new g.Sprite({
+						scene: context.scene,
+						parent: context.scene,
+						src: context.scene.asset.getImageById("smile"),
+						x: offset.x,
+						y: offset.y,
+						anchorX: 0.5,
+						anchorY: 0.5,
+					});
+					let v = { x: -7.5, y: 0 };
+					bonus.onUpdate.add(() => {
+						v.y += 0.125;
+						if (bonus.y > g.game.height - bonus.height / 2 - v.y && v.y > 0) {
+							v.y *= -0.975;
+							// TODO: 加点
+						}
+						if (bonus.x < bonus.width / 2 && v.x < 0) {
+							v.x *= -1;
+						}
+						if (bonus.x > context.container.width + bonus.width / 2 && v.x > 0) {
+							v.x *= -1;
+						}
+						bonus.x += v.x;
+						bonus.y += v.y;
+						bonus.modified();
+					});
+					await sleep(200);
+				}
+				await sleep(2000);
+				next();
+			})();
+		}
 	}
 }

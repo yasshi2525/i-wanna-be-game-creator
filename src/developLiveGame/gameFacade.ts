@@ -42,11 +42,12 @@ export class GameFacade {
 	 */
 	private readonly blaster: Blaster;
 
-	constructor({ scene, container, motivation, idea, progress, numOfObstacle }: GameFacadeOptions) {
+	constructor({ scene, container, motivation, idea, progress, life, numOfObstacle }: GameFacadeOptions) {
 		this.lifeGauge = new LifeGauge({
 			scene,
 			parent: container,
-			...constants.lifeGauge
+			initLife: life,
+			...constants.lifeGauge,
 		});
 		this.progressor = new Progressor({
 			scene,
@@ -123,6 +124,13 @@ export class GameFacade {
 	}
 
 	/**
+	 * 残り体力分のボーナスを発生させます. 残り体力があるかどうかを返します.
+	 */
+	lifeBonus(): boolean {
+		return this.lifeGauge.substract(constants.lifeGauge.bonus / constants.lifeGauge.life * constants.lifeGauge.width);
+	}
+
+	/**
 	 * ゲームの開発状況を取得します.
 	 */
 	get status(): GameStatus {
@@ -135,9 +143,17 @@ export class GameFacade {
 	get progress(): number {
 		return this.progressor.value;
 	}
-
+	/**
+	 * これまで生成したObstacleの個数を取得します.
+	 */
 	get numOfObstacle(): number {
 		return this.spawner.numOfObstacle;
+	}
+	/**
+	 * 残り体力を取得します.
+	 */
+	get life(): number {
+		return this.lifeGauge.life;
 	}
 }
 
@@ -165,6 +181,10 @@ export interface GameFacadeOptions {
 	 * 前回までの進捗
 	 */
 	progress: number;
+	/**
+	 * 前回終了時の残り体力
+	 */
+	life: number;
 	/**
 	 * これまで生成したObstacleの数
 	 */

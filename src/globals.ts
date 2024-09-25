@@ -61,6 +61,10 @@ export interface ContextVars {
 	 */
 	progress: number;
 	/**
+	 * 開発ミニゲームにおける残体力
+	 */
+	life: number;
+	/**
 	 * 障壁の生成数
 	 */
 	numbOfObstacle: number;
