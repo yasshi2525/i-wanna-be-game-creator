@@ -1,3 +1,4 @@
+import { MAX_IDEA, MAX_MOTIVATION } from "../globals";
 import { Blaster } from "./blaster";
 import { constants } from "./constants";
 import { LifeGauge } from "./lifeGauge";
@@ -35,7 +36,7 @@ export class GameFacade {
 	 */
 	private readonly blaster: Blaster;
 
-	constructor({ scene, container }: GameFacadeOptions) {
+	constructor({ scene, container, motivation, idea }: GameFacadeOptions) {
 		this.lifeGauge = new LifeGauge({
 			scene,
 			parent: container,
@@ -49,7 +50,8 @@ export class GameFacade {
 		this.spawner = new Spawner({
 			scene,
 			container,
-			interval: constants.spaner.interval
+			interval: (1 - idea / MAX_IDEA) * constants.spawner.interval.min
+				+ (idea / MAX_IDEA) * constants.spawner.interval.max
 		});
 		this.rotator = new Rotator({
 			scene,
@@ -59,7 +61,9 @@ export class GameFacade {
 		this.shooter = new Shooter({
 			scene,
 			parent: container,
-			...constants.shooter
+			...constants.shooter,
+			interval: motivation / MAX_MOTIVATION * constants.shooter.interval.min
+				+ (1 - motivation / MAX_MOTIVATION) * constants.shooter.interval.max,
 		});
 		this.blaster = new Blaster({
 			scene,
@@ -119,4 +123,12 @@ export interface GameFacadeOptions {
 	 * 描画対象の親となるエンティティ
 	 */
 	container: g.E;
+	/**
+	 * やる気。射出速度に影響。0-1.8
+	 */
+	motivation: number;
+	/**
+	 * アイデア。障壁の出現率に影響。0-1.8
+	 */
+	idea: number;
 }

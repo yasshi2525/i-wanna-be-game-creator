@@ -14,7 +14,8 @@ import { ContextVars } from "./globals";
 export class DevelopLiveGame extends LiveGame {
 	private gameFacade: GameFacade;
 
-	protected override handleIntroduction({ scene, container }: LiveContext, next: () => void): (() => void) | void {
+	protected override handleIntroduction({ scene, container, vars }: LiveContext, next: () => void): (() => void) | void {
+		const { motivation, idea } = vars as ContextVars;
 		container.append(new g.FilledRect({
 			scene,
 			width: container.width,
@@ -22,7 +23,7 @@ export class DevelopLiveGame extends LiveGame {
 			cssColor: "khaki",
 			opacity: 0.5
 		}));
-		this.gameFacade = new GameFacade({ scene, container });
+		this.gameFacade = new GameFacade({ scene, container, motivation, idea });
 	}
 	protected override handleGamePlay(context: LiveContext): (() => void) | void {
 		throw new Error("Method not implemented.");

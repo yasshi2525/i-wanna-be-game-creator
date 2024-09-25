@@ -32,16 +32,17 @@ export const constants = {
 		/**
 		 * 弾 (Attacker) 1発分につき増える進捗 (1で完成)
 		 */
-		magnitude: 0.01
+		magnitude: 0.02
 	},
 	/**
 	 * 障壁について
 	 */
 	obstacle: {
 		/**
-		 * 何発の Attacker が当たれば破壊できるか
+		 * 何発の Attacker が当たれば破壊できるか.
+		 * 生成回数依存（最初は弱く、だんだん強く）
 		 */
-		life: 5,
+		life: { min: 5, max: 20 },
 		/**
 		 * 何ミリ秒立っても破壊されなかった場合に爆発（expire、ペナルティ）するか
 		 */
@@ -65,11 +66,13 @@ export const constants = {
 	/**
 	 * 障壁の生成について
 	 */
-	spaner: {
+	spawner: {
 		/**
 		 * 生成間隔
+		 *
+		 * idea 依存
 		 */
-		interval: 4000
+		interval: { min: 2000, max: 6000 }
 	},
 	/**
 	 * 自機回転機について
@@ -89,8 +92,10 @@ export const constants = {
 		anchorY: 0.5,
 		/**
 		 * 弾 (Attacker) の射出間隔 (ミリ秒)
+		 *
+		 * motivation 依存
 		 */
-		interval: 500,
+		interval: { min: 100, max: 500 },
 	},
 	/**
 	 * 弾について

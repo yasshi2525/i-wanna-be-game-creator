@@ -16,6 +16,7 @@ export class Spawner {
 	private ended: boolean;
 
 	constructor(opts: SpawnerOptions) {
+		let counter = 0;
 		this.scene = opts.scene;
 		this.scene.setInterval(() => {
 			if (this.ended) {
@@ -33,8 +34,9 @@ export class Spawner {
 				cssColor: constants.obstacle.color,
 				font: constants.obstacle.font,
 				span: constants.obstacle.span,
-				life: constants.obstacle.life,
+				life: constants.obstacle.life.min + Math.min(counter, constants.obstacle.life.max - constants.obstacle.life.min),
 			});
+			counter++;
 			this.onCreate.fire(o);
 		}, opts.interval);
 	}
