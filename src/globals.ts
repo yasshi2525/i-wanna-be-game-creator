@@ -30,8 +30,12 @@ export interface ContextVars {
 	 * idea: これからアイデアを出す
 	 *
 	 * develop: これからゲームつくる
+	 *
+	 * developing: 開発ミニゲーム中
+	 *
+	 * retry: 開発ミニゲームから撤退
 	 */
-	stage: "motivation" | "idea" | "develop";
+	stage: "motivation" | "idea" | "develop" | "developing" | "retry";
 
 	/**
 	 * 直近のミニゲーム結果

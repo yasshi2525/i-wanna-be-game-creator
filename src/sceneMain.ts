@@ -134,6 +134,10 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 		scene.spots[1].lockedBy(scene.spots[0]);
 		scene.spots[2].lockedBy(scene.spots[1]);
 
+		// コメントが濃いので若干薄くします.
+		scene.layer.comment.opacity = 0.5;
+		scene.layer.comment.modified();
+
 		// 各種表示用のレイヤを作成します
 		const overlay = new g.E({
 			scene,
@@ -150,6 +154,11 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 			scene.layer.field.opacity = 0.25;
 			scene.layer.field.modified();
 		});
+		// ミニゲームが終わったらマップの薄さをもとに戻します
+		scene.broadcaster.onLiveEnd.add(() => {
+			scene.layer.field.opacity = 1;
+			scene.layer.field.modified();
+		});
 
 		// ミニゲームの結果の際、一時的にコメントを増やします.
 		contextVars.onLiveGameResult.add(e => {
@@ -162,7 +171,7 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 		});
 
 		// ミニゲーム攻略にしたがって、 avatar のセリフを変化させます
-		scene.broadcaster.onLiveEnd.add(() => {
+		scene.broadcaster.onLiveEnd.add(live => {
 			if (contextVars.stage === "motivation" && scene.spots[1].lockedBy().length === 0) {
 				contextVars.stage = "idea";
 				avatar.text = "次は、アイデアを固めるでぇ～す!!";
@@ -171,10 +180,29 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 				contextVars.stage = "develop";
 				avatar.text = "いよいよゲームを作るでぇ～す!!";
 			}
-			scene.layer.field.opacity = 1;
-			scene.layer.field.modified();
+			if (live instanceof DevelopLiveGame) {
+				contextVars.stage = "retry";
+				avatar.text = "一旦、体制を立て直すでぇ～す!!";
+			}
 		});
 
+		// 最後の開発ミニゲームの際はそれまでのゲーム結果にしたがったセリフに変えます
+		scene.screen.onLiveStart.add(live => {
+			if (live instanceof DevelopLiveGame) {
+				contextVars.stage = "developing";
+				if (contextVars.motivation < 0.5) {
+					avatar.text = "やる気が低くて、作業が捗りませぇ～ん!!";
+				} else if (contextVars.idea < 0.25) {
+					avatar.text = "アイデアが微妙で、困難だらけでぇ～す!!";
+				} else if (contextVars.motivation > 1.5) {
+					avatar.text = "やる気に燃えて、作業が捗るでぇ～す!!";
+				} else if (contextVars.idea > 1.25) {
+					avatar.text = "アイデアが秀逸で、困難もなく順調でぇ～す!!";
+				} else {
+					avatar.text = "困難を打ち倒しながら、前に駆け出すでぇ～す!!";
+				}
+			}
+		});
 
 		// ミニゲームの結果獲得されるパラメタを表示します.
 		const paramFont = new g.DynamicFont({

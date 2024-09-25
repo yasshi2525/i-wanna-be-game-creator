@@ -115,6 +115,12 @@ export class Avatar {
 		}
 		this._text.text = value;
 		this._text.invalidate();
+		if (this._text.width > this._textBackground.width - 50) {
+			this._text.scaleX = (this._textBackground.width - 50) / this._text.width;
+		} else {
+			this._text.scaleX = 1;
+		}
+		this._text.modified();
 		this.view.onUpdate.addOnce(() => this.onSpeak.fire(value));
 	}
 }
