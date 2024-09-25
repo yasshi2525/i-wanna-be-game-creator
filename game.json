@@ -193,6 +193,56 @@
 			"width": 223,
 			"height": 140,
 			"global": true
+		},
+		"attacker": {
+			"type": "script",
+			"path": "script/developLiveGame/attacker.js",
+			"global": true
+		},
+		"blaster": {
+			"type": "script",
+			"path": "script/developLiveGame/blaster.js",
+			"global": true
+		},
+		"constants": {
+			"type": "script",
+			"path": "script/developLiveGame/constants.js",
+			"global": true
+		},
+		"gameFacade": {
+			"type": "script",
+			"path": "script/developLiveGame/gameFacade.js",
+			"global": true
+		},
+		"lifeGauge": {
+			"type": "script",
+			"path": "script/developLiveGame/lifeGauge.js",
+			"global": true
+		},
+		"obstacle": {
+			"type": "script",
+			"path": "script/developLiveGame/obstacle.js",
+			"global": true
+		},
+		"rotator": {
+			"type": "script",
+			"path": "script/developLiveGame/rotator.js",
+			"global": true
+		},
+		"shooter": {
+			"type": "script",
+			"path": "script/developLiveGame/shooter.js",
+			"global": true
+		},
+		"spawner": {
+			"type": "script",
+			"path": "script/developLiveGame/spawner.js",
+			"global": true
+		},
+		"progressor": {
+			"type": "script",
+			"path": "script/developLiveGame/progressor.js",
+			"global": true
 		}
 	},
 	"environment": {
