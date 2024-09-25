@@ -9,32 +9,35 @@ export class Rotator extends g.E {
 	/**
 	 * プレイヤーの操作入力受付領域
 	 */
-	private readonly sensor: g.FilledRect;
+	private readonly sensor: g.Sprite;
 	/**
 	 * 自機が向いている方向を示す線
 	 */
-	private readonly direction: g.FilledRect;
+	private readonly direction: g.Sprite;
 
 	constructor(opts: RotatorOptions) {
 		super(opts);
-		this.sensor = new g.FilledRect({
+		this.sensor = new g.Sprite({
 			scene: this.scene,
 			parent: this,
-			width: this.width,
-			height: this.height,
+			src: this.scene.asset.getImageById("rotate_guide"),
 			anchorY: 0.5,
-			cssColor: opts.color,
-			touchable: true,
+			touchable: true
 		});
-		this.direction = new g.FilledRect({
+		this.direction = new g.Sprite({
 			scene: this.scene,
 			parent: this,
-			width: this.width,
-			height: 1,
-			cssColor: "black",
+			anchorY: 0.5,
+			src: this.scene.asset.getImageById("direction")
 		});
-		this.sensor.onPointDown.add(e => this.rotateTo(e.point));
-		this.sensor.onPointMove.add(e => this.rotateTo({ x: e.point.x + e.startDelta.x, y: e.point.y + e.startDelta.y }));
+		this.sensor.onPointDown.add(e => this.rotateTo({
+			x: e.point.x,
+			y: e.point.y - this.sensor.height / 2
+		}));
+		this.sensor.onPointMove.add(e => this.rotateTo({
+			x: e.point.x + e.startDelta.x,
+			y: e.point.y + e.startDelta.y - this.sensor.height / 2
+		}));
 	}
 
 	end(): void {
@@ -59,9 +62,4 @@ export class Rotator extends g.E {
 /**
  * Rotatorを初期化する際のパラメタ
  */
-export interface RotatorOptions extends g.EParameterObject {
-	/**
-	 * 操作受付領域の色
-	 */
-	color: string;
-}
+export interface RotatorOptions extends g.EParameterObject { }

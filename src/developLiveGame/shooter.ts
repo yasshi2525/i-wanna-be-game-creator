@@ -4,7 +4,7 @@ import { constants } from "./constants";
 /**
  * ひたすら自身の向きに Attacker (弾) を生成する
  */
-export class Shooter extends g.FilledRect {
+export class Shooter extends g.Sprite {
 	/**
 	 * 弾生成時に発火
 	 */
@@ -20,16 +20,14 @@ export class Shooter extends g.FilledRect {
 				const a = new Attacker({
 					scene: this.scene,
 					parent: this.parent,
-					cssColor: constants.attacker.color,
+					...constants.attacker,
 					x: this.x,
 					y: this.y,
-					width: constants.attacker.size,
-					height: constants.attacker.size,
 					anchorX: 0.5,
 					anchorY: 0.5,
-					speed: constants.attacker.speed,
 					theta: this.angle / 180 * Math.PI,
 				});
+				this.parent.insertBefore(a, this);
 				this.onShoot.fire(a);
 				duration -= opts.interval;
 			}
@@ -43,7 +41,7 @@ export class Shooter extends g.FilledRect {
 	}
 }
 
-export interface ShooterOptions extends g.FilledRectParameterObject {
+export interface ShooterOptions extends g.SpriteParameterObject {
 	/**
 	 * Attack (弾)を生成する間隔（ミリ秒）
 	 */

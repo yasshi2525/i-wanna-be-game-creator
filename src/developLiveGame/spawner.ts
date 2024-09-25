@@ -24,8 +24,8 @@ export class Spawner {
 			const o = new Obstacle({
 				scene: this.scene,
 				parent: opts.container,
-				x: g.game.random.generate() * (opts.container.width - constants.obstacle.width * 4) + constants.obstacle.width * 3,
-				y: g.game.random.generate() * (opts.container.height - constants.obstacle.height * 2) + constants.obstacle.height,
+				x: g.game.random.generate() * (opts.container.width - constants.obstacle.width * 3) + constants.obstacle.width * 2,
+				y: g.game.random.generate() * (opts.container.height - constants.obstacle.height * 2.5) + constants.obstacle.height * 1.5,
 				width: constants.obstacle.width,
 				height: constants.obstacle.height,
 				anchorX: 0.5,

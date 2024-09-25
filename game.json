@@ -243,6 +243,34 @@
 			"type": "script",
 			"path": "script/developLiveGame/progressor.js",
 			"global": true
+		},
+		"rotate_guide": {
+			"type": "image",
+			"path": "image/rotate_guide.png",
+			"width": 206,
+			"height": 291,
+			"global": true
+		},
+		"shooter_img": {
+			"type": "image",
+			"path": "image/shooter_img.png",
+			"width": 109,
+			"height": 98,
+			"global": true
+		},
+		"direction": {
+			"type": "image",
+			"path": "image/direction.png",
+			"width": 200,
+			"height": 19,
+			"global": true
+		},
+		"attacker_img": {
+			"type": "image",
+			"path": "image/attacker_img.png",
+			"width": 73,
+			"height": 73,
+			"global": true
 		}
 	},
 	"environment": {

@@ -2,7 +2,7 @@
  * Obstacle を倒す攻撃手. 弾. ひたすら前進
  * TODO: out 時に progress が進む演出
  */
-export class Attacker extends g.FilledRect {
+export class Attacker extends g.Sprite {
 	/**
 	 * 画面外に出たら発火
 	 */
@@ -26,7 +26,7 @@ export class Attacker extends g.FilledRect {
 	}
 }
 
-export interface AttackOptions extends g.FilledRectParameterObject {
+export interface AttackOptions extends g.SpriteParameterObject {
 	/**
 	 * 1秒あたり進む距離
 	 */

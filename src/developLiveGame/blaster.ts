@@ -11,10 +11,10 @@ export class Blaster {
 
 	constructor({ scene, container }: BlasterOption) {
 		container.onUpdate.add(() => {
-			const attackers = [...this.attackers].filter(a => !a.destroyed());
-			for (const attacker of attackers) {
-				const obstacles = [...this.obstacles].filter(o => !o.destroyed());
-				for (const obstacle of obstacles) {
+			const obstacles = [...this.obstacles].filter(o => !o.destroyed());
+			for (const obstacle of obstacles) {
+				const attackers = [...this.attackers].filter(a => !a.destroyed());
+				for (const attacker of attackers) {
 					const area = obstacle.calculateBoundingRect();
 					if (attacker.x >= area.left && attacker.x <= area.right && attacker.y >= area.top && attacker.y <= area.bottom) {
 						obstacle.attack();

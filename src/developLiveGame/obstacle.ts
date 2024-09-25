@@ -102,7 +102,7 @@ export class Obstacle extends g.FilledRect {
 	 */
 	attack(): void {
 		this.life--;
-		if (this.life <= 0) {
+		if (this.life <= 0 && !this.destroyed()) {
 			this.scene.clearTimeout(this.tid);
 			this.destroy();
 			this.onBreak.fire();

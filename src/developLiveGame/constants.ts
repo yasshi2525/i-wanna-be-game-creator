@@ -76,24 +76,17 @@ export const constants = {
 	 */
 	rotator: {
 		x: 0,
-		y: 300,
-		width: 200,
-		height: 200,
-		anchorY: 0.5,
-		color: "gray",
-		opacity: 0.5
+		y: 200,
 	},
 	/**
 	 * 弾 (Attacker) の射出機について
 	 */
 	shooter: {
+		src: g.game.scene().asset.getImageById("shooter_img"),
 		x: 0,
 		y: 200,
-		width: 50,
-		height: 50,
 		anchorX: 0.5,
 		anchorY: 0.5,
-		cssColor: "black",
 		/**
 		 * 弾 (Attacker) の射出間隔 (ミリ秒)
 		 */
@@ -103,8 +96,9 @@ export const constants = {
 	 * 弾について
 	 */
 	attacker: {
-		color: "green",
-		size: 20,
+		src: g.game.scene().asset.getImageById("attacker_img"),
+		scaleX: 0.5,
+		scaleY: 0.5,
 		/**
 		 * 1秒あたり進む距離
 		 */
