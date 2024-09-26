@@ -1,4 +1,4 @@
-import { CommentCondition } from "@yasshi2525/live-on-air";
+import { CommentCondition, Scorer } from "@yasshi2525/live-on-air";
 
 export const debugMode = false;
 
@@ -68,6 +68,10 @@ export interface ContextVars {
 	 * 障壁の生成数
 	 */
 	numbOfObstacle: number;
+	/**
+	 * 得点計算機能
+	 */
+	scorer?: Scorer;
 }
 /**
  * ミニゲーム結果後のコメント反応時間中か

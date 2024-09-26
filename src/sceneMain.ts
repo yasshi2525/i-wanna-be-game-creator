@@ -63,6 +63,7 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 		motivation: 0,
 		idea: 0,
 		progress: 0,
+		scorer: undefined,
 		life: constants.lifeGauge.life,
 		numbOfObstacle: 0,
 		onLiveGameResult: new g.Trigger()
@@ -172,6 +173,7 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 
 	// Scene の初期化処理を定義します
 	scene.onLoad.add(() => {
+		contextVars.scorer = scene.scorer;
 		// 後続の Spot をロックする.
 		scene.spots[1].lockedBy(scene.spots[0]);
 		scene.spots[2].lockedBy(scene.spots[1]);

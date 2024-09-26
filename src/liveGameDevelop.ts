@@ -133,7 +133,7 @@ export class DevelopLiveGame extends LiveGame {
 							v.y += 0.125;
 							if (bonus.y > g.game.height - bonus.height / 2 - v.y && v.y > 0) {
 								v.y *= -0.975;
-								// TODO: 加点
+								vars.scorer!.add(1);
 							}
 							if (bonus.x < bonus.width / 2 && v.x < 0) {
 								v.x *= -1;
