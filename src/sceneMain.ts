@@ -30,7 +30,7 @@ import { IdeaLiveGame } from "./liveGameIdea";
 import { MotivationLiveGame } from "./liveGameMotivation";
 import { ClosingScene } from "./sceneClosing";
 import { ScoreBoard } from "./scoreBoard";
-import { toCommentSchema } from "./utils";
+import { play, toCommentSchema } from "./utils";
 
 export interface MainSceneOptions {
 	totalTimeLimit: number;
@@ -173,6 +173,7 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 
 	// Scene の初期化処理を定義します
 	scene.onLoad.add(() => {
+		play("hoge");
 		contextVars.scorer = scene.scorer;
 		// 後続の Spot をロックする.
 		scene.spots[1].lockedBy(scene.spots[0]);
@@ -192,6 +193,7 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 		// avatar を表示させます
 		const avatar = new Avatar({ scene, container: overlay, side: "left" });
 		avatar.text = "まずは、やる気を出すでぇ～す!!";
+		play("main_motivation.wav");
 
 		// ミニゲームが始まったらマップを薄くします
 		scene.screen.onLiveStart.add(() => {
@@ -219,15 +221,18 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 			if (contextVars.stage === "motivation" && scene.spots[1].lockedBy().length === 0) {
 				contextVars.stage = "idea";
 				avatar.text = "次は、アイデアを固めるでぇ～す!!";
+				play("main_idea.wav");
 			}
 			if (contextVars.stage === "idea" && scene.spots[2].lockedBy().length === 0) {
 				contextVars.stage = "develop";
 				avatar.text = "いよいよゲームを作るでぇ～す!!";
+				play("main_develop.wav");
 			}
 			if (live instanceof DevelopLiveGame) {
 				if (contextVars.stage !== "success") {
 					contextVars.stage = "retry";
 					avatar.text = "一旦、体制を立て直すでぇ～す!!";
+					play("main_retry.wav");
 				} else {
 					// クリアしたのでニッコリ
 					// TODO: live-on-air 反映
@@ -237,6 +242,7 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 						spot.disable();
 					}
 					avatar.text = "ゲームが完成したでぇ～す!!";
+					play("main_success.wav");
 				}
 			}
 		});
@@ -247,14 +253,19 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 				contextVars.stage = "developing";
 				if (contextVars.motivation < LOW_MOTIVATION) {
 					avatar.text = "やる気が低くて、作業が捗りませぇ～ん!!";
+					play("develop_low_motivation.wav");
 				} else if (contextVars.idea < LOW_IDEA) {
 					avatar.text = "アイデアが微妙で、困難だらけでぇ～す!!";
+					play("develop_low_idea.wav");
 				} else if (contextVars.motivation > HIGH_MOTIVATION) {
 					avatar.text = "やる気に燃えて、作業が捗るでぇ～す!!";
+					play("develop_high_motivation.wav");
 				} else if (contextVars.idea > HIGH_IDEA) {
 					avatar.text = "アイデアが秀逸で、困難もなく順調でぇ～す!!";
+					play("develop_high_idea.wav");
 				} else {
 					avatar.text = "困難を打ち倒しながら、前に駆け出すでぇ～す!!";
+					play("develop_normal.wav");
 				}
 			}
 		});

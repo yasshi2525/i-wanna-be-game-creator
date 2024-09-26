@@ -9,7 +9,7 @@ import { Avatar } from "./avatar";
 import { Frame } from "./frame";
 import { TEXT_VIEW_TIME } from "./globals";
 import { createMainScene } from "./sceneMain";
-import { sleep, toCommentSchema } from "./utils";
+import { play, sleep, toCommentSchema } from "./utils";
 
 export class TitleScene extends g.Scene {
 	private remainFrame: number;
@@ -106,10 +106,13 @@ export class TitleScene extends g.Scene {
 				commentArea.show();
 				commentSupplier.start(contextSupplier);
 				broadcaster.text = "どぅも～";
+				play("title_1.wav");
 				await sleep(TEXT_VIEW_TIME);
 				broadcaster.text = "ゲーム制作系配信者でぇ～す！";
+				play("title_2.wav");
 				await sleep(TEXT_VIEW_TIME);
 				broadcaster.text = "今からゲームつくるでぇ～す！";
+				play("title_3.wav");
 				contextVars.stage = "decide-to-develop";
 				await sleep(TEXT_VIEW_TIME);
 				// タイトル描画開始
@@ -125,6 +128,7 @@ export class TitleScene extends g.Scene {
 					}),
 					text: "今からでも作れる生ゲがあるんですか??",
 				});
+				play("title_call.wav");
 				overlayArea.append(title);
 				await sleep(TEXT_VIEW_TIME * 1.5);
 				g.game.pushScene(createMainScene({ totalTimeLimit: this.remainFrame / g.game.fps }));

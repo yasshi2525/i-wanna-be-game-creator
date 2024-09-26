@@ -308,6 +308,214 @@
 			"width": 318,
 			"height": 197,
 			"global": true
+		},
+		"develop_low_idea.wav": {
+			"type": "audio",
+			"path": "audio/develop_low_idea.wav",
+			"systemId": "sound",
+			"duration": 2677,
+			"hint": {
+				"extensions": [
+					".aac",
+					".ogg"
+				]
+			},
+			"global": true
+		},
+		"develop_low_motivation.wav": {
+			"type": "audio",
+			"path": "audio/develop_low_motivation.wav",
+			"systemId": "sound",
+			"duration": 2870,
+			"hint": {
+				"extensions": [
+					".aac",
+					".ogg"
+				]
+			},
+			"global": true
+		},
+		"main_develop.wav": {
+			"type": "audio",
+			"path": "audio/main_develop.wav",
+			"systemId": "sound",
+			"duration": 2012,
+			"hint": {
+				"extensions": [
+					".aac",
+					".ogg"
+				]
+			},
+			"global": true
+		},
+		"main_idea.wav": {
+			"type": "audio",
+			"path": "audio/main_idea.wav",
+			"systemId": "sound",
+			"duration": 2182,
+			"hint": {
+				"extensions": [
+					".aac",
+					".ogg"
+				]
+			},
+			"global": true
+		},
+		"main_motivation.wav": {
+			"type": "audio",
+			"path": "audio/main_motivation.wav",
+			"systemId": "sound",
+			"duration": 1927,
+			"hint": {
+				"extensions": [
+					".aac",
+					".ogg"
+				]
+			},
+			"global": true
+		},
+		"main_retry.wav": {
+			"type": "audio",
+			"path": "audio/main_retry.wav",
+			"systemId": "sound",
+			"duration": 2467,
+			"hint": {
+				"extensions": [
+					".aac",
+					".ogg"
+				]
+			},
+			"global": true
+		},
+		"main_success.wav": {
+			"type": "audio",
+			"path": "audio/main_success.wav",
+			"systemId": "sound",
+			"duration": 2534,
+			"hint": {
+				"extensions": [
+					".aac",
+					".ogg"
+				]
+			},
+			"global": true
+		},
+		"title_1.wav": {
+			"type": "audio",
+			"path": "audio/title_1.wav",
+			"systemId": "sound",
+			"duration": 780,
+			"hint": {
+				"extensions": [
+					".aac",
+					".ogg"
+				]
+			},
+			"global": true
+		},
+		"title_2.wav": {
+			"type": "audio",
+			"path": "audio/title_2.wav",
+			"systemId": "sound",
+			"duration": 2532,
+			"hint": {
+				"extensions": [
+					".aac",
+					".ogg"
+				]
+			},
+			"global": true
+		},
+		"title_3.wav": {
+			"type": "audio",
+			"path": "audio/title_3.wav",
+			"systemId": "sound",
+			"duration": 1987,
+			"hint": {
+				"extensions": [
+					".aac",
+					".ogg"
+				]
+			},
+			"global": true
+		},
+		"title_call.wav": {
+			"type": "audio",
+			"path": "audio/title_call.wav",
+			"systemId": "sound",
+			"duration": 2772,
+			"hint": {
+				"extensions": [
+					".aac",
+					".ogg"
+				]
+			},
+			"global": true
+		},
+		"develop_high_idea.wav": {
+			"type": "audio",
+			"path": "audio/develop_high_idea.wav",
+			"systemId": "sound",
+			"duration": 3307,
+			"hint": {
+				"extensions": [
+					".aac",
+					".ogg"
+				]
+			},
+			"global": true
+		},
+		"develop_high_motivation.wav": {
+			"type": "audio",
+			"path": "audio/develop_high_motivation.wav",
+			"systemId": "sound",
+			"duration": 2737,
+			"hint": {
+				"extensions": [
+					".aac",
+					".ogg"
+				]
+			},
+			"global": true
+		},
+		"develop_normal.wav": {
+			"type": "audio",
+			"path": "audio/develop_normal.wav",
+			"systemId": "sound",
+			"duration": 3302,
+			"hint": {
+				"extensions": [
+					".aac",
+					".ogg"
+				]
+			},
+			"global": true
+		},
+		"developing_failed.wav": {
+			"type": "audio",
+			"path": "audio/developing_failed.wav",
+			"systemId": "sound",
+			"duration": 1640,
+			"hint": {
+				"extensions": [
+					".aac",
+					".ogg"
+				]
+			},
+			"global": true
+		},
+		"developing_success.wav": {
+			"type": "audio",
+			"path": "audio/developing_success.wav",
+			"systemId": "sound",
+			"duration": 807,
+			"hint": {
+				"extensions": [
+					".aac",
+					".ogg"
+				]
+			},
+			"global": true
 		}
 	},
 	"environment": {
@@ -317,7 +525,7 @@
 				"ranking"
 			],
 			"preferredSessionParameters": {
-				"totalTimeLimit": 90
+				"totalTimeLimit": 100
 			}
 		}
 	},

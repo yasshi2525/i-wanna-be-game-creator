@@ -40,3 +40,25 @@ export const toCommentSchema = (...arr: [string, ...CommentCondition[]][]): Comm
 		const [comment, ...conditions] = e;
 		return { comment: `  ${comment}  `, conditions };
 	});
+
+type DummyAudioPlayer = {
+	stop: () => void;
+};
+
+let prevAudio: DummyAudioPlayer;
+
+/**
+ * 音源を再生します. IDが見つからないときはエラー回避のためダミーオブジェクトを返します.
+ * GitHubで公開できない音源があるため、エラー防止措置
+ */
+export const play = (audioID: string): DummyAudioPlayer => {
+	try {
+		// 音が被らないように、前回再生した音を止める。
+		if (prevAudio) {
+			prevAudio.stop();
+		}
+		return prevAudio = g.game.scene()!.asset.getAudioById(audioID).play();
+	} catch (e) {
+		return { stop: () => undefined };
+	}
+};
