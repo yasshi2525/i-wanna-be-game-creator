@@ -2,11 +2,6 @@ import { LiveContext, LiveGame } from "@yasshi2525/live-on-air";
 import { ContextVars, MAX_IDEA, TEXT_VIEW_TIME, TWEET_VIEW_TIME } from "./globals";
 import { sleep } from "./utils";
 
-/**
- * アイデア表示の最大値
- */
-// eslint-disable-next-line @typescript-eslint/naming-convention
-const MAX_IDEA_SIZE = 200;
 type Direction = "expand" | "shrink";
 
 /**
@@ -15,7 +10,10 @@ type Direction = "expand" | "shrink";
 export class IdeaLiveGame extends LiveGame {
 	override unlockThreshold = 0;
 	private speech: g.Label;
-	private idea: g.FilledRect;
+	private idea: g.Sprite;
+	// デザインのため2箇所に同じものを表示
+	private ideaClone: g.Sprite;
+	private static speechFont = new g.DynamicFont({ game: g.game, fontFamily: "sans-serif", size: 40 });
 
 	protected override handleIntroduction({ container, scene }: LiveContext, next: () => void): (() => void) | void {
 		container.append(new g.FilledRect({
@@ -25,13 +23,26 @@ export class IdeaLiveGame extends LiveGame {
 			cssColor: "khaki",
 			opacity: 0.5
 		}));
+		container.append(new g.FilledRect({
+			scene,
+			parent: container,
+			x: container.width / 2,
+			y: container.height - 75,
+			width: container.width * 0.5,
+			height: 50,
+			anchorX: 0.5,
+			cssColor: "white",
+			opacity: 0.5
+		}));
 		this.speech = new g.Label({
 			scene,
 			parent: container,
-			x: 50,
-			y: container.height - 50,
-			anchorY: 1,
-			font: new g.DynamicFont({ game: g.game, fontFamily: "sans-serif", size: 40 }),
+			x: container.width / 2,
+			y: container.height - 75,
+			width: container.width * 0.5,
+			height: 50,
+			anchorX: 0.5,
+			font: IdeaLiveGame.speechFont,
 			text: "どんなゲームにしようかな"
 		});
 
@@ -41,41 +52,50 @@ export class IdeaLiveGame extends LiveGame {
 		})();
 	}
 	protected override handleGamePlay({ container, scene, broadcaster, vars }: LiveContext): (() => void) | void {
-		this.idea = new g.FilledRect({
+		const ideaOption: g.SpriteParameterObject = {
 			scene,
 			parent: container,
-			x: container.width / 4,
+			src: scene.asset.getImageById("idea"),
 			y: container.height / 2,
 			anchorX: 0.5,
 			anchorY: 0.5,
-			width: 0,
-			height: 0,
-			opacity: 0,
-			cssColor: "brown",
+			scaleX: g.game.random.generate(),
+			scaleY: g.game.random.generate(),
+			opacity: g.game.random.generate(),
+		};
+		this.idea = new g.Sprite({
+			...ideaOption,
+			x: container.width * 1 / 5,
 		});
-		let sizeDirection: Direction = "expand";
+		this.ideaClone = new g.Sprite({
+			...ideaOption,
+			x: container.width * 4 / 5,
+		});
+		let sizeDirection: {
+			x: Direction; y: Direction;
+		} = { x: "expand", y: "expand" };
 		let opacityDirection: Direction = "expand";
 		const updateHandler = (): void => {
 			// やる気・アイデアの値が高いほど、速度アップで難しくなる
 			const multiply = Math.max(1, (vars as ContextVars).motivation) + Math.max(1, (vars as ContextVars).idea);
-			this.idea.height += 5 * multiply * (sizeDirection === "expand" ? 1 : -1);
-			this.idea.width += 5 * multiply * (sizeDirection === "expand" ? 1 : -1);
+			this.idea.scaleX += 0.02 * multiply * (sizeDirection.x === "expand" ? 1 : -1);
+			this.idea.scaleY += 0.015 * multiply * (sizeDirection.y === "expand" ? 1 : -1);
 			this.idea.opacity += 0.01 * multiply * (opacityDirection === "expand" ? 1 : -1);
-			if (this.idea.width > MAX_IDEA_SIZE) {
-				this.idea.width = MAX_IDEA_SIZE;
-				sizeDirection = "shrink";
+			if (this.idea.scaleX > 1) {
+				this.idea.scaleX = 1;
+				sizeDirection.x = "shrink";
 			}
-			if (this.idea.height > MAX_IDEA_SIZE) {
-				this.idea.height = MAX_IDEA_SIZE;
-				sizeDirection = "shrink";
+			if (this.idea.scaleY > 1) {
+				this.idea.scaleY = 1;
+				sizeDirection.y = "shrink";
 			}
-			if (this.idea.width < 0) {
-				this.idea.width = 0;
-				sizeDirection = "expand";
+			if (this.idea.scaleX < 0) {
+				this.idea.scaleX = 0;
+				sizeDirection.x = "expand";
 			}
-			if (this.idea.height < 0) {
-				this.idea.height = 0;
-				sizeDirection = "expand";
+			if (this.idea.scaleY < 0) {
+				this.idea.scaleY = 0;
+				sizeDirection.y = "expand";
 			}
 			if (this.idea.opacity > 1) {
 				this.idea.opacity = 1;
@@ -86,6 +106,10 @@ export class IdeaLiveGame extends LiveGame {
 				opacityDirection = "expand";
 			}
 			this.idea.modified();
+			this.ideaClone.scaleX = this.idea.scaleX;
+			this.ideaClone.scaleY = this.idea.scaleY;
+			this.ideaClone.opacity = this.idea.opacity;
+			this.ideaClone.modified();
 		};
 		this.idea.onUpdate.add(updateHandler);
 		this.onSubmit.addOnce(() => this.idea.onUpdate.remove(updateHandler));
@@ -109,8 +133,28 @@ export class IdeaLiveGame extends LiveGame {
 		};
 		tweet();
 	}
+
+	protected override handleSubmit({ scene, container }: LiveContext, next: () => void): (() => void) | void {
+		const button = new g.Sprite({
+			scene,
+			parent: container,
+			src: scene.asset.getImageById("submit"),
+			x: container.width / 2,
+			y: 25,
+			anchorX: 0.5,
+			touchable: true
+		});
+		button.onPointDown.add(() => {
+			button.hide();
+			next();
+		});
+		return () => {
+			button.destroy();
+		};
+	}
+
 	protected override evaluateScore(context: LiveContext): number {
-		return this.idea.width / MAX_IDEA_SIZE * this.idea.height / MAX_IDEA_SIZE * this.idea.opacity * 100;
+		return this.idea.scaleX * this.idea.scaleY * this.idea.opacity * 100;
 	}
 
 	protected override toResultText(context: LiveContext, score: number): string {

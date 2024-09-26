@@ -10,6 +10,7 @@ export class MotivationLiveGame extends LiveGame {
 	override unlockThreshold = 0;
 	private speech: g.Label;
 	private gauge: Frame;
+	private static speechFont = new g.DynamicFont({ game: g.game, fontFamily: "sans-serif", size: 40 });
 
 	protected override handleIntroduction({ scene, container }: LiveContext, next: () => void): (() => void) | void {
 		container.append(new g.FilledRect({
@@ -38,7 +39,7 @@ export class MotivationLiveGame extends LiveGame {
 			width: container.width * 0.5,
 			height: 50,
 			anchorX: 0.5,
-			font: new g.DynamicFont({ game: g.game, fontFamily: "sans-serif", size: 40, fontColor: "black" }),
+			font: MotivationLiveGame.speechFont,
 			text: "まずはやる気を出さなきゃな"
 		});
 

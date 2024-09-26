@@ -19,11 +19,6 @@
 			"path": "script/parameterObject.js",
 			"global": true
 		},
-		"sampleLiveGame": {
-			"type": "script",
-			"path": "script/sampleLiveGame.js",
-			"global": true
-		},
 		"avatar": {
 			"type": "script",
 			"path": "script/avatar.js",
@@ -305,6 +300,13 @@
 			"path": "image/submit.png",
 			"width": 355,
 			"height": 139,
+			"global": true
+		},
+		"idea": {
+			"type": "image",
+			"path": "image/idea.png",
+			"width": 318,
+			"height": 197,
 			"global": true
 		}
 	},
