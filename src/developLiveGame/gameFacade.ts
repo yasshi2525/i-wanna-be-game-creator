@@ -91,8 +91,8 @@ export class GameFacade {
 		// 定期的に弾射出
 		this.shooter.onShoot.add(a => {
 			this.blaster.addAttacker(a);
-			a.onOut.add(loc => {
-				this.progressor.progress(loc);
+			a.onOut.add(() => {
+				this.progressor.progress(a);
 			});
 		});
 		// 弾と障壁がぶつかったら弾消滅

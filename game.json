@@ -284,8 +284,8 @@
 		"smile": {
 			"type": "image",
 			"path": "image/smile.png",
-			"width": 97,
-			"height": 97,
+			"width": 107,
+			"height": 107,
 			"global": true
 		},
 		"goback": {

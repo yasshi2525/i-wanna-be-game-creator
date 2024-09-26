@@ -11,7 +11,7 @@ export const TEXT_VIEW_TIME = 2500;
  * 心の声などの速度の早い文字切り替え時間
  */
 // eslint-disable-next-line @typescript-eslint/naming-convention
-export const TWEET_VIEW_TIME = 800;
+export const TWEET_VIEW_TIME = 1000;
 /**
  * 画像切り替えなどの短い時間
  */
@@ -153,7 +153,7 @@ export const LIVEGAME_COMMENT_PER_SCORE = 0.05;
  * ミニゲームで得点獲得後コメントが出る期間（ミリ秒）
  */
 // eslint-disable-next-line @typescript-eslint/naming-convention
-export const LIVEGAME_COMMENT_INTERVAL = 5000;
+export const LIVEGAME_COMMENT_INTERVAL = 3000;
 
 interface LiveGameResult {
 	/**

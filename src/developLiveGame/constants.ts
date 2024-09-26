@@ -14,7 +14,7 @@ export const constants = {
 		/**
 		 * 初期体力
 		 */
-		life: 10,
+		life: 8,
 		/**
 		 * 障壁 (Obstacle) が一回爆発(expire)した際、減る体力
 		 */
@@ -36,7 +36,7 @@ export const constants = {
 		/**
 		 * 弾 (Attacker) 1発分につき増える進捗 (1で完成)
 		 */
-		magnitude: 0.02
+		magnitude: 0.015
 	},
 	/**
 	 * 障壁について
@@ -46,11 +46,11 @@ export const constants = {
 		 * 何発の Attacker が当たれば破壊できるか.
 		 * 生成回数依存（最初は弱く、だんだん強く）
 		 */
-		life: { min: 5, max: 20 },
+		life: { min: 5, max: 12 },
 		/**
 		 * 何ミリ秒立っても破壊されなかった場合に爆発（expire、ペナルティ）するか
 		 */
-		span: 6000,
+		span: 4000,
 		/**
 		 * 表示色
 		 */

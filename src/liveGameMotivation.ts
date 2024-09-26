@@ -113,6 +113,7 @@ export class MotivationLiveGame extends LiveGame {
 			touchable: true
 		});
 		button.onPointDown.add(() => {
+			this.speech.hide();
 			button.hide();
 			next();
 		});

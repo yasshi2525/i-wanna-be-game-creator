@@ -47,13 +47,12 @@ export class Progressor extends g.E {
 	/**
 	 * 進捗を進める. 1弾分すすめる
 	 */
-	progress(loc: g.CommonOffset): void {
+	progress(source: g.E): void {
 		const effect = new g.Sprite({
 			scene: this.scene,
-			parent: this.parent,
 			src: this.scene.asset.getImageById("progress_unit"),
-			x: loc.x,
-			y: loc.y,
+			x: source.x,
+			y: source.y,
 			anchorX: 0.5,
 			anchorY: 0.5,
 			scaleX: 0.5,
@@ -78,8 +77,9 @@ export class Progressor extends g.E {
 				return true;
 			}
 			effect.modified();
-			v += 0.1;
+			v += 0.5;
 		});
+		this.parent.insertBefore(effect, source);
 	}
 
 	end(): void {

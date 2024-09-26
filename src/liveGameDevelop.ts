@@ -12,6 +12,15 @@ import { sleep } from "./utils";
  */
 export class DevelopLiveGame extends LiveGame {
 	private gameFacade: GameFacade;
+	private static failFont = new g.DynamicFont({
+		game: g.game,
+		fontFamily: "sans-serif",
+		size: 100,
+		fontColor: "firebrick",
+		fontWeight: "bold",
+		strokeColor: "white",
+		strokeWidth: 10
+	});
 
 	protected override handleIntroduction({ scene, container, vars }: LiveContext, next: () => void): (() => void) | void {
 		const contextVars = vars as ContextVars;
@@ -38,45 +47,37 @@ export class DevelopLiveGame extends LiveGame {
 	}
 
 	protected override handleSubmit({ scene, container }: LiveContext, next: () => void): (() => void) | void {
-		const goBack = new g.FilledRect({
+		const goBack = new g.Sprite({
 			scene,
 			parent: container,
+			src: scene.asset.getImageById("goback"),
 			x: container.width / 2,
-			width: 200,
-			height: 100,
 			anchorX: 0.5,
-			cssColor: "firebrick",
 			touchable: true
 		});
-		goBack.append(new g.Label({
-			scene,
-			font: new g.DynamicFont({
-				game: g.game,
-				size: 50,
-				fontFamily: "sans-serif",
-				fontColor: "white"
-			}),
-			x: goBack.width / 2,
-			y: goBack.height / 2,
-			width: goBack.width,
-			anchorX: 0.5,
-			anchorY: 0.5,
-			text: "戻る",
-			textAlign: "center",
-			widthAutoAdjust: false,
-		}));
+
 		goBack.onPointDown.addOnce(() => {
 			this.gameFacade.end();
+			goBack.hide();
 			next();
 		});
-		this.gameFacade.onComplete.add(() => {
-			goBack.destroy();
+		this.gameFacade.onComplete.add(success => {
+			goBack.hide();
+			if (!success) {
+				container.append(new g.Label({
+					scene,
+					font: DevelopLiveGame.failFont,
+					text: "休憩が必要です",
+					x: container.width / 2,
+					y: container.height / 2,
+					anchorX: 0.5,
+					anchorY: 0.5
+				}));
+			}
 			next();
 		});
 		return () => {
-			goBack.cssColor = "gray";
-			goBack.touchable = false;
-			goBack.modified();
+			goBack.destroy();
 		};
 	}
 
@@ -104,47 +105,56 @@ export class DevelopLiveGame extends LiveGame {
 			vars.stage = "success";
 		}
 		vars.onLiveGameResult.fire({ gameType: "develop", score });
-		if (vars.stage !== "success") {
-			context.scene.setTimeout(() => next(), 2000);
-		} else {
-			(async () => {
-				// 残り体力に応じたボーナス
-				while (this.gameFacade.lifeBonus()) {
-					const offset = context.container.localToGlobal({
-						x: constants.lifeGauge.x + this.gameFacade.life / constants.lifeGauge.life * constants.lifeGauge.width,
-						y: constants.lifeGauge.y + constants.lifeGauge.height / 2
-					});
-					const bonus = new g.Sprite({
-						scene: context.scene,
-						parent: context.scene,
-						src: context.scene.asset.getImageById("smile"),
-						x: offset.x,
-						y: offset.y,
-						anchorX: 0.5,
-						anchorY: 0.5,
-					});
-					let v = { x: -7.5, y: 0 };
-					bonus.onUpdate.add(() => {
-						v.y += 0.125;
-						if (bonus.y > g.game.height - bonus.height / 2 - v.y && v.y > 0) {
-							v.y *= -0.975;
-							// TODO: 加点
-						}
-						if (bonus.x < bonus.width / 2 && v.x < 0) {
-							v.x *= -1;
-						}
-						if (bonus.x > context.container.width + bonus.width / 2 && v.x > 0) {
-							v.x *= -1;
-						}
-						bonus.x += v.x;
-						bonus.y += v.y;
-						bonus.modified();
-					});
-					await sleep(200);
-				}
-				await sleep(2000);
-				next();
-			})();
+		switch (this.gameFacade.status) {
+			case "developing":
+				// 戻るを押した
+				context.scene.onUpdate.addOnce(() => next());
+				break;
+			case "success":
+				// 完成
+				(async () => {
+					// 残り体力に応じたボーナス
+					while (this.gameFacade.lifeBonus()) {
+						const offset = context.container.localToGlobal({
+							x: constants.lifeGauge.x + this.gameFacade.life / constants.lifeGauge.life * constants.lifeGauge.width,
+							y: constants.lifeGauge.y + constants.lifeGauge.height / 2
+						});
+						const bonus = new g.Sprite({
+							scene: context.scene,
+							parent: context.scene,
+							src: context.scene.asset.getImageById("smile"),
+							x: offset.x,
+							y: offset.y,
+							anchorX: 0.5,
+							anchorY: 0.5,
+						});
+						let v = { x: -7.5, y: 0 };
+						bonus.onUpdate.add(() => {
+							v.y += 0.125;
+							if (bonus.y > g.game.height - bonus.height / 2 - v.y && v.y > 0) {
+								v.y *= -0.975;
+								// TODO: 加点
+							}
+							if (bonus.x < bonus.width / 2 && v.x < 0) {
+								v.x *= -1;
+							}
+							if (bonus.x > g.game.width - bonus.width / 2 && v.x > 0) {
+								v.x *= -1;
+							}
+							bonus.x += v.x;
+							bonus.y += v.y;
+							bonus.modified();
+						});
+						await sleep(200);
+					}
+					await sleep(2000);
+					next();
+				})();
+				break;
+			case "fail":
+				// 体力切れ
+				context.scene.setTimeout(() => next(), 4000);
+				break;
 		}
 	}
 }

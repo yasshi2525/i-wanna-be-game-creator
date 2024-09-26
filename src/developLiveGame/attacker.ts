@@ -5,7 +5,7 @@ export class Attacker extends g.Sprite {
 	/**
 	 * 画面外に出たら発火
 	 */
-	readonly onOut = new g.Trigger<g.CommonOffset>();
+	readonly onOut = new g.Trigger();
 
 	constructor(opts: AttackOptions) {
 		super(opts);
@@ -17,8 +17,8 @@ export class Attacker extends g.Sprite {
 			this.y += Math.sin(opts.theta) * opts.speed / g.game.fps;
 			this.modified();
 			if (this.x < area.x || this.x > area.x + area.width || this.y < area.y || this.y > area.y + area.height) {
+				this.onOut.fire();
 				this.destroy();
-				this.onOut.fire({ x: this.x, y: this.y });
 				return true;
 			}
 		});

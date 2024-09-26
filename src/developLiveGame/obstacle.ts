@@ -27,22 +27,22 @@ export class Obstacle extends g.FilledRect {
 		["絵心がない"],
 		["サウンドを作れない"],
 		["唐突なフリーズ"],
-		["本当に面白い？", "始まる自問自答"],
+		["本当に面白い？", "自問自答"],
 		["テストプレイを依頼", "する友人がいない"],
-		["人前でおこる", "初めて見るバグ"],
-		["バグを直すと", "増えるバグ"],
-		["散らかっていく", "ソースコード"],
-		["増えていく", "コピー＆ペースト"],
-		["コピペしまくったコード", "バグで書き直し発覚"],
-		["友人からの", "謎のバグ報告"],
+		["人前でしか", "起こらないバグ"],
+		["バグを直すと", "バグが増える"],
+		["ソースコードが", "散らかっていく"],
+		["コピペの勢いが", "止まらない"],
+		["コピペしたコードに", "バグがあった"],
+		["プレイヤーからの", "謎のバグ報告"],
 		["最新版が行方不明"],
 		["SNSで進捗報告", "説明しづらい"],
 		["1ピクセル", "右に動かしたい"],
 		["音量ちょっと", "小さいかな"],
 		["繰り返すテスト", "ゲームに飽きる"],
 		["画像のサイズが", "ちょっと大きい"],
-		["難しすぎと", "友人に怒られる"],
-		["気づかれない", "隠し要素"],
+		["難しすぎと", "叱られる"],
+		["隠し要素に", "気づかれない",],
 		["ボタンを連打", "されると恐怖"],
 	];
 
@@ -70,8 +70,8 @@ export class Obstacle extends g.FilledRect {
 				text: description[i]
 			});
 			// はみ出ないように横幅を縮める
-			if (label.width > this.width) {
-				label.scaleX = this.width / label.width;
+			if (label.width > this.width - 10) {
+				label.scaleX = (this.width - 10) / label.width;
 				label.modified();
 			}
 		}
@@ -82,8 +82,8 @@ export class Obstacle extends g.FilledRect {
 				this.modified();
 				this.scene.setTimeout(() => {
 					if (!this.destroyed()) {
-						this.destroy();
 						this.onExpire.fire();
+						this.destroy();
 					}
 				}, 500);
 			}
@@ -97,6 +97,27 @@ export class Obstacle extends g.FilledRect {
 	attack(): void {
 		this.life--;
 		if (this.life <= 0 && !this.destroyed()) {
+			// 障壁を乗り越えた（破壊した）ときのエフェクト
+			const tip = new g.FilledRect({
+				scene: this.scene,
+				x: this.x,
+				y: this.y,
+				width: this.width,
+				height: this.height,
+				anchorX: 0.5,
+				anchorY: 0.5,
+				cssColor: this.cssColor,
+			});
+			tip.onUpdate.add(() => {
+				tip.width -= this.width * 0.1;
+				tip.height -= this.width * 0.1;
+				if (tip.width < 0 || tip.height < 0) {
+					tip.destroy();
+					return true;
+				}
+				tip.modified();
+			});
+			this.parent.insertBefore(tip, this);
 			this.destroy();
 			this.onBreak.fire();
 		}

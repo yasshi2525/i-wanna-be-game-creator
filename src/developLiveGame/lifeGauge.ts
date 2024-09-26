@@ -61,7 +61,6 @@ export class LifeGauge extends g.E {
 			]) {
 				const effect = new g.Sprite({
 					scene: this.scene,
-					parent: this.parent,
 					src: this.scene.asset.getImageById("damage"),
 					x: obstacle.x + offset.x,
 					y: obstacle.y + offset.y,
@@ -81,7 +80,7 @@ export class LifeGauge extends g.E {
 						if (!this.ended) {
 							this.gauge.width -= this.damage / 4;
 							// 体力0でミニゲーム終了
-							if (this.gauge.width < 0) {
+							if (this.gauge.width <= 0) {
 								this.gauge.width = 0;
 								this.onDie.fire();
 							}
@@ -92,6 +91,7 @@ export class LifeGauge extends g.E {
 					effect.modified();
 					v += 0.1;
 				});
+				this.parent.insertBefore(effect, obstacle);
 			}
 
 		});

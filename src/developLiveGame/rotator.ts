@@ -9,7 +9,7 @@ export class Rotator extends g.E {
 	/**
 	 * プレイヤーの操作入力受付領域
 	 */
-	private readonly sensor: g.Sprite;
+	private readonly sensor: g.E;
 	/**
 	 * 自機が向いている方向を示す線
 	 */
@@ -17,13 +17,23 @@ export class Rotator extends g.E {
 
 	constructor(opts: RotatorOptions) {
 		super(opts);
-		this.sensor = new g.Sprite({
+		const sensorArea = (opts.parent as g.E).calculateBoundingRect();
+		this.sensor = new g.E({
 			scene: this.scene,
 			parent: this,
-			src: this.scene.asset.getImageById("rotate_guide"),
+			x: sensorArea.left,
+			y: sensorArea.top,
+			width: sensorArea.right - sensorArea.left,
+			height: sensorArea.bottom - sensorArea.top,
 			anchorY: 0.5,
 			touchable: true
 		});
+		this.append(new g.Sprite({
+			scene: this.scene,
+			parent: this,
+			src: this.scene.asset.getImageById("rotate_guide"),
+			anchorY: 0.5
+		}));
 		this.direction = new g.Sprite({
 			scene: this.scene,
 			parent: this,
@@ -31,11 +41,11 @@ export class Rotator extends g.E {
 			src: this.scene.asset.getImageById("direction")
 		});
 		this.sensor.onPointDown.add(e => this.rotateTo({
-			x: e.point.x,
+			x: Math.max(1, e.point.x),
 			y: e.point.y - this.sensor.height / 2
 		}));
 		this.sensor.onPointMove.add(e => this.rotateTo({
-			x: e.point.x + e.startDelta.x,
+			x: Math.max(1, e.point.x + e.startDelta.x),
 			y: e.point.y + e.startDelta.y - this.sensor.height / 2
 		}));
 	}

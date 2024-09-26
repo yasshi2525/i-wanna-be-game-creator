@@ -108,13 +108,10 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 				["やる気大事！", isMotivationStage],
 				["やる気だしてこ！", isMotivationStage],
 				["まずはそこからかよｗｗｗ", isMotivationStage],
-				["早く作れしｗｗｗ", isMotivationStage],
-				["間に合わなくなっても知らんぞｗｗｗ", isMotivationStage],
 				["やっぱアイデアよ、大事なのは", isIdeaStage],
 				["一番いいアイデアを頼む", isIdeaStage],
 				["今から考えるんかいｗｗｗ", isIdeaStage],
 				["ノーアイデアで草", isIdeaStage],
-				["時間ないぞー", isIdeaStage],
 				["いよいよ本編ktkr!!", isDevelopStage],
 				["ksk", isDevelopStage],
 				["準備完了!!", isDevelopStage],
@@ -230,6 +227,10 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 					contextVars.stage = "retry";
 					avatar.text = "一旦、体制を立て直すでぇ～す!!";
 				} else {
+					// クリアしたのでニッコリ
+					// TODO: live-on-air 反映
+					(scene.broadcaster.view as g.Sprite).src = scene.asset.getImageById("smile");
+					(scene.broadcaster.view as g.Sprite).invalidate();
 					for (const spot of scene.spots) {
 						spot.disable();
 					}

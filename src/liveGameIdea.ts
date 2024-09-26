@@ -89,20 +89,20 @@ export class IdeaLiveGame extends LiveGame {
 				this.idea.scaleY = 1;
 				sizeDirection.y = "shrink";
 			}
-			if (this.idea.scaleX < 0) {
-				this.idea.scaleX = 0;
+			if (this.idea.scaleX < 0.25) {
+				this.idea.scaleX = 0.25;
 				sizeDirection.x = "expand";
 			}
-			if (this.idea.scaleY < 0) {
-				this.idea.scaleY = 0;
+			if (this.idea.scaleY < 0.25) {
+				this.idea.scaleY = 0.25;
 				sizeDirection.y = "expand";
 			}
 			if (this.idea.opacity > 1) {
 				this.idea.opacity = 1;
 				opacityDirection = "shrink";
 			}
-			if (this.idea.opacity < 0) {
-				this.idea.opacity = 0;
+			if (this.idea.opacity < 0.25) {
+				this.idea.opacity = 0.25;
 				opacityDirection = "expand";
 			}
 			this.idea.modified();
@@ -145,6 +145,7 @@ export class IdeaLiveGame extends LiveGame {
 			touchable: true
 		});
 		button.onPointDown.add(() => {
+			this.speech.hide();
 			button.hide();
 			next();
 		});
