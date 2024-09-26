@@ -28,7 +28,7 @@ import {
 import { DevelopLiveGame } from "./liveGameDevelop";
 import { IdeaLiveGame } from "./liveGameIdea";
 import { MotivationLiveGame } from "./liveGameMotivation";
-import { ClosingScene } from "./sceneClosing";
+import { PR } from "./pr";
 import { ScoreBoard } from "./scoreBoard";
 import { play, toCommentSchema } from "./utils";
 
@@ -173,7 +173,6 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 
 	// Scene の初期化処理を定義します
 	scene.onLoad.add(() => {
-		play("hoge");
 		contextVars.scorer = scene.scorer;
 		// 後続の Spot をロックする.
 		scene.spots[1].lockedBy(scene.spots[0]);
@@ -296,7 +295,22 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 
 		// 残り時間がなくなったら結果表示画面へ
 		scene.ticker.onExpire.addOnce(() => {
-			g.game.pushScene(new ClosingScene({ game: g.game }));
+			scene.append(new g.FilledRect({
+				scene,
+				width: g.game.width,
+				height: g.game.height,
+				cssColor: "black",
+				opacity: 0.25,
+				touchable: true
+			}));
+			scene.append(new PR({
+				scene,
+				src: scene.asset.getImageById("pr_background"),
+				x: overlay.width / 2,
+				y: overlay.height / 2,
+				anchorX: 0.5,
+				anchorY: 0.5,
+			}));
 		});
 	});
 	return scene;

@@ -142,25 +142,25 @@ export class DevelopLiveGame extends LiveGame {
 						});
 						const bonus = new g.Sprite({
 							scene: context.scene,
-							parent: context.scene,
+							parent: context.container.parent,
 							src: context.scene.asset.getImageById("smile"),
-							x: offset.x,
-							y: offset.y,
+							x: offset.x - 100,
+							y: offset.y - 100,
 							anchorX: 0.5,
 							anchorY: 0.5,
 						});
 						let v = { x: -7.5, y: 0 };
 						bonus.onUpdate.add(() => {
 							v.y += 0.125;
-							if (bonus.y > g.game.height - bonus.height / 2 - v.y && v.y > 0) {
+							if (bonus.y + 100 > g.game.height - bonus.height / 2 - v.y && v.y > 0) {
 								v.y *= -0.975;
 								vars.scorer!.add(1);
 							}
-							if (bonus.x < bonus.width / 2 && v.x < 0) {
+							if (bonus.x + 100 < bonus.width / 2 && v.x < 0) {
 								v.x *= -1;
 								vars.scorer!.add(1);
 							}
-							if (bonus.x > g.game.width - bonus.width / 2 && v.x > 0) {
+							if (bonus.x + 100 > g.game.width - bonus.width / 2 && v.x > 0) {
 								v.x *= -1;
 								vars.scorer!.add(1);
 							}

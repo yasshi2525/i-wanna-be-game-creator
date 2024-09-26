@@ -39,11 +39,6 @@
 			"path": "script/sceneTitle.js",
 			"global": true
 		},
-		"sceneClosing": {
-			"type": "script",
-			"path": "script/sceneClosing.js",
-			"global": true
-		},
 		"avatar_icon": {
 			"type": "image",
 			"path": "image/avatar_icon.png",
@@ -516,6 +511,32 @@
 				]
 			},
 			"global": true
+		},
+		"yasshi2525": {
+			"type": "image",
+			"path": "image/yasshi2525.png",
+			"width": 110,
+			"height": 102,
+			"global": true
+		},
+		"pr": {
+			"type": "script",
+			"path": "script/pr.js",
+			"global": true
+		},
+		"live_on_air": {
+			"type": "image",
+			"path": "image/live_on_air.png",
+			"width": 288,
+			"height": 288,
+			"global": true
+		},
+		"pr_background": {
+			"type": "image",
+			"path": "image/pr_background.png",
+			"width": 694,
+			"height": 352,
+			"global": true
 		}
 	},
 	"environment": {
@@ -525,7 +546,7 @@
 				"ranking"
 			],
 			"preferredSessionParameters": {
-				"totalTimeLimit": 100
+				"totalTimeLimit": 90
 			}
 		}
 	},

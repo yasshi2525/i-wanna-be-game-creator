@@ -99,7 +99,7 @@ export const constants = {
 		 *
 		 * motivation 依存
 		 */
-		interval: { min: 100, max: 500 },
+		interval: { min: 200, max: 500 },
 	},
 	/**
 	 * 弾について
