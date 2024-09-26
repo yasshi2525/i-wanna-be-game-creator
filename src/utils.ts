@@ -62,3 +62,15 @@ export const play = (audioID: string): DummyAudioPlayer => {
 		return { stop: () => undefined };
 	}
 };
+
+/**
+ * すでになっているSEがあっても強制的に再生します.
+ * エラー時は何もしません. GitHubで公開できない音源があるため、エラー防止措置
+ */
+export const playForcibly = (audioID: string): void => {
+	try {
+		g.game.scene()!.asset.getAudioById(audioID).play();
+	} catch (e) {
+		// do-nothing
+	}
+};

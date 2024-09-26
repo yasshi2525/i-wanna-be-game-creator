@@ -1,3 +1,5 @@
+import { playForcibly } from "../utils";
+
 /**
  * ゲームの完成を阻止する障壁
  *
@@ -33,13 +35,13 @@ export class Obstacle extends g.FilledRect {
 		["バグを直すと", "バグが増える"],
 		["ソースコードが", "散らかっていく"],
 		["コピペの勢いが", "止まらない"],
-		["コピペしたコードに", "バグがあった"],
+		["コピペしまくった箇所に", "バグがあった"],
 		["プレイヤーからの", "謎のバグ報告"],
 		["最新版が行方不明"],
 		["SNSで進捗報告", "説明しづらい"],
 		["1ピクセル", "右に動かしたい"],
 		["音量ちょっと", "小さいかな"],
-		["繰り返すテスト", "ゲームに飽きる"],
+		["繰り返すテスト", "飽きてくる"],
 		["画像のサイズが", "ちょっと大きい"],
 		["難しすぎと", "叱られる"],
 		["隠し要素に", "気づかれない",],
@@ -82,6 +84,7 @@ export class Obstacle extends g.FilledRect {
 				this.modified();
 				this.scene.setTimeout(() => {
 					if (!this.destroyed()) {
+						playForcibly("se_nc46976.wav");
 						this.onExpire.fire();
 						this.destroy();
 					}
@@ -96,6 +99,7 @@ export class Obstacle extends g.FilledRect {
 	 */
 	attack(): void {
 		this.life--;
+		playForcibly("se_nc141227.wav");
 		if (this.life <= 0 && !this.destroyed()) {
 			// 障壁を乗り越えた（破壊した）ときのエフェクト
 			const tip = new g.FilledRect({
@@ -118,6 +122,7 @@ export class Obstacle extends g.FilledRect {
 				tip.modified();
 			});
 			this.parent.insertBefore(tip, this);
+			playForcibly("se_nc149103.wav");
 			this.destroy();
 			this.onBreak.fire();
 		}

@@ -30,7 +30,7 @@ import { IdeaLiveGame } from "./liveGameIdea";
 import { MotivationLiveGame } from "./liveGameMotivation";
 import { PR } from "./pr";
 import { ScoreBoard } from "./scoreBoard";
-import { play, toCommentSchema } from "./utils";
+import { play, playForcibly, toCommentSchema } from "./utils";
 
 export interface MainSceneOptions {
 	totalTimeLimit: number;
@@ -65,6 +65,7 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 		progress: 0,
 		scorer: undefined,
 		life: constants.lifeGauge.life,
+		isDie: false,
 		numbOfObstacle: 0,
 		onLiveGameResult: new g.Trigger()
 	};
@@ -173,6 +174,7 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 
 	// Scene の初期化処理を定義します
 	scene.onLoad.add(() => {
+		playForcibly("se_nc10609.mp3");
 		contextVars.scorer = scene.scorer;
 		// 後続の Spot をロックする.
 		scene.spots[1].lockedBy(scene.spots[0]);

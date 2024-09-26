@@ -1,6 +1,6 @@
 import { LiveContext, LiveGame } from "@yasshi2525/live-on-air";
 import { ContextVars, MAX_IDEA, TEXT_VIEW_TIME, TWEET_VIEW_TIME } from "./globals";
-import { sleep } from "./utils";
+import { play, sleep } from "./utils";
 
 type Direction = "expand" | "shrink";
 
@@ -147,6 +147,7 @@ export class IdeaLiveGame extends LiveGame {
 		button.onPointDown.add(() => {
 			this.speech.hide();
 			button.hide();
+			play("se_nc227995.mp3");
 			next();
 		});
 		return () => {

@@ -9,7 +9,7 @@ import { Avatar } from "./avatar";
 import { Frame } from "./frame";
 import { TEXT_VIEW_TIME } from "./globals";
 import { createMainScene } from "./sceneMain";
-import { play, sleep, toCommentSchema } from "./utils";
+import { play, playForcibly, sleep, toCommentSchema } from "./utils";
 
 export class TitleScene extends g.Scene {
 	private remainFrame: number;
@@ -26,6 +26,7 @@ export class TitleScene extends g.Scene {
 			this.remainFrame--;
 		});
 		this.onLoad.add(() => {
+			playForcibly("se_nc244447.mp3");
 			// 表示順序（数字が大きいほど上）
 			// 1. commentFrame コメント表示用枠
 			// 2. commentArea  コメント本文

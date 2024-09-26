@@ -1,3 +1,4 @@
+import { playForcibly } from "../utils";
 import { Obstacle } from "./obstacle";
 
 /**
@@ -76,6 +77,7 @@ export class LifeGauge extends g.E {
 					effect.y += Math.sin(theta) * v;
 					if (g.Util.distance(effect.x, effect.y, this.x + this.gauge.width, this.y + this.height / 2)
 						< effect.width * effect.scaleX / 2) {
+						playForcibly("se_nc1280.wav");
 						effect.destroy();
 						if (!this.ended) {
 							this.gauge.width -= this.damage / 4;

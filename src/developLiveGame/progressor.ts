@@ -1,3 +1,5 @@
+import { playForcibly } from "../utils";
+
 /**
  * ゲームの完成度. 進捗.
  *
@@ -65,6 +67,7 @@ export class Progressor extends g.E {
 			effect.y += Math.sin(theta) * v;
 			if (g.Util.distance(effect.x, effect.y, this.x + this.gauge.width, this.y + this.height / 2)
 				< effect.width * effect.scaleX / 2) {
+				playForcibly("se_nc1281.wav");
 				effect.destroy();
 				if (!this.ended) {
 					this.gauge.width += this.unit;

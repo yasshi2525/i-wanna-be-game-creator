@@ -537,6 +537,149 @@
 			"width": 694,
 			"height": 352,
 			"global": true
+		},
+		"se_nc227995.mp3": {
+			"type": "audio",
+			"path": "audio/se_nc227995.mp3",
+			"systemId": "sound",
+			"duration": 5064,
+			"hint": {
+				"extensions": [
+					".aac",
+					".ogg"
+				]
+			},
+			"global": true
+		},
+		"se_nc169787.mp3": {
+			"type": "audio",
+			"path": "audio/se_nc169787.mp3",
+			"systemId": "sound",
+			"duration": 1836,
+			"hint": {
+				"extensions": [
+					".aac",
+					".ogg"
+				]
+			},
+			"global": true
+		},
+		"se_nc105302.wav": {
+			"type": "audio",
+			"path": "audio/se_nc105302.wav",
+			"systemId": "sound",
+			"duration": 31,
+			"hint": {
+				"extensions": [
+					".aac",
+					".ogg"
+				]
+			},
+			"global": true
+		},
+		"se_nc1280.wav": {
+			"type": "audio",
+			"path": "audio/se_nc1280.wav",
+			"systemId": "sound",
+			"duration": 1648,
+			"hint": {
+				"extensions": [
+					".aac",
+					".ogg"
+				]
+			},
+			"global": true
+		},
+		"se_nc1281.wav": {
+			"type": "audio",
+			"path": "audio/se_nc1281.wav",
+			"systemId": "sound",
+			"duration": 1404,
+			"hint": {
+				"extensions": [
+					".aac",
+					".ogg"
+				]
+			},
+			"global": true
+		},
+		"se_nc46973.wav": {
+			"type": "audio",
+			"path": "audio/se_nc46973.wav",
+			"systemId": "sound",
+			"duration": 2146,
+			"hint": {
+				"extensions": [
+					".aac",
+					".ogg"
+				]
+			},
+			"global": true
+		},
+		"se_nc46976.wav": {
+			"type": "audio",
+			"path": "audio/se_nc46976.wav",
+			"systemId": "sound",
+			"duration": 723,
+			"hint": {
+				"extensions": [
+					".aac",
+					".ogg"
+				]
+			},
+			"global": true
+		},
+		"se_nc149103.wav": {
+			"type": "audio",
+			"path": "audio/se_nc149103.wav",
+			"systemId": "sound",
+			"duration": 1234,
+			"hint": {
+				"extensions": [
+					".aac",
+					".ogg"
+				]
+			},
+			"global": true
+		},
+		"se_nc10609.mp3": {
+			"type": "audio",
+			"path": "audio/se_nc10609.mp3",
+			"systemId": "music",
+			"duration": 163266,
+			"hint": {
+				"extensions": [
+					".aac",
+					".ogg"
+				]
+			},
+			"global": true
+		},
+		"se_nc141227.wav": {
+			"type": "audio",
+			"path": "audio/se_nc141227.wav",
+			"systemId": "sound",
+			"duration": 1210,
+			"hint": {
+				"extensions": [
+					".aac",
+					".ogg"
+				]
+			},
+			"global": true
+		},
+		"se_nc244447.mp3": {
+			"type": "audio",
+			"path": "audio/se_nc244447.mp3",
+			"systemId": "music",
+			"duration": 15000,
+			"hint": {
+				"extensions": [
+					".aac",
+					".ogg"
+				]
+			},
+			"global": true
 		}
 	},
 	"environment": {

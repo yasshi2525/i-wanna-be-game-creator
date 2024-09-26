@@ -65,6 +65,10 @@ export interface ContextVars {
 	 */
 	life: number;
 	/**
+	 * 一度体力切れを起こしたか
+	 */
+	isDie: boolean;
+	/**
 	 * 障壁の生成数
 	 */
 	numbOfObstacle: number;

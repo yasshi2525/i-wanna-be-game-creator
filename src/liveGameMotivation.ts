@@ -1,7 +1,7 @@
 import { LiveContext, LiveGame } from "@yasshi2525/live-on-air";
 import { Frame } from "./frame";
 import { ContextVars, MAX_MOTIVATION, TEXT_VIEW_TIME, TWEET_VIEW_TIME } from "./globals";
-import { sleep } from "./utils";
+import { play, sleep } from "./utils";
 
 /**
  * やる気を出すゲーム
@@ -115,6 +115,7 @@ export class MotivationLiveGame extends LiveGame {
 		button.onPointDown.add(() => {
 			this.speech.hide();
 			button.hide();
+			play("se_nc227995.mp3");
 			next();
 		});
 		return () => {

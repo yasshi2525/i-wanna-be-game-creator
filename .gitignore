@@ -1,5 +1,5 @@
 node_modules
-/audio/se-*
+/audio/se_*
 /script
 /game
 coverage

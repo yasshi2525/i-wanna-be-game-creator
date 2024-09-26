@@ -2,7 +2,7 @@ import { LiveContext, LiveGame } from "@yasshi2525/live-on-air";
 import { constants } from "./developLiveGame/constants";
 import { GameFacade } from "./developLiveGame/gameFacade";
 import { ContextVars } from "./globals";
-import { play, sleep } from "./utils";
+import { play, playForcibly, sleep } from "./utils";
 
 /**
  * ゲーム開発をシューティングゲームに模したミニゲーム.
@@ -134,41 +134,47 @@ export class DevelopLiveGame extends LiveGame {
 			case "success":
 				// 完成
 				(async () => {
-					// 残り体力に応じたボーナス
-					while (this.gameFacade.lifeBonus()) {
-						const offset = context.container.localToGlobal({
-							x: constants.lifeGauge.x + this.gameFacade.life / constants.lifeGauge.life * constants.lifeGauge.width,
-							y: constants.lifeGauge.y + constants.lifeGauge.height / 2
-						});
-						const bonus = new g.Sprite({
-							scene: context.scene,
-							parent: context.container.parent,
-							src: context.scene.asset.getImageById("smile"),
-							x: offset.x - 100,
-							y: offset.y - 100,
-							anchorX: 0.5,
-							anchorY: 0.5,
-						});
-						let v = { x: -7.5, y: 0 };
-						bonus.onUpdate.add(() => {
-							v.y += 0.125;
-							if (bonus.y + 100 > g.game.height - bonus.height / 2 - v.y && v.y > 0) {
-								v.y *= -0.975;
-								vars.scorer!.add(1);
-							}
-							if (bonus.x + 100 < bonus.width / 2 && v.x < 0) {
-								v.x *= -1;
-								vars.scorer!.add(1);
-							}
-							if (bonus.x + 100 > g.game.width - bonus.width / 2 && v.x > 0) {
-								v.x *= -1;
-								vars.scorer!.add(1);
-							}
-							bonus.x += v.x;
-							bonus.y += v.y;
-							bonus.modified();
-						});
-						await sleep(200);
+					if (!vars.isDie) {
+						// 残り体力に応じたボーナス
+						while (this.gameFacade.lifeBonus()) {
+							const offset = context.container.localToGlobal({
+								x: constants.lifeGauge.x + this.gameFacade.life / constants.lifeGauge.life * constants.lifeGauge.width,
+								y: constants.lifeGauge.y + constants.lifeGauge.height / 2
+							});
+							const bonus = new g.Sprite({
+								scene: context.scene,
+								parent: context.container.parent,
+								src: context.scene.asset.getImageById("smile"),
+								x: offset.x - 100,
+								y: offset.y - 100,
+								anchorX: 0.5,
+								anchorY: 0.5,
+							});
+							playForcibly("se_nc169787.mp3");
+							let v = { x: -7.5, y: 0 };
+							bonus.onUpdate.add(() => {
+								v.y += 0.125;
+								if (bonus.y + 100 > g.game.height - bonus.height / 2 - v.y && v.y > 0) {
+									v.y *= -0.975;
+									vars.scorer!.add(1);
+									playForcibly("se_nc105302.wav");
+								}
+								if (bonus.x + 100 < bonus.width / 2 && v.x < 0) {
+									v.x *= -1;
+									vars.scorer!.add(1);
+									playForcibly("se_nc105302.wav");
+								}
+								if (bonus.x + 100 > g.game.width - bonus.width / 2 && v.x > 0) {
+									v.x *= -1;
+									vars.scorer!.add(1);
+									playForcibly("se_nc105302.wav");
+								}
+								bonus.x += v.x;
+								bonus.y += v.y;
+								bonus.modified();
+							});
+							await sleep(200);
+						}
 					}
 					await sleep(2000);
 					next();
@@ -176,6 +182,7 @@ export class DevelopLiveGame extends LiveGame {
 				break;
 			case "fail":
 				// 体力切れ
+				vars.isDie = true;
 				context.scene.setTimeout(() => next(), 4000);
 				break;
 		}
