@@ -2,6 +2,8 @@
  * 枠で囲ったフレーム
  */
 export class Frame extends g.E {
+	readonly body: g.FilledRect;
+
 	constructor(opts: g.EParameterObject & {
 		/**
 		 * 枠の太さ
@@ -27,7 +29,8 @@ export class Frame extends g.E {
 			y: opts.strokeWidth,
 			width: opts.width - opts.strokeWidth * 2,
 			height: opts.height - opts.strokeWidth * 2,
-			cssColor: "white"
+			cssColor: "white",
+			compositeOperation: "destination-out"
 		});
 		const outer = new g.FilledRect({
 			scene: this.scene,
@@ -39,7 +42,7 @@ export class Frame extends g.E {
 			cssColor: opts.strokeColor
 		});
 		outer.append(bodyMask);
-		this.append(new g.FilledRect({
+		this.body = new g.FilledRect({
 			scene: this.scene,
 			parent: this,
 			x: opts.strokeWidth,
@@ -47,8 +50,7 @@ export class Frame extends g.E {
 			width: opts.width - opts.strokeWidth * 2,
 			height: opts.height - opts.strokeWidth * 2,
 			cssColor: opts.fillColor,
-			opacity: opts.fillOpacity,
-			compositeOperation: "destination-out"
-		}));
+			opacity: opts.fillOpacity
+		});
 	}
 }

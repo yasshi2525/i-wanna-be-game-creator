@@ -1,4 +1,5 @@
 import { LiveContext, LiveGame } from "@yasshi2525/live-on-air";
+import { Frame } from "./frame";
 import { ContextVars, MAX_MOTIVATION, TEXT_VIEW_TIME, TWEET_VIEW_TIME } from "./globals";
 import { sleep } from "./utils";
 
@@ -8,7 +9,7 @@ import { sleep } from "./utils";
 export class MotivationLiveGame extends LiveGame {
 	override unlockThreshold = 0;
 	private speech: g.Label;
-	private gauge: g.FilledRect;
+	private gauge: Frame;
 
 	protected override handleIntroduction({ scene, container }: LiveContext, next: () => void): (() => void) | void {
 		container.append(new g.FilledRect({
@@ -16,15 +17,28 @@ export class MotivationLiveGame extends LiveGame {
 			width: container.width,
 			height: container.height,
 			cssColor: "khaki",
+			opacity: 0.75
+		}));
+		container.append(new g.FilledRect({
+			scene,
+			parent: container,
+			x: container.width / 2,
+			y: container.height - 75,
+			width: container.width * 0.5,
+			height: 50,
+			anchorX: 0.5,
+			cssColor: "white",
 			opacity: 0.5
 		}));
 		this.speech = new g.Label({
 			scene,
 			parent: container,
-			x: 50,
-			y: container.height - 50,
-			anchorY: 1,
-			font: new g.DynamicFont({ game: g.game, fontFamily: "sans-serif", size: 40 }),
+			x: container.width / 2,
+			y: container.height - 75,
+			width: container.width * 0.5,
+			height: 50,
+			anchorX: 0.5,
+			font: new g.DynamicFont({ game: g.game, fontFamily: "sans-serif", size: 40, fontColor: "black" }),
 			text: "まずはやる気を出さなきゃな"
 		});
 
@@ -34,20 +48,30 @@ export class MotivationLiveGame extends LiveGame {
 		})();
 	}
 	protected override handleGamePlay({ scene, container, vars }: LiveContext): (() => void) | void {
-		this.gauge = new g.FilledRect({
+		this.gauge = new Frame({
 			scene,
 			parent: container,
-			y: container.height / 2,
+			x: container.width / 2,
+			y: container.height / 2 + 50,
+			anchorX: 0.5,
 			anchorY: 0.5,
-			width: 0,
-			height: 100,
-			cssColor: "brown",
+			width: g.game.width / 2,
+			height: 85,
+			strokeColor: "black",
+			strokeWidth: 5,
+			fillColor: "firebrick",
+			fillOpacity: 1,
 		});
+		this.gauge.body.width = 0;
+		this.gauge.body.modified();
 		const updateHandler = (): void => {
+			if (this.gauge.body.width >= this.gauge.width - 10) {
+				this.gauge.body.width = 0;
+			}
 			// やる気が高いほどさらなるやる気上げを難しくするため、バーが伸びる速度をあげる
-			this.gauge.width += 10 * Math.max(1, (vars as ContextVars).motivation);
-			if (this.gauge.width > container.width) {
-				this.gauge.width = 0;
+			this.gauge.body.width += 10 * Math.max(1, (vars as ContextVars).motivation);
+			if (this.gauge.body.width > this.gauge.width - 10) {
+				this.gauge.body.width = this.gauge.width - 10;
 			}
 			this.gauge.modified();
 		};
@@ -77,8 +101,27 @@ export class MotivationLiveGame extends LiveGame {
 		tweet();
 	}
 
+	protected override handleSubmit({ scene, container }: LiveContext, next: () => void): (() => void) | void {
+		const button = new g.Sprite({
+			scene,
+			parent: container,
+			src: scene.asset.getImageById("submit"),
+			x: container.width / 2,
+			y: 25,
+			anchorX: 0.5,
+			touchable: true
+		});
+		button.onPointDown.add(() => {
+			button.hide();
+			next();
+		});
+		return () => {
+			button.destroy();
+		};
+	}
+
 	protected override evaluateScore({ container }: LiveContext): number {
-		return this.gauge.width / container.width * 100;
+		return this.gauge.body.width / (this.gauge.width - 10) * 100;
 	}
 
 	protected override handleResultViewing(context: LiveContext, score: number, next: () => void): (() => void) | void {
