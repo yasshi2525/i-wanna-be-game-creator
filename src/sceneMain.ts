@@ -167,6 +167,9 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 			}),
 			speed: 4
 		})
+		.scorer({
+			refrainsSendingScore: true
+		})
 		.ticker({
 			frame: (totalTimeLimit - 10) * g.game.fps
 		})
@@ -176,6 +179,12 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 	scene.onLoad.add(() => {
 		playForcibly("se_nc10609.mp3");
 		contextVars.scorer = scene.scorer;
+
+		// プレイヤー操作が行われるまでランキングにランクインしないようにする.
+		scene.broadcaster.onDepart.addOnce(() => {
+			scene.scorer.keepSendingScore();
+		});
+
 		// 後続の Spot をロックする.
 		scene.spots[1].lockedBy(scene.spots[0]);
 		scene.spots[2].lockedBy(scene.spots[1]);
