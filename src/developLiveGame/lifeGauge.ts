@@ -1,3 +1,4 @@
+import { Frame } from "../frame";
 import { playForcibly } from "../utils";
 import { Obstacle } from "./obstacle";
 
@@ -17,6 +18,10 @@ export class LifeGauge extends g.E {
 	 */
 	private readonly gauge: g.FilledRect;
 	/**
+	 * ゲージ説明テキスト
+	 */
+	private readonly label: g.Label;
+	/**
 	 * expire 1発によるゲージの減少幅
 	 */
 	private readonly damage: number;
@@ -24,27 +29,40 @@ export class LifeGauge extends g.E {
 
 	constructor(opts: LifeGaugeOptions) {
 		super(opts);
+		this.append(new Frame({
+			scene: this.scene,
+			width: opts.width,
+			height: opts.height,
+			fillColor: "white",
+			strokeColor: "black",
+			strokeWidth: 5,
+			fillOpacity: 0.25
+		}));
 		this.gauge = new g.FilledRect({
 			scene: this.scene,
 			parent: this,
 			width: opts.width * opts.initLife / opts.life,
 			height: opts.height,
-			cssColor: opts.color
+			cssColor: opts.color,
+			compositeOperation: "destination-over"
 		});
-		this.append(new g.Label({
+		this.label = new g.Label({
 			scene: this.scene,
+			parent: this,
 			font: new g.DynamicFont({
 				game: g.game,
 				fontFamily: "sans-serif",
-				size: this.height * 0.8
+				size: this.height * 0.75,
+				strokeColor: "white",
+				strokeWidth: 5
 			}),
-			text: "体力",
+			text: "心の体力",
 			width: this.width,
 			y: this.height / 2,
 			anchorY: 0.5,
 			textAlign: "center",
 			widthAutoAdjust: false
-		}));
+		});
 		this.damage = opts.damage / opts.life * opts.width;
 	}
 
@@ -101,6 +119,13 @@ export class LifeGauge extends g.E {
 
 	end(): void {
 		this.ended = true;
+	}
+
+	/**
+	 * 説明テキストを消す（ボーナス演出のため）
+	 */
+	clearLabel(): void {
+		this.label.hide();
 	}
 
 	/**

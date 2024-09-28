@@ -1,6 +1,7 @@
 import { LiveContext, LiveGame } from "@yasshi2525/live-on-air";
 import { constants } from "./developLiveGame/constants";
 import { GameFacade } from "./developLiveGame/gameFacade";
+import { Task } from "./developLiveGame/task";
 import { ContextVars } from "./globals";
 import { play, playForcibly, sleep } from "./utils";
 
@@ -40,6 +41,9 @@ export class DevelopLiveGame extends LiveGame {
 			cssColor: "khaki",
 			opacity: 0.5
 		}));
+		if (contextVars.taskBounds === undefined) {
+			contextVars.taskBounds = Task.init(container);
+		}
 		this.gameFacade = new GameFacade({
 			scene,
 			container,
@@ -48,6 +52,7 @@ export class DevelopLiveGame extends LiveGame {
 			progress: contextVars.progress,
 			life: contextVars.life,
 			numOfObstacle: contextVars.numbOfObstacle,
+			taskBounds: contextVars.taskBounds,
 		});
 		scene.setTimeout(() => next(), 2000);
 	}
@@ -62,6 +67,7 @@ export class DevelopLiveGame extends LiveGame {
 			src: scene.asset.getImageById("goback"),
 			x: container.width / 2,
 			anchorX: 0.5,
+			opacity: 0.5,
 			touchable: true
 		});
 
@@ -76,9 +82,19 @@ export class DevelopLiveGame extends LiveGame {
 				container.append(new g.Label({
 					scene,
 					font: DevelopLiveGame.failFont,
-					text: "休憩が必要です",
+					text: "心が折れました",
 					x: container.width / 2,
 					y: container.height / 2,
+					anchorX: 0.5,
+					anchorY: 0.5
+				}));
+				container.append(new g.Label({
+					scene,
+					font: DevelopLiveGame.failFont,
+					fontSize: DevelopLiveGame.failFont.size / 3,
+					text: "心の体力が無くなりました。再挑戦してください",
+					x: container.width / 2,
+					y: container.height / 2 + DevelopLiveGame.failFont.size,
 					anchorX: 0.5,
 					anchorY: 0.5
 				}));
@@ -183,8 +199,16 @@ export class DevelopLiveGame extends LiveGame {
 			case "fail":
 				// 体力切れ
 				vars.isDie = true;
-				context.scene.setTimeout(() => next(), 4000);
+				context.scene.setTimeout(() => next(), 5000);
 				break;
 		}
+		return () => this.flushTaskBounds(context);
+	}
+
+	/**
+	 * 残り Task の座標を保存します
+	 */
+	private flushTaskBounds({ vars }: LiveContext): void {
+		(vars as ContextVars).taskBounds = this.gameFacade.taskBounds;
 	}
 }

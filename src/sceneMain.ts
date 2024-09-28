@@ -67,6 +67,7 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 		life: constants.lifeGauge.life,
 		isDie: false,
 		numbOfObstacle: 0,
+		taskBounds: undefined,
 		onLiveGameResult: new g.Trigger()
 	};
 

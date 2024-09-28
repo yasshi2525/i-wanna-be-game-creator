@@ -73,7 +73,7 @@ export class PR extends g.Sprite {
 		this.append(new g.Label({
 			scene: this.scene,
 			font: urlFont,
-			text: "https://github.com/yasshi2525/live-on-air",
+			text: "https://yasshi2525.github.io/live-on-air/",
 			x: this.width * 0.95,
 			y: this.height * 0.95,
 			anchorX: 1,

@@ -17,7 +17,13 @@ export class Rotator extends g.E {
 
 	constructor(opts: RotatorOptions) {
 		super(opts);
-		const sensorArea = (opts.parent as g.E).calculateBoundingRect();
+		const parent = opts.parent as g.E;
+		const sensorArea: g.CommonRect = {
+			left: parent.x,
+			right: parent.x + parent.width,
+			top: parent.y,
+			bottom: parent.y + parent.height,
+		};
 		this.sensor = new g.E({
 			scene: this.scene,
 			parent: this,

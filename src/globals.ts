@@ -73,6 +73,10 @@ export interface ContextVars {
 	 */
 	numbOfObstacle: number;
 	/**
+	 * 残りのTaskの座標 (開発ミニゲームにて初期化)
+	 */
+	taskBounds?: Set<g.CommonArea>;
+	/**
 	 * 得点計算機能
 	 */
 	scorer?: Scorer;

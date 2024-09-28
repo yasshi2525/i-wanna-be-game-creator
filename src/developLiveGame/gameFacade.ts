@@ -6,6 +6,7 @@ import { Progressor } from "./progressor";
 import { Rotator } from "./rotator";
 import { Shooter } from "./shooter";
 import { Spawner } from "./spawner";
+import { Task } from "./task";
 
 /**
  * 開発ミニゲームの全モデル管理＋操作APIを提供
@@ -41,8 +42,12 @@ export class GameFacade {
 	 * 弾と障壁がぶつかった際、弾を消去
 	 */
 	private readonly blaster: Blaster;
+	/**
+	 * 残りのTask
+	 */
+	private readonly tasks: Set<Task>;
 
-	constructor({ scene, container, motivation, idea, progress, life, numOfObstacle }: GameFacadeOptions) {
+	constructor({ scene, container, motivation, idea, progress, life, numOfObstacle, taskBounds }: GameFacadeOptions) {
 		this.lifeGauge = new LifeGauge({
 			scene,
 			parent: container,
@@ -78,6 +83,14 @@ export class GameFacade {
 			scene,
 			container
 		});
+		this.tasks = Task.deploy(container, taskBounds);
+		for (const t of this.tasks) {
+			t.onBreak.add(() => {
+				this.progressor.progress(t);
+				this.tasks.delete(t);
+			});
+		}
+
 		// 定期的に障壁発生
 		this.spawner.onCreate.add(obstacle => {
 			this.lifeGauge.watch(obstacle);
@@ -91,9 +104,9 @@ export class GameFacade {
 		// 定期的に弾射出
 		this.shooter.onShoot.add(a => {
 			this.blaster.addAttacker(a);
-			a.onOut.add(() => {
-				this.progressor.progress(a);
-			});
+			for (const t of this.tasks) {
+				t.watch(a);
+			}
 		});
 		// 弾と障壁がぶつかったら弾消滅
 		this.blaster.onDeleteAttacker.add(a => {
@@ -127,6 +140,7 @@ export class GameFacade {
 	 * 残り体力分のボーナスを発生させます. 残り体力があるかどうかを返します.
 	 */
 	lifeBonus(): boolean {
+		this.lifeGauge.clearLabel();
 		return this.lifeGauge.substract(constants.lifeGauge.bonus / constants.lifeGauge.life * constants.lifeGauge.width);
 	}
 
@@ -154,6 +168,22 @@ export class GameFacade {
 	 */
 	get life(): number {
 		return this.lifeGauge.life;
+	}
+
+	/**
+	 * 残りのTaskの座標を取得します
+	 */
+	get taskBounds(): Set<g.CommonArea> {
+		const taskBounds = new Set<g.CommonArea>();
+		for (const t of this.tasks) {
+			taskBounds.add({
+				x: t.x,
+				y: t.y,
+				width: t.width,
+				height: t.height
+			});
+		}
+		return taskBounds;
 	}
 }
 
@@ -189,6 +219,10 @@ export interface GameFacadeOptions {
 	 * これまで生成したObstacleの数
 	 */
 	numOfObstacle: number;
+	/**
+	 * 前回終了時の残りのTaskの座標
+	 */
+	taskBounds: Set<g.CommonArea>;
 }
 
 /**

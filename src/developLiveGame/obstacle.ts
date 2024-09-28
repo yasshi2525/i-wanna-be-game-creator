@@ -1,4 +1,6 @@
+import { Frame, FrameOptions } from "../frame";
 import { playForcibly } from "../utils";
+import { constants } from "./constants";
 
 /**
  * ゲームの完成を阻止する障壁
@@ -6,7 +8,7 @@ import { playForcibly } from "../utils";
  * 一定期間放置で爆発＝ペナルティ
  * Attacker による 一定ダメージで破壊
  */
-export class Obstacle extends g.FilledRect {
+export class Obstacle extends Frame {
 	/**
 	 * 一定期間放置すると発火
 	 */
@@ -19,6 +21,14 @@ export class Obstacle extends g.FilledRect {
 	 * 残り体力
 	 */
 	private life: number;
+	/**
+	 * 破壊できたときに説明に使うフォント
+	 */
+	private readonly successFont: g.Font;
+	/**
+	 * 爆発したとき説明に使うフォント
+	 */
+	private readonly failedFont: g.Font;
 
 	/**
 	 * 障壁の説明文
@@ -59,6 +69,8 @@ export class Obstacle extends g.FilledRect {
 		if (Obstacle.desriptionPool.length === 0) {
 			Obstacle.desriptionPool = [...Obstacle.descriptions];
 		}
+		this.successFont = opts.successFont;
+		this.failedFont = opts.failedFont;
 		const description = Obstacle.desriptionPool.splice(Math.floor(g.game.random.generate() * Obstacle.desriptionPool.length), 1)[0];
 		for (let i = 0; i < description.length; i++) {
 			const label = new g.Label({
@@ -80,11 +92,12 @@ export class Obstacle extends g.FilledRect {
 		// interval ミリ秒後爆発
 		this.scene.setTimeout(() => {
 			if (!this.destroyed()) {
-				this.cssColor = "red";
+				this.body.cssColor = "red";
 				this.modified();
 				this.scene.setTimeout(() => {
 					if (!this.destroyed()) {
 						playForcibly("se_nc46976.wav");
+						this.tearDown(false);
 						this.onExpire.fire();
 						this.destroy();
 					}
@@ -102,37 +115,60 @@ export class Obstacle extends g.FilledRect {
 		playForcibly("se_nc141227.wav");
 		if (this.life <= 0 && !this.destroyed()) {
 			// 障壁を乗り越えた（破壊した）ときのエフェクト
-			const tip = new g.FilledRect({
-				scene: this.scene,
-				x: this.x,
-				y: this.y,
-				width: this.width,
-				height: this.height,
-				anchorX: 0.5,
-				anchorY: 0.5,
-				cssColor: this.cssColor,
-			});
-			tip.onUpdate.add(() => {
-				tip.width -= this.width * 0.1;
-				tip.height -= this.width * 0.1;
-				if (tip.width < 0 || tip.height < 0) {
-					tip.destroy();
-					return true;
-				}
-				tip.modified();
-			});
-			this.parent.insertBefore(tip, this);
 			playForcibly("se_nc149103.wav");
-			this.destroy();
+			this.tearDown(true);
 			this.onBreak.fire();
+			this.destroy();
 		}
+	}
+
+	/**
+	 * 消滅アニメーションを表示します
+	 */
+	private tearDown(success: boolean): void {
+		const tip = new g.FilledRect({
+			scene: this.scene,
+			x: this.x,
+			y: this.y,
+			width: this.width,
+			height: this.height,
+			anchorX: 0.5,
+			anchorY: 0.5,
+			cssColor: constants.obstacle.tipColor,
+		});
+		const label = new g.Label({
+			scene: this.scene,
+			x: this.x,
+			y: this.y,
+			anchorX: 0.5,
+			anchorY: 0.5,
+			font: success ? this.successFont : this.failedFont,
+			text: success ? "解消！" : "挫折…",
+		});
+		this.scene.setTimeout(() => {
+			if (!label.destroyed()) {
+				label.destroy();
+			}
+		}, 500);
+		const rate = success ? 0.1 : 0.05;
+		tip.onUpdate.add(() => {
+			tip.width -= this.width * rate;
+			tip.height -= this.height * rate;
+			if (tip.width < 0 || tip.height < 0) {
+				tip.destroy();
+				return true;
+			}
+			tip.modified();
+		});
+		this.parent.insertBefore(tip, this);
+		this.parent.insertBefore(label, this);
 	}
 }
 
 /**
  * Obstacle の初期化に必要なパラメタ
  */
-export interface ObstacleOptions extends g.FilledRectParameterObject {
+export interface ObstacleOptions extends FrameOptions {
 	/**
 	 * 文字描画に使うフォント
 	 */
@@ -145,4 +181,12 @@ export interface ObstacleOptions extends g.FilledRectParameterObject {
 	 * この回数 Attacker から攻撃を受けると破壊される（ボーナス）
 	 */
 	life: number;
+	/**
+	 * 破壊できたときに説明に使うフォント
+	 */
+	successFont: g.Font;
+	/**
+	 * 爆発したとき説明に使うフォント
+	 */
+	failedFont: g.Font;
 }

@@ -1,4 +1,4 @@
-import { playForcibly } from "../utils";
+import { Frame } from "../frame";
 
 /**
  * ゲームの完成度. 進捗.
@@ -22,19 +22,31 @@ export class Progressor extends g.E {
 
 	constructor(opts: ProgressorOptions) {
 		super(opts);
+		this.append(new Frame({
+			scene: this.scene,
+			width: opts.width,
+			height: opts.height,
+			fillColor: "white",
+			strokeColor: "black",
+			strokeWidth: 5,
+			fillOpacity: 0.25
+		}));
 		this.gauge = new g.FilledRect({
 			scene: this.scene,
 			parent: this,
 			width: opts.progress === 0 ? 1 : opts.progress * this.width,
 			height: this.height,
 			cssColor: opts.color,
+			compositeOperation: "destination-over"
 		});
 		this.append(new g.Label({
 			scene: this.scene,
 			font: new g.DynamicFont({
 				game: g.game,
 				fontFamily: "sans-serif",
-				size: this.height * 0.8
+				size: this.height * 0.75,
+				strokeColor: "white",
+				strokeWidth: 5
 			}),
 			text: "完成度",
 			width: this.width,
@@ -67,7 +79,6 @@ export class Progressor extends g.E {
 			effect.y += Math.sin(theta) * v;
 			if (g.Util.distance(effect.x, effect.y, this.x + this.gauge.width, this.y + this.height / 2)
 				< effect.width * effect.scaleX / 2) {
-				playForcibly("se_nc1281.wav");
 				effect.destroy();
 				if (!this.ended) {
 					this.gauge.width += this.unit;

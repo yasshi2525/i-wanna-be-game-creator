@@ -4,24 +4,7 @@
 export class Frame extends g.E {
 	readonly body: g.FilledRect;
 
-	constructor(opts: g.EParameterObject & {
-		/**
-		 * 枠の太さ
-		 */
-		strokeWidth: number;
-		/**
-		 * 枠の色
-		 */
-		strokeColor: string;
-		/**
-		 * フレーム内の色
-		 */
-		fillColor: string;
-		/**
-		 * フレーム内の色の透明度
-		 */
-		fillOpacity: number;
-	}) {
+	constructor(opts: FrameOptions) {
 		super(opts);
 		const bodyMask = new g.FilledRect({
 			scene: this.scene,
@@ -53,4 +36,23 @@ export class Frame extends g.E {
 			opacity: opts.fillOpacity
 		});
 	}
+}
+
+export interface FrameOptions extends g.EParameterObject {
+	/**
+	 * 枠の太さ
+	 */
+	strokeWidth: number;
+	/**
+	 * 枠の色
+	 */
+	strokeColor: string;
+	/**
+	 * フレーム内の色
+	 */
+	fillColor: string;
+	/**
+	 * フレーム内の色の透明度
+	 */
+	fillOpacity: number;
 }

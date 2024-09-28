@@ -6,8 +6,8 @@ export const constants = {
 	 * 残り体力について
 	 */
 	lifeGauge: {
-		x: 680,
-		y: 0,
+		x: 100,
+		y: -70,
 		width: 400,
 		height: 50,
 		color: "mediumseagreen",
@@ -28,8 +28,8 @@ export const constants = {
 	 * 完成度について
 	 */
 	progressor: {
-		x: 680,
-		y: 50,
+		x: 520,
+		y: -70,
 		width: 400,
 		height: 50,
 		color: "royalblue",
@@ -46,15 +46,16 @@ export const constants = {
 		 * 何発の Attacker が当たれば破壊できるか.
 		 * 生成回数依存（最初は弱く、だんだん強く）
 		 */
-		life: { min: 5, max: 12 },
+		life: { min: 2, max: 4 },
 		/**
 		 * 何ミリ秒立っても破壊されなかった場合に爆発（expire、ペナルティ）するか
 		 */
-		span: 4000,
+		span: 8000,
 		/**
 		 * 表示色
 		 */
 		color: "maroon",
+		tipColor: "rosybrown",
 		width: 200,
 		height: 100,
 		font: new g.DynamicFont({
@@ -65,7 +66,25 @@ export const constants = {
 			fontColor: "white",
 			strokeColor: "black",
 			strokeWidth: 4
-		})
+		}),
+		successFont: new g.DynamicFont({
+			game: g.game,
+			size: 40,
+			fontFamily: "sans-serif",
+			fontWeight: "bold",
+			fontColor: "mediumseagreen",
+			strokeColor: "white",
+			strokeWidth: 4
+		}),
+		failedFont: new g.DynamicFont({
+			game: g.game,
+			size: 40,
+			fontFamily: "sans-serif",
+			fontWeight: "bold",
+			fontColor: "firebrick",
+			strokeColor: "white",
+			strokeWidth: 4
+		}),
 	},
 	/**
 	 * 障壁の生成について
@@ -76,7 +95,7 @@ export const constants = {
 		 *
 		 * idea 依存
 		 */
-		interval: { min: 2000, max: 6000 }
+		interval: { min: 2000, max: 12000 }
 	},
 	/**
 	 * 自機回転機について
@@ -112,5 +131,14 @@ export const constants = {
 		 * 1秒あたり進む距離
 		 */
 		speed: 400,
+	},
+	/**
+	 * タスク（壊すと完成度が高まる）
+	 */
+	task: {
+		color: "royalblue",
+		tipColor: "lightblue",
+		width: 60,
+		height: 20
 	}
 };

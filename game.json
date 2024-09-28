@@ -417,7 +417,7 @@
 			"type": "audio",
 			"path": "audio/developing_failed.wav",
 			"systemId": "sound",
-			"duration": 1640,
+			"duration": 1465,
 			"hint": {
 				"extensions": [
 					".aac",
@@ -679,6 +679,11 @@
 			"path": "node_modules/@yasshi2525/live-on-air/image/spot.default.unvisited.png",
 			"width": 150,
 			"height": 100,
+			"global": true
+		},
+		"task": {
+			"type": "script",
+			"path": "script/developLiveGame/task.js",
 			"global": true
 		}
 	},
