@@ -231,7 +231,7 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 		scene.broadcaster.onLiveEnd.add(live => {
 			if (contextVars.stage === "motivation" && scene.spots[1].lockedBy().length === 0) {
 				contextVars.stage = "idea";
-				avatar.text = "次は、アイデアを固めるでぇ～す!!";
+				avatar.text = "次は、アイデアを膨らますでぇ～す!!";
 				play("main_idea.wav");
 			}
 			if (contextVars.stage === "idea" && scene.spots[2].lockedBy().length === 0) {

@@ -274,7 +274,7 @@
 			"type": "audio",
 			"path": "audio/main_idea.wav",
 			"systemId": "sound",
-			"duration": 2182,
+			"duration": 2287,
 			"hint": {
 				"extensions": [
 					".aac",
