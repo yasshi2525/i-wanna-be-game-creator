@@ -65,6 +65,7 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 		progress: 0,
 		scorer: undefined,
 		life: constants.lifeGauge.life,
+		viewedProgressionGuide: false,
 		isDie: false,
 		numbOfObstacle: 0,
 		taskBounds: undefined,
@@ -227,6 +228,25 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 			}, LIVEGAME_COMMENT_INTERVAL);
 		});
 
+		// avatar の説明で足りない補足を表示します
+		const guideFont = new g.DynamicFont({
+			game: g.game,
+			size: 30,
+			strokeColor: "white",
+			strokeWidth: 8,
+			fontFamily: "sans-serif",
+		});
+		const guide = new g.Label({
+			scene,
+			parent: avatar.view,
+			font: guideFont,
+			text: "",
+			x: 70,
+			y: 30,
+			width: g.game.width / 2,
+			hidden: true
+		});
+
 		// ミニゲーム攻略にしたがって、 avatar のセリフを変化させます
 		scene.broadcaster.onLiveEnd.add(live => {
 			if (contextVars.stage === "motivation" && scene.spots[1].lockedBy().length === 0) {
@@ -255,6 +275,7 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 					avatar.text = "ゲームが完成したでぇ～す!!";
 					play("main_success.wav");
 				}
+				guide.hide();
 			}
 		});
 
@@ -264,20 +285,27 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 				contextVars.stage = "developing";
 				if (contextVars.motivation < LOW_MOTIVATION) {
 					avatar.text = "やる気が低くて、作業が捗りませぇ～ん!!";
+					guide.text = "（弾の射出速度低下…）";
 					play("develop_low_motivation.wav");
 				} else if (contextVars.idea < LOW_IDEA) {
 					avatar.text = "アイデアが微妙で、困難だらけでぇ～す!!";
+					guide.text = "（茶色ブロック出現率アップ…）";
 					play("develop_low_idea.wav");
 				} else if (contextVars.motivation > HIGH_MOTIVATION) {
 					avatar.text = "やる気に燃えて、作業が捗るでぇ～す!!";
+					guide.text = "（弾の射出速度アップ!!）";
 					play("develop_high_motivation.wav");
 				} else if (contextVars.idea > HIGH_IDEA) {
 					avatar.text = "アイデアが秀逸で、困難もなく順調でぇ～す!!";
+					guide.text = "（茶色ブロック出現率低下!!）";
 					play("develop_high_idea.wav");
 				} else {
 					avatar.text = "困難を打ち倒しながら、前に駆け出すでぇ～す!!";
+					guide.text = "";
 					play("develop_normal.wav");
 				}
+				guide.invalidate();
+				guide.show();
 			}
 		});
 
@@ -319,9 +347,19 @@ export const createMainScene = ({ totalTimeLimit }: MainSceneOptions): LiveOnAir
 				scene,
 				src: scene.asset.getImageById("pr_background"),
 				x: overlay.width / 2,
-				y: overlay.height / 2,
+				y: overlay.height / 4,
 				anchorX: 0.5,
 				anchorY: 0.5,
+			}));
+			scene.append(new g.Sprite({
+				scene,
+				src: scene.asset.getImageById("tips1"),
+				x: overlay.width / 2,
+				y: overlay.height * 3 / 4,
+				anchorX: 0.5,
+				anchorY: 0.5,
+				scaleX: 0.75,
+				scaleY: 0.75
 			}));
 		});
 	});

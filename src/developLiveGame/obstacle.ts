@@ -14,6 +14,10 @@ export class Obstacle extends Frame {
 	 */
 	readonly onExpire = new g.Trigger();
 	/**
+	 * expire 前に発火
+	 */
+	readonly onWarn = new g.Trigger();
+	/**
 	 * 破壊されると発火
 	 */
 	readonly onBreak = new g.Trigger();
@@ -102,6 +106,7 @@ export class Obstacle extends Frame {
 						this.destroy();
 					}
 				}, 500);
+				this.onWarn.fire();
 			}
 		}, opts.span);
 		this.life = opts.life;

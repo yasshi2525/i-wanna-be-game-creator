@@ -54,6 +54,26 @@ export class DevelopLiveGame extends LiveGame {
 			numOfObstacle: contextVars.numbOfObstacle,
 			taskBounds: contextVars.taskBounds,
 		});
+		// 初回プレイ時はガイドを表示
+		if (!contextVars.viewedProgressionGuide) {
+			const progressionGuide = new g.Sprite({
+				scene,
+				parent: container,
+				src: scene.asset.getImageById("progression_guide"),
+				x: container.width / 3,
+				y: container.height / 3,
+				anchorX: 0.5,
+				anchorY: 0.5,
+				scaleX: 0.5,
+				scaleY: 0.5,
+			});
+			scene.setTimeout(() => {
+				if (!progressionGuide.destroyed()) {
+					progressionGuide.destroy();
+				}
+			}, 4000);
+			contextVars.viewedProgressionGuide = true;
+		}
 		scene.setTimeout(() => next(), 2000);
 	}
 	protected override handleGamePlay(context: LiveContext): (() => void) | void {

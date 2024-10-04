@@ -91,11 +91,35 @@ export class GameFacade {
 			});
 		}
 
+		let viewedExpireGuide = false;
 		// 定期的に障壁発生
 		this.spawner.onCreate.add(obstacle => {
 			this.lifeGauge.watch(obstacle);
 			this.blaster.addObstacle(obstacle);
+			// 放置エンティティを検知したらガイドを表示
+			obstacle.onWarn.addOnce(() => {
+				if (!viewedExpireGuide) {
+					const guide = new g.Sprite({
+						scene,
+						parent: container,
+						src: scene.asset.getImageById("obstacle_guide"),
+						x: obstacle.x,
+						y: obstacle.y,
+						anchorX: 0.5,
+						anchorY: 1,
+						scaleX: 0.5,
+						scaleY: 0.5
+					});
+					scene.setTimeout(() => {
+						if (!guide.destroyed()) {
+							guide.destroy();
+						}
+					}, 4000);
+					viewedExpireGuide = true;
+				}
+			});
 		});
+
 		// プレイヤー操作で向き変更
 		this.rotator.onRotate.add(r => {
 			this.shooter.angle = r / Math.PI * 180;

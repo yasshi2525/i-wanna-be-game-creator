@@ -65,6 +65,10 @@ export interface ContextVars {
 	 */
 	life: number;
 	/**
+	 * 開発ミニゲームにおけるガイド表示フラグ
+	 */
+	viewedProgressionGuide: boolean;
+	/**
 	 * 一度体力切れを起こしたか
 	 */
 	isDie: boolean;

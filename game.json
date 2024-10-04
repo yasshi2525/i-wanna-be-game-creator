@@ -685,6 +685,27 @@
 			"type": "script",
 			"path": "script/developLiveGame/task.js",
 			"global": true
+		},
+		"obstacle_guide": {
+			"type": "image",
+			"path": "image/obstacle_guide.png",
+			"width": 582,
+			"height": 456,
+			"global": true
+		},
+		"progression_guide": {
+			"type": "image",
+			"path": "image/progression_guide.png",
+			"width": 715,
+			"height": 279,
+			"global": true
+		},
+		"tips1": {
+			"type": "image",
+			"path": "image/tips1.png",
+			"width": 1374,
+			"height": 433,
+			"global": true
 		}
 	},
 	"environment": {
