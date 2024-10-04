@@ -1,7 +1,7 @@
 {
   "name": "@yasshi2525/i-wanna-be-game-creator",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "live game template for akashic",
   "scripts": {
     "postinstall": "npm run build",
